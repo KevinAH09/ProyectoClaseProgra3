@@ -30,13 +30,13 @@ import org.una.tramites.utils.MapperUtils;
  * @author colo7
  */
 @RestController
-@RequestMapping("/usuarios") 
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
 
-    @GetMapping() 
+    @GetMapping()
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -52,7 +52,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/{id}") 
+    @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -69,7 +69,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/login")
-    @ResponseBody 
+    @ResponseBody
     public ResponseEntity<?> login(@PathVariable(value = "cedula") String cedula, @PathVariable(value = "password") String password) {
         try {
             Usuario usuario = new Usuario();
@@ -89,7 +89,7 @@ public class UsuarioController {
 
     }
 
-    @GetMapping("/cedula/{term}") 
+    @GetMapping("/cedula/{term}")
     public ResponseEntity<?> findByCedulaAproximate(@PathVariable(value = "term") String term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByCedulaAproximate(term);
@@ -104,7 +104,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/nombre/{term}") 
+    @GetMapping("/nombre/{term}")
     public ResponseEntity<?> findByNombreCompletoAproximateIgnoreCase(@PathVariable(value = "term") String term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByNombreCompletoAproximateIgnoreCase(term);
@@ -120,7 +120,7 @@ public class UsuarioController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/") 
+    @PostMapping("/")
     @ResponseBody
     public ResponseEntity<?> create(@RequestBody Usuario usuario) {
         try {
@@ -132,9 +132,9 @@ public class UsuarioController {
         }
     }
 
-    @PutMapping("/{id}") 
+    @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id,@RequestBody Usuario usuarioModified) {
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Usuario usuarioModified) {
         try {
             Optional<Usuario> usuarioUpdated = usuarioService.update(usuarioModified, id);
             if (usuarioUpdated.isPresent()) {
@@ -150,9 +150,9 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/{id}") 
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
-         try {
+        try {
             Optional<Usuario> usuarioUpdated = usuarioService.findById(id);
             if (usuarioUpdated.isPresent()) {
                 usuarioService.delete(id);
@@ -165,8 +165,9 @@ public class UsuarioController {
         }
     }
 
-    @DeleteMapping("/") 
+    @DeleteMapping("/")
     public ResponseEntity<?> deleteAll() {
- 	usuarioService.deleteAll();
-    } 
+        usuarioService.deleteAll();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
