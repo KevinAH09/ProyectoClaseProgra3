@@ -5,6 +5,8 @@
  */
 package org.una.tramites.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +33,14 @@ import org.una.tramites.utils.MapperUtils;
  */
 @RestController
 @RequestMapping("/usuarios")
+@Api(tags = {"Usuarios"})
 public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
 
     @GetMapping()
+    @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -53,6 +57,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation(value = "Obtiene un Usuario", response = UsuarioDTO.class, tags = "Usuarios")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -70,6 +75,7 @@ public class UsuarioController {
 
     @PutMapping("/login")
     @ResponseBody
+    @ApiOperation(value = "Inicio de sesión para conseguir un token de acceso", response = UsuarioDTO.class, tags = "Seguridad")
     public ResponseEntity<?> login(@PathVariable(value = "cedula") String cedula, @PathVariable(value = "password") String password) {
         try {
             Usuario usuario = new Usuario();
@@ -90,6 +96,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/cedula/{term}")
+    @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public ResponseEntity<?> findByCedulaAproximate(@PathVariable(value = "term") String term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByCedulaAproximate(term);
@@ -105,6 +112,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/nombre/{term}")
+    @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public ResponseEntity<?> findByNombreCompletoAproximateIgnoreCase(@PathVariable(value = "term") String term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByNombreCompletoAproximateIgnoreCase(term);
@@ -122,6 +130,7 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
+    @ApiOperation(value = "Crea un usuario", response = UsuarioDTO.class, tags = "MODIFY")
     public ResponseEntity<?> create(@RequestBody Usuario usuario) {
         try {
             Usuario usuarioCreated = usuarioService.create(usuario);
@@ -134,6 +143,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     @ResponseBody
+    @ApiOperation(value = "Modifica un usuario", response = UsuarioDTO.class, tags = "MODIFY")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Usuario usuarioModified) {
         try {
             Optional<Usuario> usuarioUpdated = usuarioService.update(usuarioModified, id);
