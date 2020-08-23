@@ -130,7 +130,7 @@ public class UsuarioController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
-    @ApiOperation(value = "Crea un usuario", response = UsuarioDTO.class, tags = "MODIFY")
+    @ApiOperation(value = "Crea un usuario", response = UsuarioDTO.class, tags = "Usuarios")
     public ResponseEntity<?> create(@RequestBody Usuario usuario) {
         try {
             Usuario usuarioCreated = usuarioService.create(usuario);
@@ -143,7 +143,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    @ApiOperation(value = "Modifica un usuario", response = UsuarioDTO.class, tags = "MODIFY")
+    @ApiOperation(value = "Modifica un usuario", response = UsuarioDTO.class, tags = "Usuarios")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Usuario usuarioModified) {
         try {
             Optional<Usuario> usuarioUpdated = usuarioService.update(usuarioModified, id);
