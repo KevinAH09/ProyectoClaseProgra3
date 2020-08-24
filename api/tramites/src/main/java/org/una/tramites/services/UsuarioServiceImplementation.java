@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.entities.Usuario;
 import org.una.tramites.repositories.IUsuarioRepository;
 
-
-
 /**
  *
  * @author Bosco
@@ -84,8 +82,17 @@ public class UsuarioServiceImplementation implements IUsuarioService {
     public Optional<Usuario> login(Usuario usuario) {
         return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getCedula(), usuario.getPasswordEncriptado()));
     }
- 
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Optional findByDepartamentoId(Long id) {
+//        return Optional.ofNullable(usuarioRepository.findByDepartamentoId(id));
+//    }
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Usuario findJefeByDepartamento(Long id) {
+//        return usuarioRepository.findJefeByDepartamento(id);
+//    }
+
 }
-
-
-
