@@ -67,8 +67,8 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaModificacion;
 
-    @Column(name = "es_jefe")
-    private boolean esJeFe;
+    @Column(name = "esJefe")
+    private boolean esJefe;
 
     @ManyToOne
     @JoinColumn(name = "departamentos_id")
@@ -79,7 +79,7 @@ public class Usuario implements Serializable {
     @PrePersist
     public void prePersist() {
         estado = true;
-        esJeFe = false;
+        esJefe = false;
         fechaRegistro = new Date();
         fechaModificacion = new Date();
     }

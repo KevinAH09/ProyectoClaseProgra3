@@ -29,7 +29,7 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
 
     public Optional<List<Usuario>> findByDepartamentoId(Long id);
 
-//    @Query("SELECT u FROM Usuario u LEFT JOIN u.departamento d WHERE u.esJefe=1 AND d.id=:id")
-//    public Usuario findJefeByDepartamento(Long id);
+    @Query("SELECT u FROM Usuario u LEFT JOIN u.departamento d WHERE u.esJefe=1 AND d.id=:id")
+    public Usuario findJefeByDepartamento(Long id);
 
 }
