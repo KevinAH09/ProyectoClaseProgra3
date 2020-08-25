@@ -34,6 +34,8 @@ public interface IUsuarioService {
     public Optional<Usuario> login(Usuario usuario);
 
     public Optional<List<Usuario>> findByDepartamentoId(Long id);
+    public Usuario findJefeByDepartamento(Long id);
+    
 
 //    public Usuario findJefeByDepartamento(Long id);
 }

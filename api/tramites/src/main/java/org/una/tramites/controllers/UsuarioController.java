@@ -185,19 +185,16 @@ public class UsuarioController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @GetMapping("/departamentoId/{term}")//Puede que aqui sea nombreCompleto
-//    @ApiOperation(value = "Obtiene una lista de todos los usuarios por departamento", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
-//    public ResponseEntity<?> findJefeByDepartamento(@PathVariable(value = "term") Long id) {
-//        try {
-//            Usuario result = usuarioService.findJefeByDepartamento(id);
-//            if ()) {
-//                List<UsuarioDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(result.get(), UsuarioDTO.class);
-//                return new ResponseEntity<>(usuariosDTO, HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+
+    @GetMapping("/departamentoId/{term}")//Puede que aqui sea nombreCompleto
+    @ApiOperation(value = "Obtiene una lista de todos los usuarios por departamento", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    public ResponseEntity<?> findJefeByDepartamento(@PathVariable(value = "term") Long id) {
+        try {
+            Usuario result = usuarioService.findJefeByDepartamento(id);
+            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(result, UsuarioDTO.class);
+            return new ResponseEntity<>(usuarioDto, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

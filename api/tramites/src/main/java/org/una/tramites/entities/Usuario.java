@@ -67,7 +67,7 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaModificacion;
 
-    @Column(name = "esJefe")
+    @Column(name = "es_Jefe")
     private boolean esJefe;
 
     @ManyToOne

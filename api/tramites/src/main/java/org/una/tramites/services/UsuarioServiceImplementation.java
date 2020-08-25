@@ -89,10 +89,10 @@ public class UsuarioServiceImplementation implements IUsuarioService {
         return Optional.ofNullable(usuarioRepository.findByDepartamentoId(id));
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Usuario findJefeByDepartamento(Long id) {
-//        return usuarioRepository.findJefeByDepartamento(id);
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public Usuario findJefeByDepartamento(Long id) {
+        return usuarioRepository.findJefeByDepartamento(id);
+    }
 
 }
