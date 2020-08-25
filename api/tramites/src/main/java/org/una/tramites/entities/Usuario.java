@@ -50,12 +50,12 @@ public class Usuario implements Serializable {
 
     @Column(length = 25, unique = true)
     private String cedula;
-
+ 
     @Column
     private boolean estado;
 
     @Column(name = "departamento_id")
-    private Long DepartamentoId;
+    private Long departamentoId;
 
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.DATE)

@@ -83,11 +83,11 @@ public class UsuarioServiceImplementation implements IUsuarioService {
         return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getCedula(), usuario.getPasswordEncriptado()));
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional findByDepartamentoId(Long id) {
-//        return Optional.ofNullable(usuarioRepository.findByDepartamentoId(id));
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public Optional findByDepartamentoId(Long id) {
+        return Optional.ofNullable(usuarioRepository.findByDepartamentoId(id));
+    }
 
 //    @Override
 //    @Transactional(readOnly = true)

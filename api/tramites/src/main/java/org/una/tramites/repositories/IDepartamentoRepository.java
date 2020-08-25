@@ -23,6 +23,6 @@ public interface IDepartamentoRepository extends JpaRepository<Departamento, Lon
     public List<Departamento> findByNombreContainingIgnoreCase(String nombre);
 
     @Query("select u from Departamento u where UPPER(u.nombre) like CONCAT('%',UPPER(:nombre),'%')")
-    public Departamento findNombreCompletoWithLikeSQL(@Param("nombre") String nombre);
+    public Departamento findNombreWithLikeSQL(@Param("nombre") String nombre);
 
 }
