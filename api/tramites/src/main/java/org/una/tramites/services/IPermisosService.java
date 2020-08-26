@@ -5,6 +5,7 @@
  */
 package org.una.tramites.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.una.tramites.entities.Permisos;
@@ -23,5 +24,13 @@ public interface IPermisosService {
     public Permisos create(Permisos permiso);
 
     public Optional<Permisos> update(Permisos permiso, Long id);
+
+    public Optional<List<Permisos>> findByEstado(boolean estado);
+
+    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
+
+    public void delete(Long id);
+
+    public void deleteAll();
 
 }
