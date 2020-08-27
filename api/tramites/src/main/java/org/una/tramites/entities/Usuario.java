@@ -55,7 +55,7 @@ public class Usuario implements Serializable {
     private boolean estado;
 
     @Column(name = "departamento_id")
-    private Long departamentoId;
+    private Long departamentoId;//posible error
 
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.DATE)

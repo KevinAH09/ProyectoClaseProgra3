@@ -17,10 +17,12 @@ import org.una.tramites.entities.Usuario;
  * @author Bosco
  */
 public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
+    
+    @Query("SELECT u FROM Usuario u WHERE u.passwordEncriptado=:passwordEncriptado AND u.cedula=:cedula")
+    public Usuario findByCedulaAndPasswordEncriptado(@Param("passwordEncriptado") String passwordEncriptado, @Param("cedula") String cedula);
 
-    public Usuario findByCedulaAndPasswordEncriptado(String cedula, String passwordEncriptado);
-
-    public List<Usuario> findByCedulaContaining(String cedula);
+    @Query("select u from Usuario u where u.cedula like CONCAT(:cedula,'%')")
+    public List<Usuario> findByCedulaContaining(@Param("cedula") String cedula);
 
     public List<Usuario> findByNombreCompletoContainingIgnoreCase(String nombreCompleto);
 
@@ -30,6 +32,6 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
     public Optional<List<Usuario>> findByDepartamentoId(Long id);
 
     @Query("SELECT u FROM Usuario u LEFT JOIN u.departamento d WHERE u.esJefe=1 AND d.id=:id")
-    public Usuario findJefeByDepartamento(Long id);
+    public Usuario findJefeByDepartamento(@Param("id") Long id);
 
 }

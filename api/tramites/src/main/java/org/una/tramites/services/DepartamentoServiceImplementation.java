@@ -7,8 +7,11 @@ package org.una.tramites.services;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.entities.Departamento;
+import org.una.tramites.repositories.IDepartamentoRepository;
 
 /**
  *
@@ -17,29 +20,46 @@ import org.una.tramites.entities.Departamento;
 @Service
 public class DepartamentoServiceImplementation implements IDepartamentoService {
 
+    @Autowired
+    private IDepartamentoRepository departamentoRepository;
+
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<Departamento>> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Optional.ofNullable(departamentoRepository.findAll());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Departamento> findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return departamentoRepository.findById(id);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<Departamento>> findByNombreAproximateIgnoreCase(String nombre) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Departamento create(Departamento departamento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return departamentoRepository.save(departamento);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Departamento> update(Departamento departamento, Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (departamentoRepository.findById(id).isPresent()) {
+            return Optional.ofNullable(departamentoRepository.save(departamento));
+        } else {
+            return null;
+        }
     }
-    
+
+    @Override
+    public Optional<List<Departamento>> findByEstadoContaining(boolean estado) {
+        return Optional.ofNullable(departamentoRepository.findByEstadoContaining(estado));
+    }
+
 }

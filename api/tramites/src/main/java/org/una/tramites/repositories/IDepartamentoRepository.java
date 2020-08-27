@@ -18,8 +18,9 @@ import org.una.tramites.entities.Usuario;
  */
 public interface IDepartamentoRepository extends JpaRepository<Departamento, Long> {
 
-    public List<Departamento> findByEstadoContaining(boolean estado);
-
+    @Query("select u from Usuario u where u.estado=:estado ")
+    public List<Departamento> findByEstadoContaining(@Param("estado") boolean estado);
+    
     public List<Departamento> findByNombreContainingIgnoreCase(String nombre);
 
     @Query("select u from Departamento u where UPPER(u.nombre) like CONCAT('%',UPPER(:nombre),'%')")
