@@ -5,7 +5,9 @@
  */
 package org.una.tramites.repositories;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.una.tramites.entities.Permisos;
 
@@ -18,4 +20,8 @@ public interface IPermisosRepository extends JpaRepository<Permisos, Long> {
     public List<Permisos> findByEstadoContaining(boolean estado);
 
     public List<Permisos> findByCodigoIgnoreCase(String codigo);
+
+    public Optional<Permisos> findById(Long id);
+    
+    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
 }
