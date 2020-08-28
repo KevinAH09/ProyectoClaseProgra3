@@ -18,10 +18,8 @@ import org.una.tramites.entities.Usuario;
  */
 public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
     
-    @Query("SELECT u FROM Usuario u WHERE u.passwordEncriptado=:passwordEncriptado AND u.cedula=:cedula")
     public Usuario findByCedulaAndPasswordEncriptado(@Param("passwordEncriptado") String passwordEncriptado, @Param("cedula") String cedula);
 
-    @Query("select u from Usuario u where u.cedula like CONCAT(:cedula,'%')")
     public List<Usuario> findByCedulaContaining(@Param("cedula") String cedula);
 
     public List<Usuario> findByNombreCompletoContainingIgnoreCase(String nombreCompleto);

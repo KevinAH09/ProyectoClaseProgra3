@@ -54,8 +54,9 @@ public class Usuario implements Serializable {
     @Column
     private boolean estado;
 
-    @Column(name = "departamento_id")
-    private Long departamentoId;//posible error
+    @ManyToOne
+    @JoinColumn(name = "departamentos_id")
+    private Departamento departamento;
 
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.DATE)
@@ -70,10 +71,7 @@ public class Usuario implements Serializable {
     @Column(name = "es_Jefe")
     private boolean esJefe;
 
-    @ManyToOne
-    @JoinColumn(name = "departamentos_id")
-    private Departamento departamento;
-
+    
     private static final long serialVersionUID = 1L;
 
     @PrePersist

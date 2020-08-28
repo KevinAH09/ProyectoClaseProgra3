@@ -18,7 +18,6 @@ import org.una.tramites.entities.Usuario;
  */
 public interface IDepartamentoRepository extends JpaRepository<Departamento, Long> {
 
-    @Query("select u from Usuario u where u.estado=:estado ")
     public List<Departamento> findByEstadoContaining(@Param("estado") boolean estado);
     
     public List<Departamento> findByNombreContainingIgnoreCase(String nombre);
