@@ -18,6 +18,7 @@ import org.una.tramites.entities.Transaccion;
  */
 public interface ITransaccionRepository extends JpaRepository<Transaccion, Long> {
 
+    //preguntar al profe porque da error
 //    public Optional<List<Transaccion>> findByUsuarioIdAndFechaRegistroBetween(@Param("permiso_Otorgado")Long usuario,@Param("fechaRegistro") Date startDate,@Param("fechaRegistro") Date endDate);
 //
 //    public Optional<List<Transaccion>> findByPermisoIdAndFechaRegistroBetween(@Param("permiso_Otorgado")Long permiso,@Param("fechaRegistro") Date startDate,@Param("fechaRegistro") Date endDate);

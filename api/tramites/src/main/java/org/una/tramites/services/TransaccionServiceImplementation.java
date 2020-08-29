@@ -29,7 +29,7 @@ public class TransaccionServiceImplementation implements ITransaccionService {
     public Optional<Transaccion> findById(Long id) {
         return transaccionRepository.findById(id);
     }
-    //preguntar al profe porque da error
+   
 //    @Override
 //    @Transactional(readOnly = true)
 //    public Optional findByUsuarioIdAndFechaRegistroBetween(Long usuarioId, Date startDate, Date endDate) {
