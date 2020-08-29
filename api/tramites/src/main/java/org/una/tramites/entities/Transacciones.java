@@ -18,7 +18,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.websocket.Decoder.Text;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -48,13 +47,14 @@ public class Transacciones implements Serializable {
     private Date fechaRegistro;
 
     @ManyToOne
-    @JoinColumn(name = "Permisos_Otorgados_id")
-    private Transacciones transacciones;
+    @JoinColumn(name = "permisos_otorgados_id")
+    private PermisosOtorgados permisos;
 
     @Column(name = "objeto", length = 50)
     private String objeto;
-    @Column
-    private Text informacion;
+    
+    @Column(name = "informacion",length=500)
+    private String informacion;
 
     private static final long serialVersionUID = 1L;
 
