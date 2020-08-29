@@ -106,11 +106,11 @@ public class PermisosController {
         }
     }
 
-    @GetMapping("/estado/{term}")//Puede que aqui sea nombreCompleto
+    @GetMapping("/estado/{value}")//Puede que aqui sea nombreCompleto
     @ApiOperation(value = "Obtiene una lista de permisos por estado", response = PermisoDTO.class, responseContainer = "List", tags = "Permisos")
-    public ResponseEntity<?> findByEstado(@PathVariable(value = "term") Boolean estado) {
+    public ResponseEntity<?> findByEstado(@PathVariable(value = "value") boolean value) {
         try {
-            Optional<List<Permisos>> result = permisosService.findByEstado(estado);
+            Optional<List<Permisos>> result = permisosService.findByEstado(value);
             PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(result, PermisoDTO.class);
             return new ResponseEntity<>(permisoDTO, HttpStatus.CREATED);
         } catch (Exception e) {
