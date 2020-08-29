@@ -27,7 +27,7 @@ public interface IPermisosService {
 
     public Optional<List<Permisos>> findByEstado(boolean estado);
 
-    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
+    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);//Crear query
 
     public void delete(Long id);
 

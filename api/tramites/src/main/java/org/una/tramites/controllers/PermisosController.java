@@ -106,18 +106,17 @@ public class PermisosController {
         }
     }
 
-//    @GetMapping("/departamentoId/{term}")//Puede que aqui sea nombreCompleto
-//    @ApiOperation(value = "Obtiene una lista de todos los usuarios por departamento", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
-//    public ResponseEntity<?> findByEstado(@PathVariable(value = "term") Long id) {
-//        try {
-//            Usuario result = usuarioService.findJefeByDepartamento(id);
-//            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(result, UsuarioDTO.class);
-//            return new ResponseEntity<>(usuarioDto, HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-//    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
+    @GetMapping("/estado/{term}")//Puede que aqui sea nombreCompleto
+    @ApiOperation(value = "Obtiene una lista de permisos por estado", response = PermisoDTO.class, responseContainer = "List", tags = "Permisos")
+    public ResponseEntity<?> findByEstado(@PathVariable(value = "term") Boolean estado) {
+        try {
+            Optional<List<Permisos>> result = permisosService.findByEstado(estado);
+            PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(result, PermisoDTO.class);
+            return new ResponseEntity<>(permisoDTO, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
