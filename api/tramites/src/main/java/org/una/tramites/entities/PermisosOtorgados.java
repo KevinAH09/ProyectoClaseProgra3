@@ -55,7 +55,7 @@ public class PermisosOtorgados implements Serializable{
     
     @ManyToOne
     @JoinColumn(name = "permisos_id")
-    private Permisos permisos;
+    private Permisos permisoId;
 
     @PrePersist
     public void prePersist() {
