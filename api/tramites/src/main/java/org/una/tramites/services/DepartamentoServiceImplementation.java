@@ -38,7 +38,7 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<Departamento>> findByNombreAproximateIgnoreCase(String nombre) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return Optional.ofNullable(departamentoRepository.findByNombreContainingIgnoreCase(nombre));
     }
 
     @Override
