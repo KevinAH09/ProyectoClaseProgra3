@@ -8,39 +8,50 @@ package org.una.tramites.services;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.una.tramites.entities.Permisos;
+import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.repositories.IPermisosRepository;
 
 /**
  *
  * @author cfugu
  */
 @Service
-public class PermisosServiceImplementation implements IPermisosService{
+public class PermisosServiceImplementation implements IPermisosService {
+
+    @Autowired
+    private IPermisosRepository permisosOtorgadosRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<Permisos>> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Optional.ofNullable(permisosOtorgadosRepository.findAll());
     }
 
     @Override
     public Optional<Permisos> findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return permisosOtorgadosRepository.findById(id);
     }
 
     @Override
     public Permisos create(Permisos permiso) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return permisosOtorgadosRepository.save(permiso);
     }
 
     @Override
     public Optional<Permisos> update(Permisos permiso, Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       if (permisosOtorgadosRepository.findById(id).isPresent()) {
+            return Optional.ofNullable(permisosOtorgadosRepository.save(permiso));
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Optional<List<Permisos>> findByEstado(boolean estado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Optional.ofNullable(permisosOtorgadosRepository.findByEstadoContaining(estado));
     }
 
     @Override
@@ -58,6 +69,4 @@ public class PermisosServiceImplementation implements IPermisosService{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
-    
 }

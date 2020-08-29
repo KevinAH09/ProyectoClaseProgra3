@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,21 +73,6 @@ public class PermisosController {
         }
     }
 
-//    @GetMapping("/nombre/{term}")
-//    @ApiOperation(value = "Obtiene una lista de todos los departamentos", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
-//    public ResponseEntity<?> findByNombreproximateIgnoreCase(@PathVariable(value = "term") String term) {
-//        try {
-//            Optional<List<Departamento>> result = departamentoService.findByNombreAproximateIgnoreCase(term);
-//            if (result.isPresent()) {
-//                List<DepartamentoDTO> departamentosDTO = MapperUtils.DtoListFromEntityList(result.get(), DepartamentoDTO.class);
-//                return new ResponseEntity<>(departamentosDTO, HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
@@ -119,4 +105,19 @@ public class PermisosController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    public Optional<List<Permisos>> findByEstado(boolean estado);
+//
+//    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable(value = "id") Long id) {
+        permisosService.delete(id);
+    }
+
+    @DeleteMapping("/")
+    public void deleteAll() {
+        permisosService.deleteAll();
+    }
+    
 }
