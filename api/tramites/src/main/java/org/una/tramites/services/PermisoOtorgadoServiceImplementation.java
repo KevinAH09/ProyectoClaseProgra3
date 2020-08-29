@@ -30,14 +30,14 @@ public class PermisoOtorgadoServiceImplementation implements IPermisoOtorgadoSer
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<PermisosOtorgados>> findByPermisoIdAndEstado(Long permisoId, boolean estado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Optional findByPermisoIdAndEstado(Long permisoId, boolean estado) {
+       return Optional.ofNullable(permisoOtorgadosRepos.findByPermisoIdAndEstado(permisoId, estado));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<PermisosOtorgados>> findByFechaRegistroBetween(Date startDate, Date endDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Optional findByFechaRegistroBetween(Date startDate, Date endDate) {
+        return Optional.ofNullable(permisoOtorgadosRepos.findByFechaRegistroBetween(startDate, endDate));
     }
 
     @Override

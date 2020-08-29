@@ -9,7 +9,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.una.tramites.services.ITransaccionesService;
+import org.una.tramites.services.ITransaccionService;
 
 /**
  *
@@ -20,7 +20,7 @@ import org.una.tramites.services.ITransaccionesService;
 @Api(tags = {"Transacciones"})
 public class TransaccionController {
     @Autowired
-    private ITransaccionesService transaccionService;
+    private ITransaccionService transaccionService;
     
 //    @GetMapping()
 //    @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")

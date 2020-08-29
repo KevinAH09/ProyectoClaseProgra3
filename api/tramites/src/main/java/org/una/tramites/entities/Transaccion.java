@@ -35,7 +35,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Transacciones implements Serializable {
+public class Transaccion implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class Transacciones implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "permisos_otorgados_id")
-    private PermisosOtorgados permisosOtorgados;
+    private PermisosOtorgados permiso_Otorgado;
 
     @Column(name = "objeto", length = 50)
     private String objeto;

@@ -20,12 +20,12 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TransaccionesDTO {
+public class TransaccionDTO {
 
     private Long id;
     private String objeto;
     private String informacion;
-    private PermisosOtorgadosDTO permisos;
+    private PermisosOtorgadosDTO permisoOtorgadoId;
     private Date fechaRegistro;
 
 }
