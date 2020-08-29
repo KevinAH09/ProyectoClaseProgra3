@@ -36,7 +36,7 @@ import org.una.tramites.utils.MapperUtils;
 @Api(tags = {"Requisitos"})
 public class RequisitoController {
     
-//    @Autowired
+    @Autowired
     private IRequisitoService requisitoService;
 
     @GetMapping()

@@ -15,19 +15,19 @@ import org.una.tramites.entities.Usuario;
 
 /**
  *
- * @author cfugu
- */
-public interface IPermisosOtorgadosRepository  extends JpaRepository<PermisosOtorgados, Long> {
-
-    //public Optional<PermisosOtorgados> findById(Long id);
-
-    public Optional<List<PermisosOtorgados>> findByUsuarioId(Long id);
-
-    public Optional<List<PermisosOtorgados>> findByPermisoId(Long id);
-
-    //public Optional<List<PermisosOtorgados>> findByUsuarioIdAndEstado(Long usuarioId, boolean estado);
-
-    //public Optional<List<PermisosOtorgados>> findByPermisoIdAndEstado(Long permisoId, boolean estado);
-
-   // public Optional<List<PermisosOtorgados>> findByFechaRegistroBetween(Date startDate, Date endDate);
-}
+// * @author cfugu
+// */
+//public interface IPermisosOtorgadosRepository  extends JpaRepository<PermisosOtorgados, Long> {
+//
+//    //public Optional<PermisosOtorgados> findById(Long id);
+//
+//    public Optional<List<PermisosOtorgados>> findByUsuarioId(Long id);
+//
+//    public Optional<List<PermisosOtorgados>> findByPermisoId(Long id);
+//
+//    //public Optional<List<PermisosOtorgados>> findByUsuarioIdAndEstado(Long usuarioId, boolean estado);
+//
+//    //public Optional<List<PermisosOtorgados>> findByPermisoIdAndEstado(Long permisoId, boolean estado);
+//
+//   // public Optional<List<PermisosOtorgados>> findByFechaRegistroBetween(Date startDate, Date endDate);
+//}

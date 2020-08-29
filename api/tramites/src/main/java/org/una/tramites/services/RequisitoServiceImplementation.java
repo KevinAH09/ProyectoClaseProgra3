@@ -8,6 +8,7 @@ package org.una.tramites.services;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.entities.Requisito;
 import org.una.tramites.repositories.IRequisitoRepository;
@@ -16,6 +17,7 @@ import org.una.tramites.repositories.IRequisitoRepository;
  *
  * @author colo7
  */
+@Service
 public class RequisitoServiceImplementation implements IRequisitoService{
 
     
