@@ -48,7 +48,7 @@ public class Transacciones implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "permisos_otorgados_id")
-    private PermisosOtorgados permisos;
+    private PermisosOtorgados permisosOtorgados;
 
     @Column(name = "objeto", length = 50)
     private String objeto;

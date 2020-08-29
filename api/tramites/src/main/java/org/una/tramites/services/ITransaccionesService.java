@@ -16,6 +16,8 @@ import org.una.tramites.entities.Transacciones;
  */
 public interface ITransaccionesService {
 
+    public Optional<List<Transacciones>> findAll();
+    
     public Optional<Transacciones> findById(Long id);
 
     public Optional<List<Transacciones>> findByUsuarioIdAndFechaRegistroBetween(Long usuarioId, Date startDate, Date endDate);

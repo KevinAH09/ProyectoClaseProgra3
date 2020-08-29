@@ -56,4 +56,10 @@ public class TransaccionesServiceImplementation implements ITransaccionesService
         return transaccionesRepository.save(transaccion);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<Transacciones>> findAll() {
+        return Optional.ofNullable(transaccionesRepository.findAll());
+    }
+
 }
