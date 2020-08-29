@@ -18,6 +18,8 @@ import org.una.tramites.entities.Usuario;
  */
 public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
     
+    public List<Usuario> findByEstadoContaining(boolean estado);
+    
     public Usuario findByCedulaAndPasswordEncriptado(@Param("passwordEncriptado") String passwordEncriptado, @Param("cedula") String cedula);
 
     public List<Usuario> findByCedulaContaining(@Param("cedula") String cedula);

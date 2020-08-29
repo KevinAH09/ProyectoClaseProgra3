@@ -42,13 +42,13 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Departamento create(Departamento departamento) {
         return departamentoRepository.save(departamento);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<Departamento> update(Departamento departamento, Long id) {
         if (departamentoRepository.findById(id).isPresent()) {
             return Optional.ofNullable(departamentoRepository.save(departamento));
@@ -58,6 +58,7 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<Departamento>> findByEstadoContaining(boolean estado) {
         return Optional.ofNullable(departamentoRepository.findByEstadoContaining(estado));
     }

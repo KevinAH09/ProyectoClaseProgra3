@@ -18,8 +18,10 @@ public interface IUsuarioService {
     public Optional<List<Usuario>> findAll();
 
     public Optional<Usuario> findById(Long id);
-    
-     public Optional<Usuario> findByCedulaAndPassword(String password,String cedula);
+
+    public Optional<List<Usuario>> findByEstadoContaining(boolean estado);
+
+    public Optional<Usuario> findByCedulaAndPassword(String password, String cedula);
 
     public Optional<List<Usuario>> findByCedulaAproximate(String cedula);
 
@@ -36,8 +38,8 @@ public interface IUsuarioService {
     public Optional<Usuario> login(Usuario usuario);
 
     public Optional<List<Usuario>> findByDepartamentoId(Long id);
+
     public Usuario findJefeByDepartamento(Long id);
-    
 
 //    public Usuario findJefeByDepartamento(Long id);
 }

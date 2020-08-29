@@ -7,7 +7,6 @@ package org.una.tramites.services;
 
 import java.util.List;
 import java.util.Optional;
-import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +99,11 @@ public class UsuarioServiceImplementation implements IUsuarioService {
     @Transactional(readOnly = true)
     public Optional<Usuario> findByCedulaAndPassword(String password, String cedula) {
         return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(password, cedula));
+    }
+
+    @Override
+    public Optional<List<Usuario>> findByEstadoContaining(boolean estado) {
+         return Optional.ofNullable(usuarioRepository.findByEstadoContaining(estado));
     }
 
 }

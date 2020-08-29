@@ -126,6 +126,22 @@ public class UsuarioController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/estado/{term}")//Puede que aqui sea nombreCompleto
+    @ApiOperation(value = "Obtiene una lista de todos los usuarios por estado", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
+        try {
+            Optional<List<Usuario>> result = usuarioService.findByEstadoContaining(term);
+            if (result.isPresent()) {
+                List<UsuarioDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(result.get(), UsuarioDTO.class);
+                return new ResponseEntity<>(usuariosDTO, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
