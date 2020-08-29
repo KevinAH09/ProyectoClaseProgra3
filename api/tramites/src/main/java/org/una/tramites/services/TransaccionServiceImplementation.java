@@ -29,18 +29,18 @@ public class TransaccionServiceImplementation implements ITransaccionService {
     public Optional<Transaccion> findById(Long id) {
         return transaccionRepository.findById(id);
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional findByUsuarioIdAndFechaRegistroBetween(Long usuarioId, Date startDate, Date endDate) {
-        return Optional.ofNullable(transaccionRepository.findByUsuarioIdAndFechaRegistroBetween(usuarioId,startDate, endDate));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional findByPermisoIdAndFechaRegistroBetween(Long permisoId, Date startDate, Date endDate) {
-        return Optional.ofNullable(transaccionRepository.findByPermisoIdAndFechaRegistroBetween(permisoId,startDate, endDate));
-    }
+    //preguntar al profe porque da error
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Optional findByUsuarioIdAndFechaRegistroBetween(Long usuarioId, Date startDate, Date endDate) {
+//        return Optional.ofNullable(transaccionRepository.findByUsuarioIdAndFechaRegistroBetween(usuarioId,startDate, endDate));
+//    }
+//
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Optional findByPermisoIdAndFechaRegistroBetween(Long permisoId, Date startDate, Date endDate) {
+//        return Optional.ofNullable(transaccionRepository.findByPermisoIdAndFechaRegistroBetween(permisoId,startDate, endDate));
+//    }
 
     @Override
     @Transactional(readOnly = true)
