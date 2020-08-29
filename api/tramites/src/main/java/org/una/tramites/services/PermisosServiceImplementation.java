@@ -31,16 +31,19 @@ public class PermisosServiceImplementation implements IPermisosService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Permisos> findById(Long id) {
         return permisosOtorgadosRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public Permisos create(Permisos permiso) {
         return permisosOtorgadosRepository.save(permiso);
     }
 
     @Override
+    @Transactional
     public Optional<Permisos> update(Permisos permiso, Long id) {
        if (permisosOtorgadosRepository.findById(id).isPresent()) {
             return Optional.ofNullable(permisosOtorgadosRepository.save(permiso));
@@ -50,6 +53,7 @@ public class PermisosServiceImplementation implements IPermisosService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<Permisos>> findByEstado(boolean estado) {
         return Optional.ofNullable(permisosOtorgadosRepository.findByEstadoContaining(estado));
     }
@@ -60,10 +64,12 @@ public class PermisosServiceImplementation implements IPermisosService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         permisosOtorgadosRepository.deleteById(id);
     }
     @Override
+    @Transactional
     public void deleteAll() {
         permisosOtorgadosRepository.deleteAll();
     }

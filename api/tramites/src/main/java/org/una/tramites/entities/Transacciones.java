@@ -6,21 +6,19 @@
 package org.una.tramites.entities;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.websocket.Decoder.Text;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,51 +28,39 @@ import lombok.ToString;
 
 /**
  *
- * @author colo7
+ * @author cfugu
  */
 @Entity
-@Table(name = "departamentos")
+@Table(name = "transacciones")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Departamento implements Serializable {
+public class Transacciones implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "nombre", length = 100)
-    private String nombre;
-
-    @Column
-    private boolean estado;
-
-    private static final long serialVersionUID = 1L;
 
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.DATE)
     @Setter(AccessLevel.NONE)
     private Date fechaRegistro;
 
-    @Column(name = "fecha_modificacion")
-    @Setter(AccessLevel.NONE)
-    @Temporal(TemporalType.DATE)
-    private Date fechaModificacion;
+    @ManyToOne
+    @JoinColumn(name = "Permisos_Otorgados_id")
+    private Transacciones transacciones;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")//creo que es departamotos
-    private List<Usuario> usuarios = new ArrayList<>();
+    @Column(name = "objeto", length = 50)
+    private String objeto;
+    @Column
+    private Text informacion;
+
+    private static final long serialVersionUID = 1L;
 
     @PrePersist
     public void prePersist() {
-        estado = true;
         fechaRegistro = new Date();
-        fechaModificacion = new Date();
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        fechaModificacion = new Date();
     }
 
 }
