@@ -34,7 +34,7 @@ import org.una.tramites.utils.MapperUtils;
   @RestController
 @RequestMapping("/Tramites_Tipos")
 @Api(tags = {"Tramites_Tipos"})
-public class TramitesTipos {
+public class TramiteTipoController {
   
 
 

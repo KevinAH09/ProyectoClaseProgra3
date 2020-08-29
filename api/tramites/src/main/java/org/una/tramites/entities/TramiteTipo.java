@@ -37,7 +37,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TramitesTipos {
+public class TramiteTipo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

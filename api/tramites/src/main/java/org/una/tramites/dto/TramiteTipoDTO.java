@@ -19,7 +19,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TramitesTipoDTO {
+public class TramiteTipoDTO {
     
 
 

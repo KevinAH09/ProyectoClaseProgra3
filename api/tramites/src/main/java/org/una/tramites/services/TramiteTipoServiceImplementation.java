@@ -9,45 +9,45 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.una.tramites.entities.TramitesTipos;
-import org.una.tramites.repositories.ITramitesTiposRepository;
+import org.una.tramites.entities.TramiteTipo;
+import org.una.tramites.repositories.ITramiteTipoRepository;
 
 /**
  *
  * @author Bosco
  */
-public class TramitesTiposServiceImplementation implements ITramitesTiposService {
+public class TramiteTipoServiceImplementation implements ITramiteTipoService {
     
     @Autowired
-    private ITramitesTiposRepository tramitesTiposRepository;
+    private ITramiteTipoRepository tramitesTiposRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramitesTipos>> findAll() {
+    public Optional<List<TramiteTipo>> findAll() {
        return Optional.ofNullable(tramitesTiposRepository.findAll());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<TramitesTipos> findById(Long id) {
+    public Optional<TramiteTipo> findById(Long id) {
         return tramitesTiposRepository.findById(id);
     }
 
     @Override
     @Transactional
-    public TramitesTipos create(TramitesTipos usuario) {
+    public TramiteTipo create(TramiteTipo usuario) {
         return tramitesTiposRepository.save(usuario);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramitesTipos>> findByEstadoContaining(boolean estado) {
+    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado) {
          return Optional.ofNullable(tramitesTiposRepository.findByEstadoContaining(estado));
     }
 
     @Override
     @Transactional
-    public Optional<TramitesTipos> update(TramitesTipos usuario, Long id) {
+    public Optional<TramiteTipo> update(TramiteTipo usuario, Long id) {
         if (tramitesTiposRepository.findById(id).isPresent()) {
             return Optional.ofNullable(tramitesTiposRepository.save(usuario));
         } else {
@@ -57,7 +57,7 @@ public class TramitesTiposServiceImplementation implements ITramitesTiposService
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramitesTipos>> findByDepartamentoId(Long id) {
+    public Optional<List<TramiteTipo>> findByDepartamentoId(Long id) {
         return Optional.ofNullable(tramitesTiposRepository.findByDepartamentoId(id));
     }
     

@@ -10,19 +10,19 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.una.tramites.entities.TramitesTipos;
+import org.una.tramites.entities.TramiteTipo;
 import org.una.tramites.entities.Usuario;
 
 /**
  *
  * @author Bosco
  */
-public interface ITramitesTiposRepository extends JpaRepository<TramitesTipos, Long>  {
+public interface ITramiteTipoRepository extends JpaRepository<TramiteTipo, Long>  {
     
     
-    public List<TramitesTipos> findByEstadoContaining(@Param("estado") boolean estado);
+    public List<TramiteTipo> findByEstadoContaining(@Param("estado") boolean estado);
     
-    public List<TramitesTipos> findByDepartamentoId(Long id);
+    public List<TramiteTipo> findByDepartamentoId(Long id);
 
  
 }
