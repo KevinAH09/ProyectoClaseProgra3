@@ -106,8 +106,17 @@ public class PermisosController {
         }
     }
 
-//    public Optional<List<Permisos>> findByEstado(boolean estado);
-//
+//    @GetMapping("/departamentoId/{term}")//Puede que aqui sea nombreCompleto
+//    @ApiOperation(value = "Obtiene una lista de todos los usuarios por departamento", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+//    public ResponseEntity<?> findByEstado(@PathVariable(value = "term") Long id) {
+//        try {
+//            Usuario result = usuarioService.findJefeByDepartamento(id);
+//            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(result, UsuarioDTO.class);
+//            return new ResponseEntity<>(usuarioDto, HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 //    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
 
     @DeleteMapping("/{id}")

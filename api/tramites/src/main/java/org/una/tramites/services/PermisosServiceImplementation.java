@@ -61,12 +61,11 @@ public class PermisosServiceImplementation implements IPermisosService {
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        permisosOtorgadosRepository.deleteById(id);
     }
-
     @Override
     public void deleteAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        permisosOtorgadosRepository.deleteAll();
     }
 
 }
