@@ -111,7 +111,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping("/nombre/{term}")//Puede que aqui sea nombreCompleto
+    @GetMapping("/nombre/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public ResponseEntity<?> findByNombreCompletoAproximateIgnoreCase(@PathVariable(value = "term") String term) {
         try {
@@ -127,7 +127,7 @@ public class UsuarioController {
         }
     }
     
-    @GetMapping("/estado/{term}")//Puede que aqui sea nombreCompleto
+    @GetMapping("/estado/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los usuarios por estado", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {

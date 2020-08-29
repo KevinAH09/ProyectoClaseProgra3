@@ -131,7 +131,7 @@ public class PermisosOtorgadosController {
         }
     }
     
-    @GetMapping("/permisos/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
+    @GetMapping("/permisoId/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
     @ApiOperation(value = "Obtiene una lista de todos los permios otorgados por permiso", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "PermisosOtorgados")
     public ResponseEntity<?> findByPermisoId(@PathVariable(value = "term") Long id) {
         try {
