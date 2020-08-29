@@ -8,13 +8,14 @@ package org.una.tramites.repositories;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.una.tramites.entities.PermisosOtorgados;
 
 /**
  *
  * @author cfugu
  */
-public interface IPermisosOtorgadosRepository {
+public interface IPermisosOtorgadosRepository  extends JpaRepository<PermisosOtorgados, Long> {
 
     public Optional<PermisosOtorgados> findById(Long usuarioId);
 

@@ -1,0 +1,64 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package org.una.tramites.services;
+
+import java.util.List;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.entities.TramitesTipos;
+import org.una.tramites.repositories.ITramitesTiposRepository;
+
+/**
+ *
+ * @author Bosco
+ */
+public class TramitesTiposServiceImplementation implements ITramitesTiposService {
+    
+    @Autowired
+    private ITramitesTiposRepository tramitesTiposRepository;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramitesTipos>> findAll() {
+       return Optional.ofNullable(tramitesTiposRepository.findAll());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<TramitesTipos> findById(Long id) {
+        return tramitesTiposRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public TramitesTipos create(TramitesTipos usuario) {
+        return tramitesTiposRepository.save(usuario);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramitesTipos>> findByEstadoContaining(boolean estado) {
+         return Optional.ofNullable(tramitesTiposRepository.findByEstadoContaining(estado));
+    }
+
+    @Override
+    @Transactional
+    public Optional<TramitesTipos> update(TramitesTipos usuario, Long id) {
+        if (tramitesTiposRepository.findById(id).isPresent()) {
+            return Optional.ofNullable(tramitesTiposRepository.save(usuario));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramitesTipos>> findByDepartamentoId(Long id) {
+        return Optional.ofNullable(tramitesTiposRepository.findByDepartamentoId(id));
+    }
+    
+}

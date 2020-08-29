@@ -19,15 +19,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UsuarioDTO {
+public class TramitesTipoDTO {
+    
+
 
     private Long id;
-    private String nombreCompleto;
-    private String cedula;
+    private String descripcion;
     private boolean estado;
+    private DepartamentoDTO departamento;
     private Date fechaRegistro;
     private Date fechaModificacion;
-    private DepartamentoDTO departamento;
-    private boolean esJefe;
+    
+
 
 }
