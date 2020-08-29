@@ -48,6 +48,8 @@ public class Permisos implements Serializable{
 
     @Column
     private boolean estado;
+    
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.DATE)
