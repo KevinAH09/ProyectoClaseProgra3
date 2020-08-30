@@ -7,6 +7,7 @@ package org.una.tramites.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.una.tramites.dto.PermisoDTO;
+import org.una.tramites.dto.TransaccionDTO;
 import org.una.tramites.entities.Permisos;
+import org.una.tramites.entities.Transaccion;
 import org.una.tramites.services.IPermisosService;
 import org.una.tramites.utils.MapperUtils;
 
@@ -127,5 +130,25 @@ public class PermisosController {
     public void deleteAll() {
         permisosService.deleteAll();
     }
-    
+
+    @GetMapping("/fecha_registro/{inicio}/{fin}")
+    @ApiOperation(value = "Obtiene una lista de permisos entre fechas de registro", response = PermisoDTO.class, tags = "Permisos")
+    @ResponseBody
+    public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
+        try {
+
+            Optional<List<Permisos>> permisosFound = permisosService.findByFechaRegistroBetween(startDate, endDate);
+            if (permisosFound.isPresent()) {
+                List<PermisoDTO> permisoDTO = MapperUtils.DtoListFromEntityList(permisosFound.get(), PermisoDTO.class);
+                return new ResponseEntity<>(permisoDTO, HttpStatus.OK);
+
+            } else {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 }

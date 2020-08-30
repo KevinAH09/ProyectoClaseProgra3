@@ -59,8 +59,8 @@ public class PermisosServiceImplementation implements IPermisosService {
     }
 
     @Override
-    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Optional findByFechaRegistroBetween(Date startDate, Date endDate) {
+        return Optional.ofNullable(permisosOtorgadosRepository.findByFechaRegistroBetween(startDate, endDate));
     }
 
     @Override

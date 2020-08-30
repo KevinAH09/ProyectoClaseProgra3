@@ -20,16 +20,16 @@ import org.una.tramites.entities.Transaccion;
 public interface ITransaccionRepository extends JpaRepository<Transaccion, Long> {
 
 //    @Query("SELECT u FROM Usuario u LEFT JOIN u.departamento d WHERE u.esJefe=1 AND d.id=:id")
-    @Query("select u from Usuario u where u.id= usuario and (u.fechaRegistro between startDate and endDate)")
-    public Optional<List<Transaccion>> findByUsuarioIdAndFechaRegistroBetween(@Param("permiso_Otorgado") Long usuario, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro") Date endDate);
+    @Query("select u from Transaccion u JOIN u.permiso_Otorgado d where d.usuario = usuario and (u.fechaRegistro between fechaRegistro and fechaRegistro1)")
+    public Optional<List<Transaccion>> findByUsuarioIdAndFechaRegistroBetween(@Param("usuario") Long usuario, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro1") Date endDate);
 
-    @Query("select c from Permisos c where c.id= permiso and (c.fechaRegistro between startDate and endDate)")
-    public Optional<List<Transaccion>> findByPermisoIdAndFechaRegistroBetween(@Param("permiso_Otorgado") Long permiso, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro") Date endDate);
+    @Query("select u from Transaccion u JOIN u.permiso_Otorgado d where d.permisoId = permiso and (u.fechaRegistro between fechaRegistro and fechaRegistro1)")
+    public Optional<List<Transaccion>> findByPermisoIdAndFechaRegistroBetween(@Param("permiso") Long permiso, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro1") Date endDate);
 
-    @Query("select d from Transaccion d where d.objeto= objeto and (d.fechaRegistro between startDate and endDate)")
-    public Optional<List<Transaccion>> findByObjetoAndFechaRegistroBetween(@Param("objeto") String objeto, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro") Date endDate);
+    @Query("select d from Transaccion d where d.objeto= objeto and (d.fechaRegistro between fechaRegistro and fechaRegistro1)")
+    public Optional<List<Transaccion>> findByObjetoAndFechaRegistroBetween(@Param("objeto") String objeto, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro1") Date endDate);
 
-    public Optional<List<Transaccion>> findByFechaRegistroBetween(@Param("fechaRegistro") Date startDate, @Param("fechaRegistro") Date endDate);
+    public Optional<List<Transaccion>> findByFechaRegistroBetween(@Param("fechaRegistro") Date startDate, @Param("fechaRegistro1") Date endDate);
 
     //public Optional<List<Transaccion>> findByPermisosOtorgados(Long id);
 }
