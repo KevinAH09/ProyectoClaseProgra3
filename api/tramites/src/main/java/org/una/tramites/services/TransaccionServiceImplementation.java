@@ -29,28 +29,28 @@ public class TransaccionServiceImplementation implements ITransaccionService {
     public Optional<Transaccion> findById(Long id) {
         return transaccionRepository.findById(id);
     }
-   
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional findByUsuarioIdAndFechaRegistroBetween(Long usuarioId, Date startDate, Date endDate) {
-//        return Optional.ofNullable(transaccionRepository.findByUsuarioIdAndFechaRegistroBetween(usuarioId,startDate, endDate));
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional findByPermisoIdAndFechaRegistroBetween(Long permisoId, Date startDate, Date endDate) {
-//        return Optional.ofNullable(transaccionRepository.findByPermisoIdAndFechaRegistroBetween(permisoId,startDate, endDate));
-//    }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional findByObjetoAndFechaRegistroBetween(String objeto, Date startDate, Date endDate) {
-        return Optional.ofNullable(transaccionRepository.findByObjetoAndFechaRegistroBetween(objeto,startDate, endDate));
+    public Optional findByUsuarioIdAndFechaRegistroBetween(Long usuarioId, Date startDate, Date endDate) {
+        return Optional.ofNullable(transaccionRepository.findByUsuarioIdAndFechaRegistroBetween(usuarioId, startDate, endDate));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional  findByFechaRegistroBetween(Date startDate, Date endDate) {
+    public Optional findByPermisoIdAndFechaRegistroBetween(Long permisoId, Date startDate, Date endDate) {
+        return Optional.ofNullable(transaccionRepository.findByPermisoIdAndFechaRegistroBetween(permisoId, startDate, endDate));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional findByObjetoAndFechaRegistroBetween(String objeto, Date startDate, Date endDate) {
+        return Optional.ofNullable(transaccionRepository.findByObjetoAndFechaRegistroBetween(objeto, startDate, endDate));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional findByFechaRegistroBetween(Date startDate, Date endDate) {
         return Optional.ofNullable(transaccionRepository.findByFechaRegistroBetween(startDate, endDate));
     }
 
@@ -58,6 +58,6 @@ public class TransaccionServiceImplementation implements ITransaccionService {
     @Transactional
     public Transaccion create(Transaccion transaccion) {
         return transaccionRepository.save(transaccion);
-    }   
+    }
 
 }
