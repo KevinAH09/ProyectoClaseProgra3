@@ -56,7 +56,7 @@ public class TransaccionController {
     }
 
     @GetMapping("/fecha_registro/{inicio}/{fin}")
-    @ApiOperation(value = "Obtiene una lista de transacciiones entre fechas de registro", response = TransaccionDTO.class, tags = "Transacciones")
+    @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
@@ -90,7 +90,7 @@ public class TransaccionController {
     }
 
     @GetMapping("/{usuario}/{inicio}/{fin}")
-    @ApiOperation(value = "Obtiene una lista de transacciiones entre fechas de registro por un usuario", response = TransaccionDTO.class, tags = "Transacciones")
+    @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro por un usuario", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
     public ResponseEntity<?> findByUsuarioIdAndFechaRegistroBetween(@PathVariable(value = "usuario") Long usuario, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
@@ -110,7 +110,7 @@ public class TransaccionController {
     }
 
     @GetMapping("/{permiso}/{inicio}/{fin}")
-    @ApiOperation(value = "Obtiene una lista de transacciiones entre fechas de registro por permiso", response = TransaccionDTO.class, tags = "Transacciones")
+    @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro por permiso", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
     public ResponseEntity<?> findByPermisoIdAndFechaRegistroBetween(@PathVariable(value = "permiso") Long permiso, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
@@ -130,7 +130,7 @@ public class TransaccionController {
     }
 
     @GetMapping("/{objeto}/{inicio}/{fin}")
-    @ApiOperation(value = "Obtiene una lista de transacciiones entre fechas de registro por objeto", response = TransaccionDTO.class, tags = "Transacciones")
+    @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro por objeto", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
     public ResponseEntity<?> findByObjetoAndFechaRegistroBetween(@PathVariable(value = "objeto") String objeto, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
