@@ -38,7 +38,12 @@ public class SwaggerConfiguration {
                 .tags(new Tag("Seguridad", "Metodos de Seguridad") {},
                          new Tag("Usuarios", "Entidad de Usuarios"),
                          new Tag("Requisitos", "Entidad de Usuarios"),
-                         new Tag("Departamentos", "Entidad de Departamentos")
+                         new Tag("Departamentos", "Entidad de Departamentos"),
+                         new Tag("Permisos", "Entidad de Permisos"),
+                         new Tag("Permisos_Otorgados", "Entidad de Permisos_Otorgados"),
+                         new Tag("Tramites_Tipos", "Entidad de Tramites_Tipos"),
+                         new Tag("Transacciones", "Entidad de Transacciones"),
+                         new Tag("Variaciones", "Entidad de Variaciones")
                 );
 
     }
