@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.una.tramites.dto.PermisosOtorgadosDTO;
+import org.una.tramites.dto.PermisoOtorgadoDTO;
 import org.una.tramites.dto.TransaccionDTO;
-import org.una.tramites.entities.PermisosOtorgados;
+import org.una.tramites.entities.PermisoOtorgado;
 import org.una.tramites.entities.Transaccion;
 import org.una.tramites.services.IPermisoOtorgadoService;
 import org.una.tramites.utils.MapperUtils;
@@ -37,19 +37,19 @@ import org.una.tramites.utils.MapperUtils;
 @RestController
 @RequestMapping("/Permisos_Otorgados")
 @Api(tags = {"Permisos_Otorgados"})
-public class PermisosOtorgadosController {
+public class PermisoOtorgadoController {
 
     @Autowired
     private IPermisoOtorgadoService permisoOtorgadoService;
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene un permiso otorgado", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
-            Optional<PermisosOtorgados> permisoOtorgadoFound = permisoOtorgadoService.findById(id);
+            Optional<PermisoOtorgado> permisoOtorgadoFound = permisoOtorgadoService.findById(id);
             if (permisoOtorgadoFound.isPresent()) {
-                PermisosOtorgadosDTO permisoOtorgadoDto = MapperUtils.DtoFromEntity(permisoOtorgadoFound.get(), PermisosOtorgadosDTO.class);
+                PermisoOtorgadoDTO permisoOtorgadoDto = MapperUtils.DtoFromEntity(permisoOtorgadoFound.get(), PermisoOtorgadoDTO.class);
                 return new ResponseEntity<>(permisoOtorgadoDto, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -62,11 +62,11 @@ public class PermisosOtorgadosController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
-    @ApiOperation(value = "Crea un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
-    public ResponseEntity<?> create(@RequestBody PermisosOtorgados permisoOtorgado) {
+    @ApiOperation(value = "Crea un permiso otorgado", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
+    public ResponseEntity<?> create(@RequestBody PermisoOtorgado permisoOtorgado) {
         try {
-            PermisosOtorgados PermisosOtorgadosCreated = permisoOtorgadoService.create(permisoOtorgado);
-            PermisosOtorgadosDTO permisosOtorgadosDTO = MapperUtils.DtoFromEntity(PermisosOtorgadosCreated, PermisosOtorgadosDTO.class);
+            PermisoOtorgado PermisosOtorgadosCreated = permisoOtorgadoService.create(permisoOtorgado);
+            PermisoOtorgadoDTO permisosOtorgadosDTO = MapperUtils.DtoFromEntity(PermisosOtorgadosCreated, PermisoOtorgadoDTO.class);
             return new ResponseEntity<>(permisosOtorgadosDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -75,12 +75,12 @@ public class PermisosOtorgadosController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    @ApiOperation(value = "Modifica un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody PermisosOtorgados permisoOtorgadoModified) {
+    @ApiOperation(value = "Modifica un permiso otorgado", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody PermisoOtorgado permisoOtorgadoModified) {
         try {
-            Optional<PermisosOtorgados> permisoOtorgadoServiceUpdated = permisoOtorgadoService.update(permisoOtorgadoModified, id);
+            Optional<PermisoOtorgado> permisoOtorgadoServiceUpdated = permisoOtorgadoService.update(permisoOtorgadoModified, id);
             if (permisoOtorgadoServiceUpdated.isPresent()) {
-                PermisosOtorgadosDTO usuarioDto = MapperUtils.DtoFromEntity(permisoOtorgadoServiceUpdated.get(), PermisosOtorgadosDTO.class);
+                PermisoOtorgadoDTO usuarioDto = MapperUtils.DtoFromEntity(permisoOtorgadoServiceUpdated.get(), PermisoOtorgadoDTO.class);
                 return new ResponseEntity<>(usuarioDto, HttpStatus.OK);
 
             } else {
@@ -103,12 +103,12 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/usuario/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
-    @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por usuario", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por usuario", response = PermisoOtorgadoDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
     public ResponseEntity<?> findByUsuarioId(@PathVariable(value = "term") Long id) {
         try {
-            Optional<List<PermisosOtorgados>> result = permisoOtorgadoService.findByUsuarioId(id);
+            Optional<List<PermisoOtorgado>> result = permisoOtorgadoService.findByUsuarioId(id);
             if (result.isPresent()) {
-                List<PermisosOtorgadosDTO> PermisosOtorgadosDTO = MapperUtils.DtoListFromEntityList(result.get(), PermisosOtorgadosDTO.class);
+                List<PermisoOtorgadoDTO> PermisosOtorgadosDTO = MapperUtils.DtoListFromEntityList(result.get(), PermisoOtorgadoDTO.class);
                 return new ResponseEntity<>(PermisosOtorgadosDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -119,12 +119,12 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/permisoId/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
-    @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por permisos", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por permisos", response = PermisoOtorgadoDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
     public ResponseEntity<?> findByPermisoId(@PathVariable(value = "term") Long id) {
         try {
-            Optional<List<PermisosOtorgados>> result = permisoOtorgadoService.findByPermisoId(id);
+            Optional<List<PermisoOtorgado>> result = permisoOtorgadoService.findByPermisoId(id);
             if (result.isPresent()) {
-                List<PermisosOtorgadosDTO> PermisosOtorgadosDTO = MapperUtils.DtoListFromEntityList(result.get(), PermisosOtorgadosDTO.class);
+                List<PermisoOtorgadoDTO> PermisosOtorgadosDTO = MapperUtils.DtoListFromEntityList(result.get(), PermisoOtorgadoDTO.class);
                 return new ResponseEntity<>(PermisosOtorgadosDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -135,14 +135,14 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/fecha_registro/{inicio}/{fin}")
-    @ApiOperation(value = "Obtiene una lista de permisos otorgados entre fechas de registro", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de permisos otorgados entre fechas de registro", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
     @ResponseBody
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
-            Optional<List<PermisosOtorgados>> transaccionFound = permisoOtorgadoService.findByFechaRegistroBetween(startDate, endDate);
+            Optional<List<PermisoOtorgado>> transaccionFound = permisoOtorgadoService.findByFechaRegistroBetween(startDate, endDate);
             if (transaccionFound.isPresent()) {
-                List<PermisosOtorgadosDTO> PermisosOtorgadosDTO = MapperUtils.DtoListFromEntityList(transaccionFound.get(), PermisosOtorgadosDTO.class);
+                List<PermisoOtorgadoDTO> PermisosOtorgadosDTO = MapperUtils.DtoListFromEntityList(transaccionFound.get(), PermisoOtorgadoDTO.class);
                 return new ResponseEntity<>(PermisosOtorgadosDTO, HttpStatus.OK);
 
             } else {

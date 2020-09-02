@@ -10,41 +10,41 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.una.tramites.entities.Permisos;
+import org.una.tramites.entities.Permiso;
 import org.springframework.transaction.annotation.Transactional;
-import org.una.tramites.repositories.IPermisosRepository;
+import org.una.tramites.repositories.IPermisoRepository;
 
 /**
  *
  * @author cfugu
  */
 @Service
-public class PermisosServiceImplementation implements IPermisosService {
+public class PermisoServiceImplementation implements IPermisoService {
 
     @Autowired
-    private IPermisosRepository permisosOtorgadosRepository;
+    private IPermisoRepository permisosOtorgadosRepository;
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Permisos>> findAll() {
+    public Optional<List<Permiso>> findAll() {
         return Optional.ofNullable(permisosOtorgadosRepository.findAll());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Permisos> findById(Long id) {
+    public Optional<Permiso> findById(Long id) {
         return permisosOtorgadosRepository.findById(id);
     }
 
     @Override
     @Transactional
-    public Permisos create(Permisos permiso) {
+    public Permiso create(Permiso permiso) {
         return permisosOtorgadosRepository.save(permiso);
     }
 
     @Override
     @Transactional
-    public Optional<Permisos> update(Permisos permiso, Long id) {
+    public Optional<Permiso> update(Permiso permiso, Long id) {
        if (permisosOtorgadosRepository.findById(id).isPresent()) {
             return Optional.ofNullable(permisosOtorgadosRepository.save(permiso));
         } else {
@@ -54,7 +54,7 @@ public class PermisosServiceImplementation implements IPermisosService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Permisos>> findByEstado(boolean estado) {
+    public Optional<List<Permiso>> findByEstado(boolean estado) {
         return Optional.ofNullable(permisosOtorgadosRepository.findByEstadoContaining(estado));
     }
 
