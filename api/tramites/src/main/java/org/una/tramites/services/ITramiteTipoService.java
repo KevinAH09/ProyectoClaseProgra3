@@ -15,19 +15,19 @@ import org.una.tramites.entities.TramiteTipo;
  */
 public interface ITramiteTipoService {
     
-//    public Optional<List<TramiteTipo>> findAll();
-//
-//    public Optional<TramiteTipo> findById(Long id);
-//
-//    public TramiteTipo create(TramiteTipo usuario);
-//
-//    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado);
-//    
-//    public Optional<TramiteTipo> update(TramiteTipo usuario, Long id);
-//
-//    public Optional<List<TramiteTipo>> findByDepartamentoId(Long id);
+    public Optional<List<TramiteTipo>> findAll();
+
+    public Optional<TramiteTipo> findById(Long id);
+
+    public TramiteTipo create(TramiteTipo usuario);
+
+    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado);
     
-//    public void delete(Long id);
-//
-//    public void deleteAll();
+    public Optional<TramiteTipo> update(TramiteTipo usuario, Long id);
+
+    public Optional<List<TramiteTipo>> findByDepartamentoId(Long id);
+    
+    public void delete(Long id);
+
+    public void deleteAll();
 }
