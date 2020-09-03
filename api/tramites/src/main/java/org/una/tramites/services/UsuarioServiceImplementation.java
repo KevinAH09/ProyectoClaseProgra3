@@ -35,7 +35,18 @@ public class UsuarioServiceImplementation implements IUsuarioService {
     public Optional<List<Usuario>> findAll() {
         return Optional.ofNullable(usuarioRepository.findAll());
     }
+    
+    @Autowired   //nooooo sssssaaaaaaaabbbbbbeeeeeemmmmooooossss sssssssiiiiiii vvvvaaaaa aaaaqqqqquuuuuiiiii
+    private BCryptPasswordEncoder bCryptPasswordEncoder;//
 
+    private void encriptarPassword(Usuario usuario) {//
+        String password = usuario.getPasswordEncriptado();//
+        if (!password.isBlank()) {//
+            usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));//
+        }//
+    } //
+
+    
     @Override
     @Transactional(readOnly = true)
     public Optional<Usuario> findById(Long id) {
