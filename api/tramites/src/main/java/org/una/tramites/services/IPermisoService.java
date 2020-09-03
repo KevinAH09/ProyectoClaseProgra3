@@ -19,13 +19,14 @@ public interface IPermisoService {
     public Optional<List<Permiso>> findAll();
 
     public Optional<Permiso> findById(Long id);
-//    public Optional<Permisos> findByCodigo(String codigo);
+    public Optional<Permiso> findByCodigo(String codigo);
 
     public Permiso create(Permiso permiso);
 
     public Optional<Permiso> update(Permiso permiso, Long id);
 
     public Optional<List<Permiso>> findByEstado(boolean estado);
+    public Long countByEstado(boolean estado);
 
     public Optional<List<Permiso>> findByFechaRegistroBetween(Date startDate, Date endDate);//Crear query
 

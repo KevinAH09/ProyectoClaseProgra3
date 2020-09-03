@@ -24,6 +24,7 @@ public interface IUsuarioService {
     public Optional<Usuario> findByCedulaAndPassword(String password, String cedula);
 
     public Optional<List<Usuario>> findByCedulaAproximate(String cedula);
+    public Optional<List<Usuario>> findByCedula(String cedula);
 
     public Optional<List<Usuario>> findByNombreCompletoAproximateIgnoreCase(String nombreCompleto);
 
