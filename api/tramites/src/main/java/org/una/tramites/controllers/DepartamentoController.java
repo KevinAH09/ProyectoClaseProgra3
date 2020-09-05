@@ -72,37 +72,37 @@ public class DepartamentoController {
         }
     }
 
-    @GetMapping("/nombre/{term}")
-    @ApiOperation(value = "Obtiene una lista de todos los departamentos por nombre", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
-    public ResponseEntity<?> findByNombreproximateIgnoreCase(@PathVariable(value = "term") String term) {
-        try {
-            Optional<List<Departamento>> result = departamentoService.findByNombreAproximateIgnoreCase(term);
-            if (result.isPresent()) {
-                List<DepartamentoDTO> departamentosDTO = MapperUtils.DtoListFromEntityList(result.get(), DepartamentoDTO.class);
-                return new ResponseEntity<>(departamentosDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/nombre/{term}")
+//    @ApiOperation(value = "Obtiene una lista de todos los departamentos por nombre", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
+//    public ResponseEntity<?> findByNombreproximateIgnoreCase(@PathVariable(value = "term") String term) {
+//        try {
+//            Optional<List<Departamento>> result = departamentoService.findByNombreAproximateIgnoreCase(term);
+//            if (result.isPresent()) {
+//                List<DepartamentoDTO> departamentosDTO = MapperUtils.DtoListFromEntityList(result.get(), DepartamentoDTO.class);
+//                return new ResponseEntity<>(departamentosDTO, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
     
-    @GetMapping("/estado/{term}")
-    @ApiOperation(value = "Obtiene una lista de todos los departamentos por estado", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
-    public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
-        try {
-            Optional<List<Departamento>> result = departamentoService.findByEstadoContaining(term);
-            if (result.isPresent()) {
-                List<DepartamentoDTO> departamentosDTO = MapperUtils.DtoListFromEntityList(result.get(), DepartamentoDTO.class);
-                return new ResponseEntity<>(departamentosDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/estado/{term}")
+//    @ApiOperation(value = "Obtiene una lista de todos los departamentos por estado", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
+//    public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
+//        try {
+//            Optional<List<Departamento>> result = departamentoService.findByEstadoContaining(term);
+//            if (result.isPresent()) {
+//                List<DepartamentoDTO> departamentosDTO = MapperUtils.DtoListFromEntityList(result.get(), DepartamentoDTO.class);
+//                return new ResponseEntity<>(departamentosDTO, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
