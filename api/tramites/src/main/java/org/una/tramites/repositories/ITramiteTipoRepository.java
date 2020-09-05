@@ -17,9 +17,9 @@ import org.una.tramites.entities.TramiteTipo;
 public interface ITramiteTipoRepository extends JpaRepository<TramiteTipo, Long>  {
     
     
-    public List<TramiteTipo> findByEstadoContaining(@Param("estado") boolean estado);
+//    public List<TramiteTipo> findByEstadoContaining(@Param("estado") boolean estado);
 //    
-    public List<TramiteTipo> findByDepartamentoId(Long id);
+//    public List<TramiteTipo> findByDepartamentoId(Long id);
 
  
 }
