@@ -26,15 +26,8 @@ import org.una.tramites.services.UsuarioServiceImplementation;
  */
 @Configuration
 @EnableWebSecurity
-
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UsuarioServiceImplementation userService;
-
-    @Autowired
-    private BCryptPasswordEncoder bCrypt;
-     
     @Autowired
     private JwtAuthenticationEntryPoint entryPoint;
 
@@ -54,7 +47,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-    
+    @Autowired
+    private UsuarioServiceImplementation userService;
+
+    @Autowired
+    private BCryptPasswordEncoder bCrypt;
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -68,18 +66,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .authorizeRequests().antMatchers("/usuarios/**", "/v2/api-docs",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html**",
-                        "/webjars/**").permitAll()
-                .anyRequest().authenticated().and()
-                .exceptionHandling().authenticationEntryPoint(entryPoint).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        http.authorizeRequests().anyRequest().authenticated().and().httpBasic();
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/usuarios/**", "/v2/api-docs",
+                "/swagger-resources/**",
+                "/swagger-ui.html**",
+                "/webjars/**").permitAll().anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(entryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
     }
-
 
 }

@@ -110,7 +110,6 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
 
     @Override
     public String login(AuthenticationRequest authenticationRequest) {
-
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtProvider.generateToken(authenticationRequest);

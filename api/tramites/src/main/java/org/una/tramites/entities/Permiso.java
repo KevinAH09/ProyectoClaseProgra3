@@ -50,8 +50,6 @@ public class Permiso implements Serializable {
     @Column
     private boolean estado;
 
-    private static final long serialVersionUID = 1L;
-
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @Setter(AccessLevel.NONE)
@@ -61,6 +59,8 @@ public class Permiso implements Serializable {
     @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
+
+    private static final long serialVersionUID = 1L;
 
     @PrePersist
     public void prePersist() {

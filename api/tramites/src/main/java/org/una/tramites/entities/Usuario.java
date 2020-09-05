@@ -57,7 +57,7 @@ public class Usuario implements Serializable {
     @ManyToOne
     @JoinColumn(name = "departamentos_id")
     private Departamento departamento;
-
+    
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @Setter(AccessLevel.NONE)
