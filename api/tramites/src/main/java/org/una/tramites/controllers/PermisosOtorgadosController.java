@@ -103,7 +103,7 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/usuario/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
-    @ApiOperation(value = "Obtiene una lista de todos los permios otorgados por usuario", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por usuario", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
     public ResponseEntity<?> findByUsuarioId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<PermisosOtorgados>> result = permisoOtorgadoService.findByUsuarioId(id);
