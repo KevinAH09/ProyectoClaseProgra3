@@ -60,7 +60,7 @@ public class PermisoController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene un permiso", response = PermisoDTO.class, tags = "Permisos")
+    @ApiOperation(value = "Obtiene un permiso", response = PermisoDTO.class, tags = "Departamentos")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
