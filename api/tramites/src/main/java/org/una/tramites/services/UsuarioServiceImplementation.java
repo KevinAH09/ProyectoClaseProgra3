@@ -52,12 +52,7 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Autowired  
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private void encriptarPassword(Usuario usuario) {
-        String password = usuario.getPasswordEncriptado();
-        if (!password.isBlank()) {
-            usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));
-        }
-    } 
+   
 
     
     @Override
@@ -81,6 +76,7 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Override
     @Transactional
     public Usuario create(Usuario usuario) {
+        encriptarPassword(usuario);
         return usuarioRepository.save(usuario);
     }
 
@@ -98,7 +94,6 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Override
     @Transactional
     public void delete(Long id) {
-
         usuarioRepository.deleteById(id);
     }
 
@@ -109,13 +104,18 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     }
 
     @Override
+    @Transactional(readOnly = true)
     public String login(AuthenticationRequest authenticationRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         return jwtProvider.generateToken(authenticationRequest);
  
     }
-
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<Usuario> login(Usuario usuario) {
+        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getCedula(), usuario.getPasswordEncriptado()));
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -144,12 +144,13 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Override
     @Transactional(readOnly = true)
     public Optional<Usuario> findByCedula(String cedula) {
-        return usuarioRepository.findByCedula(cedula);
+        return Optional.ofNullable(usuarioRepository.findByCedula(cedula));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Usuario> usuarioBuscado = usuarioRepository.findByCedula(username);
+        Optional<Usuario> usuarioBuscado = Optional.ofNullable(usuarioRepository.findByCedula(username));
         if (usuarioBuscado.isPresent()) {
             Usuario usuario = usuarioBuscado.get();
             List<GrantedAuthority> roles = new ArrayList<>();
@@ -161,5 +162,10 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
         }
 
     }
-
+    private void encriptarPassword(Usuario usuario) {
+        String password = usuario.getPasswordEncriptado();
+        if (!password.isBlank()) {
+            usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));
+        }
+    }
 }
