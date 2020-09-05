@@ -62,6 +62,13 @@ public class SwaggerConfiguration {
                          new Tag("Permisos_Otorgados", "Entidad de Permisos_Otorgados"),
                          new Tag("Tramites_Tipos", "Entidad de Tramites_Tipos"),
                          new Tag("Transacciones", "Entidad de Transacciones"),
+                         new Tag("Archivos_Relacionados", "Entidad de Archivos Relacionados"),
+                         new Tag("Clientes", "Entidad de Clientes"),
+                         new Tag("Notas", "Entidad de Notas"),
+                         new Tag("Parametros_Generales", "Entidad de Parametros Generales"),
+                         new Tag("Requisitos_Presentados", "Entidad de Requisitos Presentados"),
+                         new Tag("Tramites_Estados", "Entidad de Requisitos Tramites Estados"),
+                         new Tag("Tramites_Registrados", "Entidad de Requisitos Tramites Registrados"),
                          new Tag("Variaciones", "Entidad de Variaciones")
                 );
 

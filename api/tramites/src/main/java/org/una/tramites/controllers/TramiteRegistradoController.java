@@ -39,7 +39,7 @@ public class TramiteRegistradoController {
     private ITramiteRegistradoService tramiteRegistradoService;
 
     @GetMapping()
-    @ApiOperation(value = "Obtiene una lista de todos los tramites registrados", response = TramiteRegistradoDTO.class, responseContainer = "List", tags = "Tramites Registrados")
+    @ApiOperation(value = "Obtiene una lista de todos los tramites registrados", response = TramiteRegistradoDTO.class, responseContainer = "List", tags = "Tramites_Registrados")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -56,7 +56,7 @@ public class TramiteRegistradoController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene un tramite registrado su id", response = TramiteRegistradoDTO.class, tags = "Tramites Registrados")
+    @ApiOperation(value = "Obtiene un tramite registrado su id", response = TramiteRegistradoDTO.class, tags = "Tramites_Registrados")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 

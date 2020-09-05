@@ -41,6 +41,7 @@ public class ArchivoRelacionadoController {
     private IArchivoRelacionadoService archivoRelacionadoService;
     
     @GetMapping("/{id}")
+    @ApiOperation(value = "Obtiene una lista de Archivos Relacionados por id", response = ArchivoRelacionadoDTO.class, tags = "Archivos_Relacionados")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
             Optional<ArchivoRelacionado> archivoRelacionadoResult = archivoRelacionadoService.findById(id);
@@ -105,6 +106,7 @@ public class ArchivoRelacionadoController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
+    
     public ResponseEntity<?> create(@RequestBody ArchivoRelacionado archivoRelacionado) {
         try {
             ArchivoRelacionado archivoRelacionadoCreated = archivoRelacionadoService.create(archivoRelacionado);

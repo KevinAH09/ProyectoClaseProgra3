@@ -36,7 +36,7 @@ public class ParametroGeneralController {
     private IParametroGeneralService paramGenService;
     
     @GetMapping("/{nombre}")
-    @ApiOperation(value = "Obtiene los Paremetro General segun el nombre", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros Generales")
+    @ApiOperation(value = "Obtiene los Paremetro General segun el nombre", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByNombre(@PathVariable(value = "nombre")String nombre) {
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByNombre(nombre);
@@ -51,7 +51,7 @@ public class ParametroGeneralController {
     }
     
     @GetMapping("/{valor}")
-    @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros Generales")
+    @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByValor(@PathVariable(value = "valor") String valor){
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByValor(valor);
@@ -65,7 +65,7 @@ public class ParametroGeneralController {
         }
     }
     @GetMapping("/{descripcion}")
-    @ApiOperation(value = "Obtiene una lista de Parametro General segun su descripcion", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros Generales")
+    @ApiOperation(value = "Obtiene una lista de Parametro General segun su descripcion", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByDescripcion(@PathVariable(value = "descripcion")String descripcion){
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByDescripcion(descripcion);
@@ -95,7 +95,7 @@ public class ParametroGeneralController {
     }
     
     @GetMapping()
-    @ApiOperation(value = "Obtiene una lista de todos los Parametro General", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros Generales")
+    @ApiOperation(value = "Obtiene una lista de todos los Parametro General", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public @ResponseBody ResponseEntity<?> findAll() {
         try {
             Optional<List<ParametroGeneral>> result = paramGenService.findAll();

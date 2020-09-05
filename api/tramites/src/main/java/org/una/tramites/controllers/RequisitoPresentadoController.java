@@ -40,7 +40,7 @@ public class RequisitoPresentadoController {
     IRequisitoPresentadoService requisitoPresentadoService;
     
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene un requisito presentado", response = RequisitoPresentadoDTO.class, tags = "Requisitos Presentados")
+    @ApiOperation(value = "Obtiene un requisito presentado", response = RequisitoPresentadoDTO.class, tags = "Requisitos_Presentados")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
             Optional<RequisitoPresentado> requisitoPresentadoFound = requisitoPresentadoService.findById(id);
@@ -56,7 +56,7 @@ public class RequisitoPresentadoController {
     }
     
     @GetMapping()
-    @ApiOperation(value = "Obtiene una lista de todos los requisitos presentados", response = RequisitoPresentadoDTO.class, responseContainer = "List", tags = "Requisitos Presentados")
+    @ApiOperation(value = "Obtiene una lista de todos los requisitos presentados", response = RequisitoPresentadoDTO.class, responseContainer = "List", tags = "Requisitos_Presentados")
     public @ResponseBody ResponseEntity<?> findAll() {
         try {
             Optional<List<RequisitoPresentado>> result = requisitoPresentadoService.findAll();

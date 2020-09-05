@@ -39,7 +39,7 @@ public class TramiteEstadoController {
     private ITramiteEstadoService tramiteEstadoService;
     
     @GetMapping()
-    @ApiOperation(value = "Obtiene una lista de todos los tramites estados", response = TramiteEstadoDTO.class, responseContainer = "List", tags = "Tramites Estados")
+    @ApiOperation(value = "Obtiene una lista de todos los tramites estados", response = TramiteEstadoDTO.class, responseContainer = "List", tags = "Tramites_Estados")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -56,7 +56,7 @@ public class TramiteEstadoController {
     }
     
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene un tipo de tramite del id", response = TramiteEstadoDTO.class, tags = "Tramites Estados")
+    @ApiOperation(value = "Obtiene un tipo de tramite del id", response = TramiteEstadoDTO.class, tags = "Tramites_Estados")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
