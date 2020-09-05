@@ -19,9 +19,9 @@ public interface IDepartamentoService {
 
     public Optional<Departamento> findById(Long id);
     
-//    public Optional<List<Departamento>> findByEstadoContaining(boolean estado);
+    public Optional<List<Departamento>> findByEstadoContaining(boolean estado);
 
-//    public Optional<List<Departamento>> findByNombreAproximateIgnoreCase(String nombre);
+    public Optional<List<Departamento>> findByNombreAproximateIgnoreCase(String nombre);
 
     public Departamento create(Departamento departamento);
 
