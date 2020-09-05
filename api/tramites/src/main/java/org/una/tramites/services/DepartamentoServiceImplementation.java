@@ -35,11 +35,11 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
         return departamentoRepository.findById(id);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<List<Departamento>> findByNombreAproximateIgnoreCase(String nombre) {
-       return Optional.ofNullable(departamentoRepository.findByNombreContainingIgnoreCase(nombre));
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Optional<List<Departamento>> findByNombreAproximateIgnoreCase(String nombre) {
+//       return Optional.ofNullable(departamentoRepository.findByNombreContainingIgnoreCase(nombre));
+//    }
 
     @Override
     @Transactional
@@ -57,10 +57,10 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
         }
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<List<Departamento>> findByEstadoContaining(boolean estado) {
-        return Optional.ofNullable(departamentoRepository.findByEstadoContaining(estado));
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Optional<List<Departamento>> findByEstadoContaining(boolean estado) {
+//        return Optional.ofNullable(departamentoRepository.findByEstadoContaining(estado));
+//    }
 
 }
