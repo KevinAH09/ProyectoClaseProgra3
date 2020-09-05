@@ -13,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ import org.una.tramites.repositories.IUsuarioRepository;
  * @author Bosco
  */
 @Service
-public class UsuarioServiceImplementation implements UserDetailsService,IUsuarioService {
+public class UsuarioServiceImplementation implements IUsuarioService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
@@ -128,23 +127,8 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Usuario> findByCedula(String cedula) {
-        return usuarioRepository.findByCedula(cedula);
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<Usuario> usuarioBuscado = usuarioRepository.findByCedula(username);
-        if (usuarioBuscado.isPresent()) {
-            Usuario usuario = usuarioBuscado.get();
-            List<GrantedAuthority> roles = new ArrayList<>();
-            roles.add(new SimpleGrantedAuthority("ADMIN"));
-            UserDetails userDetails = new User(usuario.getCedula(), usuario.getPasswordEncriptado(), roles);
-            return userDetails;
-        } else {
-            return null;
-        }
-
+    public Optional<List<Usuario>> findByCedula(String cedula) {
+        return Optional.ofNullable(usuarioRepository.findByCedula(cedula));
     }
 
 }
