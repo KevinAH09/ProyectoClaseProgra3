@@ -97,10 +97,15 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Usuario> login(Usuario usuario) {
-        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getCedula(), usuario.getPasswordEncriptado()));
+    public String login(AuthenticationRequest authenticationRequest) {
+
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return jwtProvider.generateToken(authenticationRequest);
+ 
     }
+
 
     @Override
     @Transactional(readOnly = true)
