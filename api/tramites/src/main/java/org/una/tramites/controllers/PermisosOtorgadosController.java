@@ -43,7 +43,7 @@ public class PermisosOtorgadosController {
     private IPermisoOtorgadoService permisoOtorgadoService;
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "PermisosOtorgados")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -62,7 +62,7 @@ public class PermisosOtorgadosController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
-    @ApiOperation(value = "Crea un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Crea un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos Otorgados")
     public ResponseEntity<?> create(@RequestBody PermisosOtorgados permisoOtorgado) {
         try {
             PermisosOtorgados PermisosOtorgadosCreated = permisoOtorgadoService.create(permisoOtorgado);
@@ -75,7 +75,7 @@ public class PermisosOtorgadosController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    @ApiOperation(value = "Modifica un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Modifica un permiso otorgado", response = PermisosOtorgadosDTO.class, tags = "Permisos Otorgados")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody PermisosOtorgados permisoOtorgadoModified) {
         try {
             Optional<PermisosOtorgados> permisoOtorgadoServiceUpdated = permisoOtorgadoService.update(permisoOtorgadoModified, id);
@@ -103,7 +103,7 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/usuario/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
-    @ApiOperation(value = "Obtiene una lista de todos los permios otorgados por usuario", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de todos los permios otorgados por usuario", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "PermisosOtorgados")
     public ResponseEntity<?> findByUsuarioId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<PermisosOtorgados>> result = permisoOtorgadoService.findByUsuarioId(id);
@@ -119,7 +119,7 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/permisoId/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
-    @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por permisos", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de todos los permios otorgados por permiso", response = PermisosOtorgadosDTO.class, responseContainer = "List", tags = "PermisosOtorgados")
     public ResponseEntity<?> findByPermisoId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<PermisosOtorgados>> result = permisoOtorgadoService.findByPermisoId(id);
@@ -135,7 +135,7 @@ public class PermisosOtorgadosController {
     }
 
     @GetMapping("/fecha_registro/{inicio}/{fin}")
-    @ApiOperation(value = "Obtiene una lista de permisos otorgados entre fechas de registro", response = PermisosOtorgadosDTO.class, tags = "Permisos_Otorgados")
+    @ApiOperation(value = "Obtiene una lista de transacciiones entre fechas de registro", response = PermisosOtorgadosDTO.class, tags = "Transacciones")
     @ResponseBody
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
