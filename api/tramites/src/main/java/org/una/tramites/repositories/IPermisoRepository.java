@@ -21,9 +21,7 @@ public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
 
     public List<Permiso> findByEstadoContaining(boolean estado);
 
-    public List<Permiso> findByCodigoIgnoreCase(String codigo);
-
-    public List<Permiso> findByCodigo(String codigo);
+    public Permiso findByCodigo(String codigo);
 
     @Query("select COUNT(*) from Permiso u where u.estado=estado")
     public Long countByEstado(@Param("estado") boolean estado);

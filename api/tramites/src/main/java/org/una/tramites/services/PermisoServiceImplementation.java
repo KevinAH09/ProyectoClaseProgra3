@@ -76,7 +76,7 @@ public class PermisoServiceImplementation implements IPermisoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional findByCodigo(String codigo) {
+    public Optional<Permiso> findByCodigo(String codigo) {
          return Optional.ofNullable(permisosOtorgadosRepository.findByCodigo(codigo));
     }
 
