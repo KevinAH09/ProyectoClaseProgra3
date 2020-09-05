@@ -32,7 +32,7 @@ public class SwaggerConfiguration {
                 .apis(
                         RequestHandlerSelectors
                                 .basePackage("org.una.tramites.controllers"))
-                .paths(PathSelectors.regex("/.*"))
+                .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo())
                 .tags(new Tag("Seguridad", "Metodos de Seguridad") {},
