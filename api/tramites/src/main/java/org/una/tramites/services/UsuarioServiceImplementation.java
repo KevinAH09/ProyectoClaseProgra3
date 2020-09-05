@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.dto.AuthenticationRequest;
 import org.una.tramites.entities.Usuario;
+import org.una.tramites.jwt.JwtProvider;
 import org.una.tramites.repositories.IUsuarioRepository;
 
 /**
@@ -34,6 +36,12 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+    
+    @Autowired
+    AuthenticationManager authenticationManager;
+    
+    @Autowired
+    JwtProvider jwtProvider;
 
     @Override
     @Transactional(readOnly = true)
@@ -41,15 +49,15 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
         return Optional.ofNullable(usuarioRepository.findAll());
     }
     
-    @Autowired   //nooooo sssssaaaaaaaabbbbbbeeeeeemmmmooooossss sssssssiiiiiii vvvvaaaaa aaaaqqqqquuuuuiiiii
-    private BCryptPasswordEncoder bCryptPasswordEncoder;//
+    @Autowired  
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private void encriptarPassword(Usuario usuario) {//
-        String password = usuario.getPasswordEncriptado();//
-        if (!password.isBlank()) {//
-            usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));//
-        }//
-    } //
+    private void encriptarPassword(Usuario usuario) {
+        String password = usuario.getPasswordEncriptado();
+        if (!password.isBlank()) {
+            usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));
+        }
+    } 
 
     
     @Override
