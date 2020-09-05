@@ -51,9 +51,6 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     
     @Autowired  
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-   
-
     
     @Override
     @Transactional(readOnly = true)
@@ -83,6 +80,7 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Override
     @Transactional
     public Optional<Usuario> update(Usuario usuario, Long id) {
+        encriptarPassword(usuario);
         if (usuarioRepository.findById(id).isPresent()) {
             return Optional.ofNullable(usuarioRepository.save(usuario));
         } else {

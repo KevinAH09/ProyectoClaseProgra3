@@ -5,20 +5,28 @@
  */
 package org.una.tramites.dto;
 
-import java.sql.Date;
-import org.una.tramites.entities.TramiteRegistrado;
+import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  *
  * @author colo7
  */
-public class ArchivoRelacionadoDTO {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor 
+@ToString
+public class NotaDTO {
     private Long id;
-    private TramiteRegistrado tramiteRegistradoId;
-    private String nombre;
     private boolean estado;
-    private String rutaArchivo;
+    private boolean tipo;
+    private String titulo;
+    private String contenido;
     private Date fechaRegistro;
-    private String etiqueta;
     private Date fechaModificacion;
+    private TramiteRegistradoDTO tramitesRegistrados;
+    
 }

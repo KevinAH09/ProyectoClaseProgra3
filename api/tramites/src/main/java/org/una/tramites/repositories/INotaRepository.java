@@ -5,20 +5,16 @@
  */
 package org.una.tramites.repositories;
 
-import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
-import org.una.tramites.entities.Requisito;
-import org.una.tramites.entities.Usuario;
+import org.una.tramites.entities.Nota;
 
 /**
  *
  * @author colo7
  */
-public interface IRequisitoRepository extends JpaRepository<Requisito, Long>{
+public interface INotaRepository extends JpaRepository<Nota, Long>{
     
-    public List<Requisito> findByEstadoContaining(boolean estado);
-    
-    //por fecha registro
-    
+    public Nota findByTitulo(String titulo);
 }

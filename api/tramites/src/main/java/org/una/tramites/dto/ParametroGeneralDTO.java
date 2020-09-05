@@ -3,22 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package org.una.tramites.dto;
 
 import java.sql.Date;
-import org.una.tramites.entities.TramiteRegistrado;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
- *
+ * 
  * @author colo7
  */
-public class ArchivoRelacionadoDTO {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor 
+@ToString
+public class ParametroGeneralDTO {
+
     private Long id;
-    private TramiteRegistrado tramiteRegistradoId;
     private String nombre;
-    private boolean estado;
-    private String rutaArchivo;
+    private String valor;
+    private String descripcion;
     private Date fechaRegistro;
-    private String etiqueta;
     private Date fechaModificacion;
+    private boolean estado;
 }
