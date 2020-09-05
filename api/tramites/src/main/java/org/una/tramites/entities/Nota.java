@@ -69,7 +69,7 @@ public class Nota implements Serializable  {
     
     @ManyToOne 
     @JoinColumn(name="tramites_registrados_id")
-    private TramiteRegistrado tramitesRegistrados;
+    private TramiteRegistrado tramiteRegistrado;
     
     
     @PrePersist

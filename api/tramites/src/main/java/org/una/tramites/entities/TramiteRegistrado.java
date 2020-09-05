@@ -47,14 +47,14 @@ public class TramiteRegistrado implements Serializable {
     @JoinColumn(name="tramites_tipos_id")
     private TramiteTipo tramitesTipos;
 //    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "archivos_relacionados") 
-//    private List<ArchivoRelacionado> tramiteRegistrado = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado") 
+    private List<ArchivoRelacionado> tramiteRegistrado = new ArrayList<>();
 //    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "") 
-//    private List<Nota> nota = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado") 
+    private List<Nota> nota = new ArrayList<>();
 //    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramites_registrados") 
-//    private List<RequisitoPresentado> requisitoPresentado = new ArrayList<>();
+ @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado") 
+ private List<RequisitoPresentado> requisitoPresentado = new ArrayList<>();
     
     
     
