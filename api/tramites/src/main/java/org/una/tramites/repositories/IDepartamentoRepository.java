@@ -7,13 +7,21 @@ package org.una.tramites.repositories;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.una.tramites.entities.Departamento;
 
 /**
  *
  * @author colo7
  */
-public interface IDepartamentoRepository extends JpaRepository<Departamento, Long>{
-    public List<Departamento> findByEstado(boolean estado);
+public interface IDepartamentoRepository extends JpaRepository<Departamento, Long> {
+
+    public List<Departamento> findByEstadoContaining(@Param("estado") boolean estado);
+    
+    public List<Departamento> findByNombreContainingIgnoreCase(String nombre);
+
+    @Query("select u from Departamento u where UPPER(u.nombre) like CONCAT('%',UPPER(:nombre),'%')")
+    public Departamento findNombreWithLikeSQL(@Param("nombre") String nombre);
 
 }

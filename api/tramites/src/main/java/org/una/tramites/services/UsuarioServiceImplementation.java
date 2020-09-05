@@ -38,10 +38,10 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     private IUsuarioRepository usuarioRepository;
     
     @Autowired
-    private AuthenticationManager authenticationManager;
+    AuthenticationManager authenticationManager;
     
     @Autowired
-    private JwtProvider jwtProvider;
+    JwtProvider jwtProvider;
 
     @Override
     @Transactional(readOnly = true)

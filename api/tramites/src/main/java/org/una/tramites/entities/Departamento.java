@@ -64,9 +64,6 @@ public class Departamento implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")//creo que es departamotos
     private List<Usuario> usuarios = new ArrayList<>();
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento") 
-    private List<TramiteTipo> tramites = new ArrayList<>();
 
     @PrePersist
     public void prePersist() {
