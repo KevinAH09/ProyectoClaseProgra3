@@ -9,8 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.una.tramites.entities.Permiso;
 
 /**
@@ -23,12 +21,7 @@ public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
 
     public List<Permiso> findByCodigoIgnoreCase(String codigo);
 
-    public List<Permiso> findByCodigo(String codigo);
-
-    @Query("select COUNT(*) from Permiso u where u.estado=estado")
-    public Long countByEstado(@Param("estado") boolean estado);
-
     public Optional<Permiso> findById(Long id);
-
+    
     public Optional<List<Permiso>> findByFechaRegistroBetween(Date startDate, Date endDate);
 }

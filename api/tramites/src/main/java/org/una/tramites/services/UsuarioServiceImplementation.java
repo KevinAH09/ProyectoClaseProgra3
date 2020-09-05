@@ -102,15 +102,8 @@ public class UsuarioServiceImplementation implements IUsuarioService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Optional<List<Usuario>> findByEstadoContaining(boolean estado) {
          return Optional.ofNullable(usuarioRepository.findByEstadoContaining(estado));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<List<Usuario>> findByCedula(String cedula) {
-        return Optional.ofNullable(usuarioRepository.findByCedula(cedula));
     }
 
 }

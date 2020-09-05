@@ -113,18 +113,7 @@ public class PermisoController {
     @ApiOperation(value = "Obtiene una lista de permisos por estado", response = PermisoDTO.class, responseContainer = "List", tags = "Permisos")
     public ResponseEntity<?> findByEstado(@PathVariable(value = "value") boolean value) {
         try {
-            Long result = permisosService.countByEstado(value);
-            PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(result, PermisoDTO.class);
-            return new ResponseEntity<>(permisoDTO, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    @GetMapping("/codigo/{value}")//Puede que aqui sea nombreCompleto
-    @ApiOperation(value = "Obtiene un permiso por codigo", response = PermisoDTO.class, responseContainer = "List", tags = "Permisos")
-    public ResponseEntity<?> findByCodigo(@PathVariable(value = "value") String value) {
-        try {
-             Optional<Permiso> result = permisosService.findByCodigo(value);
+            Optional<List<Permiso>> result = permisosService.findByEstado(value);
             PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(result, PermisoDTO.class);
             return new ResponseEntity<>(permisoDTO, HttpStatus.CREATED);
         } catch (Exception e) {

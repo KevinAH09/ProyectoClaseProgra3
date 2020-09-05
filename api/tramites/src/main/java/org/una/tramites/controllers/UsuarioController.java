@@ -111,22 +111,6 @@ public class UsuarioController {
         }
     }
 
-//    @GetMapping("/cedula/{term}")
-//    @ApiOperation(value = "Obtiene un usuario por su cedula", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
-//    public ResponseEntity<?> findByCedula(@PathVariable(value = "term") String term) {
-//        try {
-//            Optional<List<Usuario>> result = usuarioService.findByCedula(term);
-//            if (result.isPresent()) {
-//                List<UsuarioDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(result.get(), UsuarioDTO.class);
-//                return new ResponseEntity<>(usuariosDTO, HttpStatus.OK);
-//            } else {
-//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//            }
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
     @GetMapping("/nombre/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public ResponseEntity<?> findByNombreCompletoAproximateIgnoreCase(@PathVariable(value = "term") String term) {
@@ -142,7 +126,7 @@ public class UsuarioController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    
     @GetMapping("/estado/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los usuarios por estado", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
