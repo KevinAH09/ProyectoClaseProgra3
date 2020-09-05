@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.una.tramites.dto.VariacionDTO;
-import org.una.tramites.entities.Variacion;
+import org.una.tramites.dto.VariacionesDTO;
+import org.una.tramites.entities.Variaciones;
+import org.una.tramites.services.IVariacionesService;
 import org.una.tramites.utils.MapperUtils;
-import org.una.tramites.services.IVariacionService;
 
 /**
  *
@@ -34,18 +34,18 @@ import org.una.tramites.services.IVariacionService;
 @RestController
 @RequestMapping("/variaciones")
 @Api(tags = {"Variaciones"})
-public class VariacionController {
+public class VariacionesController {
     @Autowired
-    private IVariacionService variacionesService;
+    private IVariacionesService variacionesService;
 
     @GetMapping()
-    @ApiOperation(value = "Obtiene una lista de todas las variaciones", response = VariacionDTO.class, responseContainer = "List", tags = "Variaciones")
+    @ApiOperation(value = "Obtiene una lista de todas las variaciones", response = VariacionesDTO.class, responseContainer = "List", tags = "Variaciones")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
-            Optional<List<Variacion>> result = variacionesService.findAll();
+            Optional<List<Variaciones>> result = variacionesService.findAll();
             if (result.isPresent()) {
-                List<VariacionDTO> variacionesDTO = MapperUtils.DtoListFromEntityList(result.get(), VariacionDTO.class);
+                List<VariacionesDTO> variacionesDTO = MapperUtils.DtoListFromEntityList(result.get(), VariacionesDTO.class);
                 return new ResponseEntity<>(variacionesDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -56,13 +56,13 @@ public class VariacionController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene una Variacion", response = VariacionDTO.class, tags = "Variaciones")
+    @ApiOperation(value = "Obtiene una Variacion", response = VariacionesDTO.class, tags = "Variaciones")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
-            Optional<Variacion> variacionesFound = variacionesService.findById(id);
+            Optional<Variaciones> variacionesFound = variacionesService.findById(id);
             if (variacionesFound.isPresent()) {
-                VariacionDTO usuarioDto = MapperUtils.DtoFromEntity(variacionesFound.get(), VariacionDTO.class);
+                VariacionesDTO usuarioDto = MapperUtils.DtoFromEntity(variacionesFound.get(), VariacionesDTO.class);
                 return new ResponseEntity<>(usuarioDto, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -73,12 +73,12 @@ public class VariacionController {
     }
     
     @GetMapping("/estado/{term}")
-    @ApiOperation(value = "Obtiene una lista de todas las variaciones por estado", response = VariacionDTO.class, responseContainer = "List", tags = "Variaciones")
+    @ApiOperation(value = "Obtiene una lista de todas las variaciones por estado", response = VariacionesDTO.class, responseContainer = "List", tags = "Variaciones")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {
-            Optional<List<Variacion>> result = variacionesService.findByEstadoContaining(term);
+            Optional<List<Variaciones>> result = variacionesService.findByEstadoContaining(term);
             if (result.isPresent()) {
-                List<VariacionDTO> variacionesDTO = MapperUtils.DtoListFromEntityList(result.get(), VariacionDTO.class);
+                List<VariacionesDTO> variacionesDTO = MapperUtils.DtoListFromEntityList(result.get(), VariacionesDTO.class);
                 return new ResponseEntity<>(variacionesDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -93,11 +93,11 @@ public class VariacionController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
-    @ApiOperation(value = "Crea una variacion", response = VariacionDTO.class, tags = "Variaciones")
-    public ResponseEntity<?> create(@RequestBody Variacion variacion) {
+    @ApiOperation(value = "Crea una variacion", response = VariacionesDTO.class, tags = "Variaciones")
+    public ResponseEntity<?> create(@RequestBody Variaciones variacion) {
         try {
-            Variacion variacionCreated = variacionesService.create(variacion);
-            VariacionDTO variacionesDTO = MapperUtils.DtoFromEntity(variacionCreated, VariacionDTO.class);
+            Variaciones variacionCreated = variacionesService.create(variacion);
+            VariacionesDTO variacionesDTO = MapperUtils.DtoFromEntity(variacionCreated, VariacionesDTO.class);
             return new ResponseEntity<>(variacionesDTO, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -106,12 +106,12 @@ public class VariacionController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    @ApiOperation(value = "Modifica una variacion", response = VariacionDTO.class, tags = "Variaciones")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Variacion variacionModified) {
+    @ApiOperation(value = "Modifica una variacion", response = VariacionesDTO.class, tags = "Variaciones")
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Variaciones variacionModified) {
         try {
-            Optional<Variacion> usuarioUpdated = variacionesService.update(variacionModified, id);
+            Optional<Variaciones> usuarioUpdated = variacionesService.update(variacionModified, id);
             if (usuarioUpdated.isPresent()) {
-                VariacionDTO variacionDto = MapperUtils.DtoFromEntity(usuarioUpdated.get(), VariacionDTO.class);
+                VariacionesDTO variacionDto = MapperUtils.DtoFromEntity(usuarioUpdated.get(), VariacionesDTO.class);
                 return new ResponseEntity<>(variacionDto, HttpStatus.OK);
 
             } else {
@@ -134,12 +134,12 @@ public class VariacionController {
 //    }
 
     @GetMapping("/tramiteTipo_id/{term}")//Puede que aqui sea nombreCompleto
-    @ApiOperation(value = "Obtiene una lista de todas las variaciones por tipo de tramite", response = VariacionDTO.class, responseContainer = "List", tags = "Variaciones")
+    @ApiOperation(value = "Obtiene una lista de todas las variaciones por tipo de tramite", response = VariacionesDTO.class, responseContainer = "List", tags = "Variaciones")
     public ResponseEntity<?> findByTramiteTipoId(@PathVariable(value = "term") Long id) {
         try {
-            Optional<List<Variacion>> result = variacionesService.findByTramiteTipoId(id);
+            Optional<List<Variaciones>> result = variacionesService.findByTramiteTipoId(id);
             if (result.isPresent()) {
-                List<VariacionDTO> variacionesDTO = MapperUtils.DtoListFromEntityList(result.get(), VariacionDTO.class);
+                List<VariacionesDTO> variacionesDTO = MapperUtils.DtoListFromEntityList(result.get(), VariacionesDTO.class);
                 return new ResponseEntity<>(variacionesDTO, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

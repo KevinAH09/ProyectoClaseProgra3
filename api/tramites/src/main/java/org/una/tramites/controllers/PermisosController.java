@@ -25,10 +25,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.una.tramites.dto.PermisoDTO;
 import org.una.tramites.dto.TransaccionDTO;
-import org.una.tramites.entities.Permiso;
+import org.una.tramites.entities.Permisos;
 import org.una.tramites.entities.Transaccion;
+import org.una.tramites.services.IPermisosService;
 import org.una.tramites.utils.MapperUtils;
-import org.una.tramites.services.IPermisoService;
 
 /**
  *
@@ -37,17 +37,17 @@ import org.una.tramites.services.IPermisoService;
 @RestController
 @RequestMapping("/permisos")
 @Api(tags = {"Permisos"})
-public class PermisoController {
+public class PermisosController {
 
     @Autowired
-    private IPermisoService permisosService;
+    private IPermisosService permisosService;
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los permisos", response = PermisoDTO.class, responseContainer = "List", tags = "Permisos")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
-            Optional<List<Permiso>> result = permisosService.findAll();
+            Optional<List<Permisos>> result = permisosService.findAll();
             if (result.isPresent()) {
                 List<PermisoDTO> permisoDTO = MapperUtils.DtoListFromEntityList(result.get(), PermisoDTO.class);
                 return new ResponseEntity<>(permisoDTO, HttpStatus.OK);
@@ -64,7 +64,7 @@ public class PermisoController {
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
-            Optional<Permiso> permisoFound = permisosService.findById(id);
+            Optional<Permisos> permisoFound = permisosService.findById(id);
             if (permisoFound.isPresent()) {
                 PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(permisoFound.get(), PermisoDTO.class);
                 return new ResponseEntity<>(permisoDTO, HttpStatus.OK);
@@ -80,9 +80,9 @@ public class PermisoController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un permiso", response = PermisoDTO.class, tags = "Permisos")
-    public ResponseEntity<?> create(@RequestBody Permiso permisos) {
+    public ResponseEntity<?> create(@RequestBody Permisos permisos) {
         try {
-            Permiso permisoCreated = permisosService.create(permisos);
+            Permisos permisoCreated = permisosService.create(permisos);
             PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(permisoCreated, PermisoDTO.class);
             return new ResponseEntity<>(permisoDTO, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -93,9 +93,9 @@ public class PermisoController {
     @PutMapping("/{id}")
     @ResponseBody
     @ApiOperation(value = "Modifica un permiso", response = PermisoDTO.class, tags = "Permisos")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Permiso permisoModified) {
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Permisos permisoModified) {
         try {
-            Optional<Permiso> permisoUpdated = permisosService.update(permisoModified, id);
+            Optional<Permisos> permisoUpdated = permisosService.update(permisoModified, id);
             if (permisoUpdated.isPresent()) {
                 PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(permisoUpdated.get(), PermisoDTO.class);
                 return new ResponseEntity<>(permisoDTO, HttpStatus.OK);
@@ -113,7 +113,7 @@ public class PermisoController {
     @ApiOperation(value = "Obtiene una lista de permisos por estado", response = PermisoDTO.class, responseContainer = "List", tags = "Permisos")
     public ResponseEntity<?> findByEstado(@PathVariable(value = "value") boolean value) {
         try {
-            Optional<List<Permiso>> result = permisosService.findByEstado(value);
+            Optional<List<Permisos>> result = permisosService.findByEstado(value);
             PermisoDTO permisoDTO = MapperUtils.DtoFromEntity(result, PermisoDTO.class);
             return new ResponseEntity<>(permisoDTO, HttpStatus.CREATED);
         } catch (Exception e) {
@@ -137,7 +137,7 @@ public class PermisoController {
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
-            Optional<List<Permiso>> permisosFound = permisosService.findByFechaRegistroBetween(startDate, endDate);
+            Optional<List<Permisos>> permisosFound = permisosService.findByFechaRegistroBetween(startDate, endDate);
             if (permisosFound.isPresent()) {
                 List<PermisoDTO> permisoDTO = MapperUtils.DtoListFromEntityList(permisosFound.get(), PermisoDTO.class);
                 return new ResponseEntity<>(permisoDTO, HttpStatus.OK);

@@ -8,16 +8,16 @@ package org.una.tramites.repositories;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.una.tramites.entities.Variacion;
+import org.una.tramites.entities.Variaciones;
 
 /**
  *
  * @author Bosco
  */
-public interface IVariacionRepository  extends JpaRepository<Variacion, Long>{
+public interface IVariacionesRepository  extends JpaRepository<Variaciones, Long>{
     
     
-    public List<Variacion> findByEstadoContaining(boolean estado);
+    public List<Variaciones> findByEstadoContaining(boolean estado);
     
-    public Optional<List<Variacion>> findByTramiteTipoId(Long id);
+    public Optional<List<Variaciones>> findByTramiteTipoId(Long id);
 }

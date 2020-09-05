@@ -9,19 +9,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.una.tramites.entities.Permiso;
+import org.una.tramites.entities.Permisos;
 
 /**
  *
  * @author cfugu
  */
-public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
+public interface IPermisosRepository extends JpaRepository<Permisos, Long> {
 
-    public List<Permiso> findByEstadoContaining(boolean estado);
+    public List<Permisos> findByEstadoContaining(boolean estado);
 
-    public List<Permiso> findByCodigoIgnoreCase(String codigo);
+    public List<Permisos> findByCodigoIgnoreCase(String codigo);
 
-    public Optional<Permiso> findById(Long id);
+    public Optional<Permisos> findById(Long id);
     
-    public Optional<List<Permiso>> findByFechaRegistroBetween(Date startDate, Date endDate);
+    public Optional<List<Permisos>> findByFechaRegistroBetween(Date startDate, Date endDate);
 }

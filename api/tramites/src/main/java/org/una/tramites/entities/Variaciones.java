@@ -36,7 +36,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Variacion implements Serializable{
+public class Variaciones implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

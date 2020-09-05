@@ -8,7 +8,7 @@ package org.una.tramites.services;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import org.una.tramites.entities.PermisoOtorgado;
+import org.una.tramites.entities.PermisosOtorgados;
 
 /**
  *
@@ -17,21 +17,21 @@ import org.una.tramites.entities.PermisoOtorgado;
 public interface IPermisoOtorgadoService {
 
     
-    public Optional <PermisoOtorgado> findById(Long usuarioId);
+    public Optional <PermisosOtorgados> findById(Long usuarioId);
 
-    public Optional<List<PermisoOtorgado>> findByUsuarioId(Long usuarioId);
+    public Optional<List<PermisosOtorgados>> findByUsuarioId(Long usuarioId);
 
-    public Optional<List<PermisoOtorgado>> findByPermisoId(Long permisoId);
+    public Optional<List<PermisosOtorgados>> findByPermisoId(Long permisoId);
 
-    public Optional<List<PermisoOtorgado>> findByUsuarioIdAndEstado(Long usuarioId, boolean estado);
+    public Optional<List<PermisosOtorgados>> findByUsuarioIdAndEstado(Long usuarioId, boolean estado);
 
-    public Optional<List<PermisoOtorgado>> findByPermisoIdAndEstado(Long permisoId, boolean estado);
+    public Optional<List<PermisosOtorgados>> findByPermisoIdAndEstado(Long permisoId, boolean estado);
 
-    public Optional<List<PermisoOtorgado>> findByFechaRegistroBetween(Date startDate, Date endDate);
+    public Optional<List<PermisosOtorgados>> findByFechaRegistroBetween(Date startDate, Date endDate);
  
-    public PermisoOtorgado create(PermisoOtorgado permisoOtorgado);
+    public PermisosOtorgados create(PermisosOtorgados permisoOtorgado);
 
-    public Optional<PermisoOtorgado> update(PermisoOtorgado permisoOtorgado, Long id);
+    public Optional<PermisosOtorgados> update(PermisosOtorgados permisoOtorgado, Long id);
 
     public void delete(Long id);
 

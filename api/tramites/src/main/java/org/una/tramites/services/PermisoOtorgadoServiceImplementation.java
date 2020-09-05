@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.una.tramites.entities.PermisoOtorgado;
+import org.una.tramites.entities.PermisosOtorgados;
 import org.una.tramites.repositories.IPermisoOtorgadoRepository;
 
 
@@ -42,13 +42,13 @@ public class PermisoOtorgadoServiceImplementation implements IPermisoOtorgadoSer
 
     @Override
     @Transactional
-    public PermisoOtorgado create(PermisoOtorgado permisoOtorgado) {
+    public PermisosOtorgados create(PermisosOtorgados permisoOtorgado) {
         return permisoOtorgadosRepos.save(permisoOtorgado);
     }
 
     @Override
     @Transactional
-    public Optional<PermisoOtorgado> update(PermisoOtorgado permisoOtorgado, Long id) {
+    public Optional<PermisosOtorgados> update(PermisosOtorgados permisoOtorgado, Long id) {
         if (permisoOtorgadosRepos.findById(id).isPresent()) {
             return Optional.ofNullable(permisoOtorgadosRepos.save(permisoOtorgado));
         } else {
@@ -70,19 +70,19 @@ public class PermisoOtorgadoServiceImplementation implements IPermisoOtorgadoSer
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<PermisoOtorgado> findById(Long id) {
+    public Optional<PermisosOtorgados> findById(Long id) {
         return permisoOtorgadosRepos.findById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<PermisoOtorgado>> findByUsuarioId(Long usuarioId) {
+    public Optional<List<PermisosOtorgados>> findByUsuarioId(Long usuarioId) {
         return permisoOtorgadosRepos.findByUsuarioId(usuarioId); 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<PermisoOtorgado>> findByPermisoId(Long permisoId) {
+    public Optional<List<PermisosOtorgados>> findByPermisoId(Long permisoId) {
         return permisoOtorgadosRepos.findByPermisoId(permisoId);  
     }
 

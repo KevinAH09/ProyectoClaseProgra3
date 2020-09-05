@@ -12,9 +12,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,47 +30,37 @@ import lombok.ToString;
  * @author cfugu
  */
 @Entity
-@Table(name = "permisos")
+@Table(name = "permisos_otorgados")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Permiso implements Serializable {
+public class PermisosOtorgados implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "codigo", length = 10)
-    private String codigo;
-
-    @Column(length = 100, name = "descripcion")
-    private String descripcion;
-
-    @Column
-    private boolean estado;
-
-    private static final long serialVersionUID = 1L;
 
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @Setter(AccessLevel.NONE)
     private Date fechaRegistro;
 
-    @Column(name = "fecha_modificacion")
-    @Setter(AccessLevel.NONE)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaModificacion;
+    @Column
+    private boolean estado;
+
+    @ManyToOne
+    @JoinColumn(name = "usuarios_id")
+    private Usuario usuario;
+    
+    @ManyToOne
+    @JoinColumn(name = "permisos_id")
+    private Permisos permisoId;
 
     @PrePersist
     public void prePersist() {
         estado = true;
         fechaRegistro = new Date();
-        fechaModificacion = new Date();
-    }
 
-    @PreUpdate
-    public void preUpdate() {
-        fechaModificacion = new Date();
     }
 }
