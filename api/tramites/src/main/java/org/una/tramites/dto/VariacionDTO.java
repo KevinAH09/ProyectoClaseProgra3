@@ -6,25 +6,17 @@
 package org.una.tramites.dto;
 
 import java.util.Date;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  *
- * @author cfugu
+ * @author Bosco
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class PermisosOtorgadosDTO {
-
+public class VariacionDTO {
     private Long id;
+    private String descripcion;
+    private boolean grupo;
     private boolean estado;
     private Date fechaRegistro;
-    private PermisoDTO permisoId;
-    private UsuarioDTO usuarios;
+    private TramiteTipoDTO tramiteTipo;
+    
 }

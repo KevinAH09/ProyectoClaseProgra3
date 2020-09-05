@@ -10,45 +10,45 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.una.tramites.entities.Variaciones;
-import org.una.tramites.repositories.IVariacionesRepository;
+import org.una.tramites.entities.Variacion;
+import org.una.tramites.repositories.IVariacionRepository;
 
 /**
  *
  * @author Bosco
  */
 @Service
-public class VariacionesServiceImplementation implements IVariacionesService{
+public class VariacionServiceImplementation implements IVariacionService{
 
     @Autowired
-    private IVariacionesRepository variacionesRepository;
+    private IVariacionRepository variacionesRepository;
     
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Variaciones>> findAll() {
+    public Optional<List<Variacion>> findAll() {
         return Optional.ofNullable(variacionesRepository.findAll());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Variaciones> findById(Long id) {
+    public Optional<Variacion> findById(Long id) {
         return variacionesRepository.findById(id);
     }
 
     @Override
-    public Optional<List<Variaciones>> findByEstadoContaining(boolean estado) {
+    public Optional<List<Variacion>> findByEstadoContaining(boolean estado) {
         return Optional.ofNullable(variacionesRepository.findByEstadoContaining(estado));
     }
 
     @Override
     @Transactional
-    public Variaciones create(Variaciones usuario) {
+    public Variacion create(Variacion usuario) {
         return variacionesRepository.save(usuario);
     }
 
     @Override
     @Transactional
-    public Optional<Variaciones> update(Variaciones usuario, Long id) {
+    public Optional<Variacion> update(Variacion usuario, Long id) {
         if (variacionesRepository.findById(id).isPresent()) {
             return Optional.ofNullable(variacionesRepository.save(usuario));
         } else {
