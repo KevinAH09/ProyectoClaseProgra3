@@ -20,7 +20,7 @@ import org.una.tramites.entities.Transaccion;
 public interface ITransaccionRepository extends JpaRepository<Transaccion, Long> {
 
 //    @Query("SELECT u FROM Usuario u LEFT JOIN u.departamento d WHERE u.esJefe=1 AND d.id=:id")
-    @Query("select u from Transaccion u JOIN u.permiso_Otorgado d where d.usuario = usuario and (u.fechaRegistro between fechaRegistro and fechaRegistro1)")//Dos puntos posible error
+    @Query("select u from Transaccion u JOIN u.permiso_Otorgado d where d.usuario = usuario and (u.fechaRegistro between fechaRegistro and fechaRegistro1)")
     public Optional<List<Transaccion>> findByUsuarioIdAndFechaRegistroBetween(@Param("usuario") Long usuario, @Param("fechaRegistro") Date startDate, @Param("fechaRegistro1") Date endDate);
 
     @Query("select u from Transaccion u JOIN u.permiso_Otorgado d where d.permisoId = permiso and (u.fechaRegistro between fechaRegistro and fechaRegistro1)")
