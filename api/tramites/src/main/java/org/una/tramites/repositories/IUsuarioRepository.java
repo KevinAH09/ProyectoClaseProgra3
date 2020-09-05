@@ -17,14 +17,17 @@ import org.una.tramites.entities.Usuario;
  * @author Bosco
  */
 public interface IUsuarioRepository extends JpaRepository<Usuario, Long> {
-    
+
     public List<Usuario> findByEstadoContaining(boolean estado);
-    
+
     public Usuario findByCedulaAndPasswordEncriptado(@Param("passwordEncriptado") String passwordEncriptado, @Param("cedula") String cedula);
 
     public List<Usuario> findByCedulaContaining(@Param("cedula") String cedula);
 
     public List<Usuario> findByNombreCompletoContainingIgnoreCase(String nombreCompleto);
+
+    @Query("select u from Usuario u where u.cedula=cedula")
+    public List<Usuario> findByCedula(@Param("cedula") String cedula);
 
     @Query("select u from Usuario u where UPPER(u.nombreCompleto) like CONCAT('%',UPPER(:nombreCompleto),'%')")
     public Usuario findNombreCompletoWithLikeSQL(@Param("nombreCompleto") String nombreCompleto);
