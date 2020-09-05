@@ -18,59 +18,47 @@ import org.una.tramites.repositories.ITramiteTipoRepository;
  */
 public class TramiteTipoServiceImplementation implements ITramiteTipoService {
     
-//    @Autowired
-//    private ITramiteTipoRepository tramitesTiposRepository;
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional<List<TramiteTipo>> findAll() {
-//       return Optional.ofNullable(tramitesTiposRepository.findAll());
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional<TramiteTipo> findById(Long id) {
-//        return tramitesTiposRepository.findById(id);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public TramiteTipo create(TramiteTipo usuario) {
-//        return tramitesTiposRepository.save(usuario);
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado) {
-//         return Optional.ofNullable(tramitesTiposRepository.findByEstadoContaining(estado));
-//    }
-//
-//    @Override
-//    @Transactional
-//    public Optional<TramiteTipo> update(TramiteTipo usuario, Long id) {
-//        if (tramitesTiposRepository.findById(id).isPresent()) {
-//            return Optional.ofNullable(tramitesTiposRepository.save(usuario));
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    @Override
-//    @Transactional(readOnly = true)
-//    public Optional<List<TramiteTipo>> findByDepartamentoId(Long id) {
-//        return Optional.ofNullable(tramitesTiposRepository.findByDepartamentoId(id));
-//    }
+    @Autowired
+    private ITramiteTipoRepository tramitesTiposRepository;
 
-//    @Override
-//    @Transactional
-//    public void delete(Long id) {
-//        tramitesTiposRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void deleteAll() {
-//        tramitesTiposRepository.deleteAll();
-//    }
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramiteTipo>> findAll() {
+       return Optional.ofNullable(tramitesTiposRepository.findAll());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<TramiteTipo> findById(Long id) {
+        return tramitesTiposRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public TramiteTipo create(TramiteTipo usuario) {
+        return tramitesTiposRepository.save(usuario);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado) {
+         return Optional.ofNullable(tramitesTiposRepository.findByEstadoContaining(estado));
+    }
+
+    @Override
+    @Transactional
+    public Optional<TramiteTipo> update(TramiteTipo usuario, Long id) {
+        if (tramitesTiposRepository.findById(id).isPresent()) {
+            return Optional.ofNullable(tramitesTiposRepository.save(usuario));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramiteTipo>> findByDepartamentoId(Long id) {
+        return Optional.ofNullable(tramitesTiposRepository.findByDepartamentoId(id));
+    }
     
 }
