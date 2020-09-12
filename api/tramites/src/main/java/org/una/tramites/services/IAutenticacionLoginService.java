@@ -15,7 +15,6 @@
 // * @author Bosco
 // */
 //public interface IAutenticacionLoginService {
-//    
 //    public AuthenticationResponse login(AuthenticationRequest authenticationRequest);
 //    
 //    public Optional<Usuario> login(Usuario usuario); 
