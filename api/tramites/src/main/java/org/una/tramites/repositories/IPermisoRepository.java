@@ -29,4 +29,7 @@ public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
     public Optional<Permiso> findById(Long id);
 
     public Optional<List<Permiso>> findByFechaRegistroBetween(Date startDate, Date endDate);
+    
+    //query por si ocupa
+   // public long countByPermisos();
 }

@@ -35,5 +35,7 @@ public interface IPermisoService {
     public void delete(Long id);
 
     public void deleteAll();
+    
+    //public long countByPermisos();
 
 }
