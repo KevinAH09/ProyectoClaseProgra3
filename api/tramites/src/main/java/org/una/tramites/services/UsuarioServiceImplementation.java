@@ -164,26 +164,26 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
         }
     }
 
-//    @Override
-//    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
-//               Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-//
-//        Optional<Usuario> usuario = findByCedula(authenticationRequest.getCedula());
-//
-//        if (usuario.isPresent()) {
-//            authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
-//            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
-//            authenticationResponse.setUsuario(usuarioDto);
-//            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisoOtorgado(), PermisoOtorgadoDTO.class);
-//            authenticationResponse.setPermisos(permisosOtorgadosDto);
-//
-//            return authenticationResponse;
-//        } else {
-//            return null;
-//        }
-//    }
+    @Override
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+               Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+
+        Optional<Usuario> usuario = findByCedula(authenticationRequest.getCedula());
+
+        if (usuario.isPresent()) {
+            authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
+            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
+            authenticationResponse.setUsuario(usuarioDto);
+            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisoOtorgado(), PermisoOtorgadoDTO.class);
+            authenticationResponse.setPermisos(permisosOtorgadosDto);
+
+            return authenticationResponse;
+        } else {
+            return null;
+        }
+    }
 
    
 

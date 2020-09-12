@@ -36,6 +36,6 @@ public interface IPermisoService {
 
     public void deleteAll();
     
-    //public long countByPermisos();
+    public long countByPermisos();
 
 }

@@ -86,10 +86,10 @@ public class PermisoServiceImplementation implements IPermisoService {
         return permisosOtorgadosRepository.countByEstado(estado);
     }
 
-//    @Override
-//    public long countByPermisos() {
-//        return permisosOtorgadosRepository.countByPermisos();
-//    }
+    @Override
+    public long countByPermisos() {
+        return permisosOtorgadosRepository.countByPermisos();
+    }
 
    
 
