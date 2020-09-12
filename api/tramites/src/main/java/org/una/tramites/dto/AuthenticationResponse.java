@@ -25,6 +25,4 @@ public class AuthenticationResponse {
     private UsuarioDTO usuario;
     private List<PermisoOtorgadoDTO> permisos;
 
-   
-
 }
