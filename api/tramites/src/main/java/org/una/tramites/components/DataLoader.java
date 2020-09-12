@@ -46,7 +46,7 @@ public class DataLoader implements ApplicationRunner {
         
         //System.out.println("org.una.loaders.DataLoader.run()adasssssssssssssssssssssssssssssssssssssssssssssssssss");
         if (usuarioService.findByCedula(cedula).isEmpty()) {
-              
+
 //            Permiso permiso;
 //            final String codigo = "Usu01";
 //            Optional<Permiso> permisoBuscado = permisoService.findByCodigo(codigo);
@@ -61,7 +61,6 @@ public class DataLoader implements ApplicationRunner {
 //                permiso = permisoBuscado.get();
 //            }
             createPermisos();
-            
             Usuario usuario = new Usuario();
             usuario.setNombreCompleto("Usuario Admin");
             usuario.setCedula(cedula);
@@ -75,8 +74,6 @@ public class DataLoader implements ApplicationRunner {
 
             System.out.println("Se agrega el usuario inicial");
         } else {
-            
-            System.err.println(permisoService.countByPermisos());
             System.out.println("Se encontro el admin");
         }
        
