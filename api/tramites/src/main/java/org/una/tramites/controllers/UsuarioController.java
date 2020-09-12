@@ -77,29 +77,29 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/login")
-    @ResponseBody
-    @ApiOperation(value = "Inicio de sesión para conseguir un token de acceso", response = UsuarioDTO.class, tags = "Seguridad")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity("La información no esta bien formada o no coincide con el formato esperado", HttpStatus.BAD_REQUEST);
-        }
-        try {
-            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-            String token = usuarioService.login(authenticationRequest);
-            if (!token.isBlank()) {
-                authenticationResponse.setJwt(token);
-                //TODO: Complete this   authenticationResponse.setUsuario(usuario);
-                //TODO: Complete this    authenticationResponse.setPermisos(permisosOtorgados);
-                return new ResponseEntity(authenticationResponse, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Credenciales invalidos", HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/login")
+//    @ResponseBody
+//    @ApiOperation(value = "Inicio de sesión para conseguir un token de acceso", response = UsuarioDTO.class, tags = "Seguridad")
+//    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest, BindingResult bindingResult) {
+//
+//        if (bindingResult.hasErrors()) {
+//            return new ResponseEntity("La información no esta bien formada o no coincide con el formato esperado", HttpStatus.BAD_REQUEST);
+//        }
+//        try {
+//            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+//            String token = usuarioService.login(authenticationRequest);
+//            if (!token.isBlank()) {
+//                authenticationResponse.setJwt(token);
+//                //TODO: Complete this   authenticationResponse.setUsuario(usuario);
+//                //TODO: Complete this    authenticationResponse.setPermisos(permisosOtorgados);
+//                return new ResponseEntity(authenticationResponse, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>("Credenciales invalidos", HttpStatus.UNAUTHORIZED);
+//            }
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 
     @GetMapping("/cedula/{term}")
