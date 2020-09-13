@@ -71,7 +71,8 @@ public class VariacionServiceImplementation implements IVariacionService{
     }
 
     @Override
-    public Optional findByTramiteTipoId(Long id) {
+    @Transactional(readOnly = true)
+    public Optional<List<Variacion >>findByTramiteTipoId(Long id) {
         return Optional.ofNullable(variacionesRepository.findByTramiteTipoId(id));
 
     }
