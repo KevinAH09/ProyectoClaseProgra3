@@ -90,9 +90,9 @@ public class DepartamentoController {
     
     @GetMapping("/estado/{estado}")
     @ApiOperation(value = "Obtiene una lista de todos los departamentos por estado", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
-    public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "estado") boolean term) {
+    public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "estado") boolean estado) {
         try {
-            Optional<List<Departamento>> result = departamentoService.findByEstadoContaining(term);
+            Optional<List<Departamento>> result = departamentoService.findByEstadoContaining(estado);
             if (result.isPresent()) {
                 List<DepartamentoDTO> departamentosDTO = MapperUtils.DtoListFromEntityList(result.get(), DepartamentoDTO.class);
                 return new ResponseEntity<>(departamentosDTO, HttpStatus.OK);
