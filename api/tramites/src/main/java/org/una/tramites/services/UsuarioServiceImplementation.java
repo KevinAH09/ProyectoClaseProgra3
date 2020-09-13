@@ -111,7 +111,8 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Override
     @Transactional(readOnly = true)
     public Optional<Usuario> login(Usuario usuario) {
-        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getCedula(), usuario.getPasswordEncriptado()));
+        encriptarPassword(usuario);
+        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado( usuario.getPasswordEncriptado(),usuario.getCedula()));
     }
 
     @Override
@@ -128,8 +129,9 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Usuario> findByCedulaAndPassword(String password, String cedula) {
-        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(password, cedula));
+    public Optional<Usuario> findByCedulaAndPassword(String cedula, String password) {
+        System.out.println("org.una.tramites.services.UsuarioServiceImplementation.findByCedulaAndPassword()"+password+"  "+cedula);
+        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(cedula, bCryptPasswordEncoder.encode(password)));
     }
 
     @Override

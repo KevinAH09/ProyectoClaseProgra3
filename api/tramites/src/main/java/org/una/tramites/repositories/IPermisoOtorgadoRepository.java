@@ -22,7 +22,7 @@ public interface IPermisoOtorgadoRepository extends JpaRepository<PermisoOtorgad
 
     public Optional<List<PermisoOtorgado>> findByPermisoId(@Param("permisosId") Long permisos);
 
-    public Optional<List<PermisoOtorgado>> findByUsuarioIdAndEstado(@Param("usuario") Long usuario, @Param("estado") boolean estado);
+    public List<PermisoOtorgado> findByUsuarioIdAndEstado(@Param("usuario") Long usuario, @Param("estado") boolean estado);
 
     public Optional<List<PermisoOtorgado>> findByPermisoIdAndEstado(@Param("permisosId") Long permisos, @Param("estado") boolean estado);
 

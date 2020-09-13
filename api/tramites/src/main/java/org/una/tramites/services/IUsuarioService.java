@@ -8,6 +8,7 @@ package org.una.tramites.services;
 import java.util.List;
 import java.util.Optional;
 import org.una.tramites.dto.AuthenticationRequest;
+import org.una.tramites.dto.AuthenticationResponse;
 import org.una.tramites.entities.Usuario;
 
 /**
@@ -22,7 +23,7 @@ public interface IUsuarioService {
 
     public Optional<List<Usuario>> findByEstadoContaining(boolean estado);
 
-    public Optional<Usuario> findByCedulaAndPassword(String password, String cedula);
+    public Optional<Usuario> findByCedulaAndPassword(String cedula, String password);
 
     public Optional<List<Usuario>> findByCedulaAproximate(String cedula);
     
@@ -38,7 +39,7 @@ public interface IUsuarioService {
 
     public void deleteAll();
 
-    public String login(AuthenticationRequest authenticationRequest);
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest);
     
     public Optional<Usuario> login(Usuario usuario); 
 

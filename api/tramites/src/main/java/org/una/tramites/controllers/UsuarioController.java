@@ -88,7 +88,18 @@ public class UsuarioController {
         try {
             AuthenticationResponse authenticationResponse = new AuthenticationResponse();
             String token = usuarioService.login(authenticationRequest);
+            
             if (!token.isBlank()) {
+                Usuario u = new Usuario();
+                u.setCedula(authenticationRequest.getCedula());
+                System.out.println("org.una.tramites.controllers.UsuarioController.login() " + authenticationRequest.getPassword());
+                u.setPasswordEncriptado(authenticationRequest.getPassword());
+                Optional<Usuario> usuarioFound = usuarioService.login(u);
+            if (usuarioFound.isPresent()) {
+                System.out.println("org.una.tramites.controllers.UsuarioController.login() 33333" );
+                UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuarioFound.get(), UsuarioDTO.class);
+                authenticationResponse.setUsuario(usuarioDto);
+            }
                 authenticationResponse.setJwt(token);
                 //TODO: Complete this   authenticationResponse.setUsuario(usuario);
                 //TODO: Complete this    authenticationResponse.setPermisos(permisosOtorgados);
@@ -117,7 +128,22 @@ public class UsuarioController {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/cedula/{cedula}/password_encriptado/{password}")
+    @ApiOperation(value = "Obtiene un Usuario por cedula y password", response = UsuarioDTO.class, tags = "Usuarios")
+    public ResponseEntity<?> findByCedulaAndPassword(@PathVariable(value = "cedula") String cedula,@PathVariable(value = "password") String pass) {
+        try {
 
+            Optional<Usuario> usuarioFound = usuarioService.findByCedulaAndPassword(cedula, pass);
+            if (usuarioFound.isPresent()) {
+                UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuarioFound.get(), UsuarioDTO.class);
+                return new ResponseEntity<>(usuarioDto, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 //    @GetMapping("/cedula/{term}")
 //    @ApiOperation(value = "Obtiene un usuario por su cedula", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
 //    public ResponseEntity<?> findByCedula(@PathVariable(value = "term") String term) {
