@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.una.tramites.entities.Cliente;
-import org.una.tramites.entities.TramiteTipo;
 
 /**
  *
@@ -24,7 +23,7 @@ import org.una.tramites.entities.TramiteTipo;
 @ToString
 public class TramiteRegistradoDTO {
     private Long id;
-    private TramiteTipo tramitesTiposId;
+    private TramiteTipoDTO tramitesTiposId;
     private Cliente clienteId;
     private List<NotaDTO> notas = new ArrayList<>();
     private List<ArchivoRelacionadoDTO> archivosRelacionados = new ArrayList<>();

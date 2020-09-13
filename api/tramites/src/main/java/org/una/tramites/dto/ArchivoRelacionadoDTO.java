@@ -6,7 +6,6 @@
 package org.una.tramites.dto;
 
 import java.sql.Date;
-import org.una.tramites.entities.TramiteRegistrado;
 
 /**
  *
@@ -14,7 +13,7 @@ import org.una.tramites.entities.TramiteRegistrado;
  */
 public class ArchivoRelacionadoDTO {
     private Long id;
-    private TramiteRegistrado tramiteRegistradoId;
+    private TramiteRegistradoDTO tramiteRegistradoId;
     private String nombre;
     private boolean estado;
     private String rutaArchivo;

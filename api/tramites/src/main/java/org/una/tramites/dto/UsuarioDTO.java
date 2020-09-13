@@ -20,11 +20,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UsuarioDTO {
-
+    
     private Long id;
     private String nombreCompleto;
     private String cedula;
     private boolean estado;
+    private String passwordEncriptado;
     private Date fechaRegistro;
     private Date fechaModificacion;
     private DepartamentoDTO departamento;
