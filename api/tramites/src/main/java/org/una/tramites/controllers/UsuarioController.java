@@ -87,22 +87,10 @@ public class UsuarioController {
         }
         try {
             AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-            String token = usuarioService.login(authenticationRequest);
+            Optional<AuthenticationResponse> result = usuarioService.login(authenticationRequest);
             
-            if (!token.isBlank()) {
-                Usuario u = new Usuario();
-                u.setCedula(authenticationRequest.getCedula());
-                System.out.println("org.una.tramites.controllers.UsuarioController.login() " + authenticationRequest.getPassword());
-                u.setPasswordEncriptado(authenticationRequest.getPassword());
-                Optional<Usuario> usuarioFound = usuarioService.login(u);
-            if (usuarioFound.isPresent()) {
-                System.out.println("org.una.tramites.controllers.UsuarioController.login() 33333" );
-                UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuarioFound.get(), UsuarioDTO.class);
-                authenticationResponse.setUsuario(usuarioDto);
-            }
-                authenticationResponse.setJwt(token);
-                //TODO: Complete this   authenticationResponse.setUsuario(usuario);
-                //TODO: Complete this    authenticationResponse.setPermisos(permisosOtorgados);
+            if (result.isPresent()) {
+                authenticationResponse =result.get();
                 return new ResponseEntity(authenticationResponse, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("Credenciales invalidos", HttpStatus.UNAUTHORIZED);

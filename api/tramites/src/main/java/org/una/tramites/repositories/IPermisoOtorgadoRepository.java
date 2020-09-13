@@ -18,14 +18,14 @@ import org.una.tramites.entities.PermisoOtorgado;
  */
 public interface IPermisoOtorgadoRepository extends JpaRepository<PermisoOtorgado, Long> {
 
-    public Optional<List<PermisoOtorgado>> findByUsuarioId(@Param("usuario") Long usuario);
+    public List<PermisoOtorgado> findByUsuarioId(@Param("usuario") Long usuario);
 
-    public Optional<List<PermisoOtorgado>> findByPermisoId(@Param("permisosId") Long permisos);
+    public List<PermisoOtorgado> findByPermisoId(@Param("permisosId") Long permisos);
 
     public List<PermisoOtorgado> findByUsuarioIdAndEstado(@Param("usuario") Long usuario, @Param("estado") boolean estado);
 
-    public Optional<List<PermisoOtorgado>> findByPermisoIdAndEstado(@Param("permisosId") Long permisos, @Param("estado") boolean estado);
+    public List<PermisoOtorgado> findByPermisoIdAndEstado(@Param("permisosId") Long permisos, @Param("estado") boolean estado);
 
-    public Optional<List<PermisoOtorgado>> findByFechaRegistroBetween(@Param("fechaRegistro") Date fechaRegistro, @Param("fechaRegistro1") Date fechaRegistro1);
+    public List<PermisoOtorgado> findByFechaRegistroBetween(@Param("fechaRegistro") Date fechaRegistro, @Param("fechaRegistro1") Date fechaRegistro1);
 
 }

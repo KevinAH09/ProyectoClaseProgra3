@@ -77,18 +77,18 @@ public class PermisoOtorgadoServiceImplementation implements IPermisoOtorgadoSer
     @Override
     @Transactional(readOnly = true)
     public Optional<List<PermisoOtorgado>> findByUsuarioId(Long usuarioId) {
-        return permisoOtorgadosRepos.findByUsuarioId(usuarioId); 
+        return Optional.ofNullable(permisoOtorgadosRepos.findByUsuarioId(usuarioId)); 
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<PermisoOtorgado>> findByPermisoId(Long permisoId) {
-        return permisoOtorgadosRepos.findByPermisoId(permisoId);  
+        return Optional.ofNullable(permisoOtorgadosRepos.findByPermisoId(permisoId));  
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional findByUsuarioIdAndEstado(Long usuarioId, boolean estado) {
+    public Optional<List<PermisoOtorgado>> findByUsuarioIdAndEstado(Long usuarioId, boolean estado) {
         return Optional.ofNullable(permisoOtorgadosRepos.findByUsuarioIdAndEstado(usuarioId, estado));
     }
 

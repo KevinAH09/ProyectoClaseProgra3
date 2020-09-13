@@ -23,23 +23,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.dto.AuthenticationRequest;
+import org.una.tramites.dto.AuthenticationResponse;
+import org.una.tramites.dto.PermisoOtorgadoDTO;
+import org.una.tramites.dto.UsuarioDTO;
+import org.una.tramites.entities.PermisoOtorgado;
 import org.una.tramites.entities.Usuario;
 import org.una.tramites.jwt.JwtProvider;
 import org.una.tramites.repositories.IUsuarioRepository;
+import org.una.tramites.utils.MapperUtils;
 
 /**
  *
  * @author Bosco
  */
 @Service
-public class UsuarioServiceImplementation implements UserDetailsService,IUsuarioService {
+public class UsuarioServiceImplementation implements UserDetailsService, IUsuarioService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
-    
+
     @Autowired
     private AuthenticationManager authenticationManager;
-    
+
     @Autowired
     private JwtProvider jwtProvider;
 
@@ -48,10 +53,10 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     public Optional<List<Usuario>> findAll() {
         return Optional.ofNullable(usuarioRepository.findAll());
     }
-    
-    @Autowired  
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    
+
     @Override
     @Transactional(readOnly = true)
     public Optional<Usuario> findById(Long id) {
@@ -102,18 +107,35 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
 
     @Override
     @Transactional(readOnly = true)
-    public String login(AuthenticationRequest authenticationRequest) {
+    public Optional<AuthenticationResponse> login(AuthenticationRequest authenticationRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generateToken(authenticationRequest);
- 
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+        authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
+        Optional<Usuario> usuarioBuscado = findByCedula(authenticationRequest.getCedula());
+        if (usuarioBuscado.isPresent()) {
+            Usuario usuario = usuarioBuscado.get();
+            authenticationResponse.setUsuario(MapperUtils.DtoFromEntity(usuario, UsuarioDTO.class));
+//            PermisoOtorgadoServiceImplementation perOtorgadoServiceImplementation = new PermisoOtorgadoServiceImplementation();
+//            Optional<List<PermisoOtorgado>> ListpermisoOtorgado = perOtorgadoServiceImplementation.findByUsuarioIdAndEstado(usuario.getId(), true);
+//            if (ListpermisoOtorgado.isPresent()) {
+//                 System.out.println("org.una.tramites.controllers.UsuarioController.login() Controllleeeerrrr 333333333"+ authenticationResponse.getJwt());
+//                List<PermisoOtorgado> permisosOtorgados = ListpermisoOtorgado.get();
+//                authenticationResponse.setPermisos(MapperUtils.DtoListFromEntityList(permisosOtorgados, PermisoOtorgadoDTO.class));
+//            }
+
+        }
+
+        return Optional.ofNullable(authenticationResponse);
+
     }
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<Usuario> login(Usuario usuario) {
-        encriptarPassword(usuario);
-        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado( usuario.getPasswordEncriptado(),usuario.getCedula()));
-    }
+
+//    @Override
+//    @Transactional(readOnly = true)
+//    public Optional<Usuario> login(Usuario usuario) {
+//        encriptarPassword(usuario);
+//        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getPasswordEncriptado(), usuario.getCedula()));
+//    }
 
     @Override
     @Transactional(readOnly = true)
@@ -130,7 +152,7 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
     @Override
     @Transactional(readOnly = true)
     public Optional<Usuario> findByCedulaAndPassword(String cedula, String password) {
-        System.out.println("org.una.tramites.services.UsuarioServiceImplementation.findByCedulaAndPassword()"+password+"  "+cedula);
+        System.out.println("org.una.tramites.services.UsuarioServiceImplementation.findByCedulaAndPassword()" + password + "  " + cedula);
         return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(cedula, bCryptPasswordEncoder.encode(password)));
     }
 
@@ -161,6 +183,7 @@ public class UsuarioServiceImplementation implements UserDetailsService,IUsuario
         }
 
     }
+
     private void encriptarPassword(Usuario usuario) {
         String password = usuario.getPasswordEncriptado();
         if (!password.isBlank()) {
