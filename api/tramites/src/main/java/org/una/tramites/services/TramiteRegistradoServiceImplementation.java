@@ -15,7 +15,7 @@ import org.una.tramites.repositories.ITramiteRegistradoRepository;
 
 /**
  *
- * @author cordo
+ * @author Bosco
  */
 @Service
 public class TramiteRegistradoServiceImplementation implements ITramiteRegistradoService{

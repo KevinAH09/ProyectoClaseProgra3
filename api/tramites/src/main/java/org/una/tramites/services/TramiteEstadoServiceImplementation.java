@@ -15,7 +15,7 @@ import org.una.tramites.repositories.ITramiteEstadoRepository;
 
 /**
  *
- * @author cordo
+ * @author Bosco
  */
 @Service
 public class TramiteEstadoServiceImplementation implements ITramiteEstadoService {
