@@ -42,7 +42,6 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        System.out.println("org.una.loaders.DataLoader.run()adasssssssssssssssssssssssssssssssssssssssssssssssssss");
         if (usuarioService.findByCedula(cedula).isEmpty()) {
 
             Permiso permiso;
