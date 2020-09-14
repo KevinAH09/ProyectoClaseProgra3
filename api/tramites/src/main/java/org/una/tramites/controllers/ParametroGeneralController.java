@@ -35,7 +35,7 @@ public class ParametroGeneralController {
     @Autowired
     private IParametroGeneralService paramGenService;
     
-    @GetMapping("/{nombre}")
+    @GetMapping("/nombre/{nombre}")
     @ApiOperation(value = "Obtiene los Paremetro General segun el nombre", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByNombre(@PathVariable(value = "nombre")String nombre) {
         try{
@@ -50,7 +50,7 @@ public class ParametroGeneralController {
         }
     }
     
-    @GetMapping("/{valor}")
+    @GetMapping("/valor/{valor}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByValor(@PathVariable(value = "valor") String valor){
         try{
@@ -64,7 +64,7 @@ public class ParametroGeneralController {
             return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/{descripcion}")
+    @GetMapping("/descripcion/{descripcion}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun su descripcion", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByDescripcion(@PathVariable(value = "descripcion")String descripcion){
         try{
