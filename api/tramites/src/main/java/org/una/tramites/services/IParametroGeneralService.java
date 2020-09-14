@@ -24,4 +24,6 @@ public interface IParametroGeneralService {
     public Optional<ParametroGeneral> update(ParametroGeneral parametroGeneral, Long id);
     
     public Optional<List<ParametroGeneral>> findAll();
+    
+    public Optional<ParametroGeneral> create(ParametroGeneral parametroGeneral);
 }

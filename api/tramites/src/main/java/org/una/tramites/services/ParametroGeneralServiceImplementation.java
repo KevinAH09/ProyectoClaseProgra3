@@ -55,4 +55,10 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
     public Optional<List<ParametroGeneral>> findAll() {
         return Optional.ofNullable(parametroGeneralRepository.findAll());
     }
+
+    @Override
+    public Optional<ParametroGeneral> create(ParametroGeneral parametroGeneral) {
+        return Optional.ofNullable(parametroGeneralRepository.save(parametroGeneral));
+        
+    }
 }
