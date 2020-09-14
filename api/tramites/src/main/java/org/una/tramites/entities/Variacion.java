@@ -46,7 +46,7 @@ public class Variacion implements Serializable{
     private String descripcion;
     
     @Column
-    private boolean grupo;
+    private Long grupo;
     
     @Column
     private boolean estado;

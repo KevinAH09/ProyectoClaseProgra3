@@ -14,7 +14,7 @@ import java.util.Date;
 public class VariacionDTO {
     private Long id;
     private String descripcion;
-    private boolean grupo;
+    private Long grupo;
     private boolean estado;
     private Date fechaRegistro;
     private TramiteTipoDTO tramiteTipo;
