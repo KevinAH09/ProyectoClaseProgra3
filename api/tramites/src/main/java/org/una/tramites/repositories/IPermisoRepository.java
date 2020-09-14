@@ -18,8 +18,8 @@ import org.una.tramites.entities.Permiso;
  * @author cfugu
  */
 public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
-
-    public List<Permiso> findByEstadoContaining(boolean estado);
+    @Query("select u from Permiso u where u.estado=estado")
+    public List<Permiso> findByEstadoContaining(@Param("estado")boolean estado);
 
     public Permiso findByCodigo(String codigo);
 
