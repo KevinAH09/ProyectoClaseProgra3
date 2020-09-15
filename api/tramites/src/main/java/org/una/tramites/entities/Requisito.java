@@ -56,7 +56,7 @@ public class Requisito implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "variacion_id")
-    private Departamento variacion;
+    private Variacion variacion;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "variaciones")//creo que es departamotos
 //    private List<Usuario> usuarios = new ArrayList<>();
 
