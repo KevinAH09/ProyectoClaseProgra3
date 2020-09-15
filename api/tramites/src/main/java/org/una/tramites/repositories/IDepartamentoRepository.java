@@ -16,8 +16,9 @@ import org.una.tramites.entities.Departamento;
  * @author colo7
  */
 public interface IDepartamentoRepository extends JpaRepository<Departamento, Long>{
-    @Query("select u from Departamento u where u.estado=estado")
-    public List<Departamento> findByEstadoContaining(@Param("estado")boolean estado);
+    
+    public List<Departamento> findByEstado(boolean estado);
+    
     public List<Departamento> findByNombreContainingIgnoreCase(String nombre);
 
 }

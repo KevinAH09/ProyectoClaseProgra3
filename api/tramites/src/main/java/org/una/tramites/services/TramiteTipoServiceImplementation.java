@@ -43,8 +43,8 @@ public class TramiteTipoServiceImplementation implements ITramiteTipoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado) {
-         return Optional.ofNullable(tramitesTiposRepository.findByEstadoContaining(estado));
+    public Optional<List<TramiteTipo>> findByEstado(boolean estado) {
+         return Optional.ofNullable(tramitesTiposRepository.findByEstado(estado));
     }
 
     @Override
@@ -74,5 +74,7 @@ public class TramiteTipoServiceImplementation implements ITramiteTipoService {
     public void deleteAll() {
         tramitesTiposRepository.deleteAll();
     }
+
+  
     
 }

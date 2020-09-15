@@ -61,4 +61,15 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
         return Optional.ofNullable(parametroGeneralRepository.save(parametroGeneral));
         
     }
+
+    @Override
+    public Optional<List<ParametroGeneral>> findByEstado(boolean estado) {
+        return Optional.ofNullable(parametroGeneralRepository.findByEstado(estado));
+    }
+
+    @Override
+    public Optional<ParametroGeneral> findById(Long id) {
+       return  parametroGeneralRepository.findById(id);
+    }
+    
 }

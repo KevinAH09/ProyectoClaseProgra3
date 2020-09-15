@@ -60,7 +60,7 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<Departamento>> findByEstadoContaining(boolean estado) {
-        return Optional.ofNullable(departamentoRepository.findByEstadoContaining(estado));
+        return Optional.ofNullable(departamentoRepository.findByEstado(estado));
     }
 
 }

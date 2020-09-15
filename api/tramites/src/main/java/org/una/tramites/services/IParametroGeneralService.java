@@ -14,6 +14,10 @@ import org.una.tramites.entities.ParametroGeneral;
  * @author colo7
  */
 public interface IParametroGeneralService {
+   
+    public Optional<List<ParametroGeneral>> findByEstado(boolean estado);
+    
+    public Optional<ParametroGeneral> findById(Long id);
     
     public Optional<List<ParametroGeneral>> findByNombre(String nombre);
     

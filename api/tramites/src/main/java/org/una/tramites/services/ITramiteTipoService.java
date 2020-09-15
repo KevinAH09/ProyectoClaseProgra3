@@ -21,7 +21,8 @@ public interface ITramiteTipoService {
 
     public TramiteTipo create(TramiteTipo usuario);
 
-    public Optional<List<TramiteTipo>> findByEstadoContaining(boolean estado);
+    
+    public Optional<List<TramiteTipo>> findByEstado(boolean estado);
     
     public Optional<TramiteTipo> update(TramiteTipo usuario, Long id);
 

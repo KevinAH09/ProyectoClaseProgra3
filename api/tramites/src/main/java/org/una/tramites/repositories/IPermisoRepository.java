@@ -27,6 +27,8 @@ public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
     public Long countByEstado(@Param("estado") boolean estado);
 
     public Optional<Permiso> findById(Long id);
-
+    
+    public List<Permiso> findByEstado(boolean estado);
+    
     public Optional<List<Permiso>> findByFechaRegistroBetween(Date startDate, Date endDate);
 }

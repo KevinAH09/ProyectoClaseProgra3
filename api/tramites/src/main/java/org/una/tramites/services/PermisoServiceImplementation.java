@@ -55,7 +55,7 @@ public class PermisoServiceImplementation implements IPermisoService {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<Permiso>> findByEstado(boolean estado) {
-        return Optional.ofNullable(permisosOtorgadosRepository.findByEstadoContaining(estado));
+        return Optional.ofNullable(permisosOtorgadosRepository.findByEstado(estado));
     }
 
     @Override
