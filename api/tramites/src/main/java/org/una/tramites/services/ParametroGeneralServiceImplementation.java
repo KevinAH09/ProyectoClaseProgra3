@@ -26,7 +26,7 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ParametroGeneral>> findByNombre(String nombre) {
-        return Optional.ofNullable(parametroGeneralRepository.findByNombre(nombre));
+        return Optional.ofNullable(parametroGeneralRepository.findByNombreContainingIgnoreCase(nombre));
     }
 
     @Override

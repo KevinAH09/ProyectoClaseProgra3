@@ -15,7 +15,7 @@ import org.una.tramites.entities.ParametroGeneral;
  */
 public interface IParametroGeneralRepository extends JpaRepository<ParametroGeneral, Long>{
     
-    public List<ParametroGeneral> findByNombre(String nombre);
+    public List<ParametroGeneral> findByNombreContainingIgnoreCase(String nombre);
     
     public List<ParametroGeneral> findByValor(String valor);
     

@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.una.tramites.dto.DepartamentoDTO;
 import org.una.tramites.dto.ParametroGeneralDTO;
+import org.una.tramites.entities.Departamento;
 import org.una.tramites.entities.ParametroGeneral;
 import org.una.tramites.services.IParametroGeneralService;
 import org.una.tramites.utils.MapperUtils;
@@ -82,15 +84,16 @@ public class ParametroGeneralController {
         }
     }
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, tags = "Parametros_Generales")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long valor){
         try{
-            Optional<ParametroGeneral> result = paramGenService.findById(valor);
-            if(result.isPresent()){
-                ParametroGeneralDTO resultDto = MapperUtils.DtoFromEntity(result, ParametroGeneralDTO.class);
-                return new ResponseEntity<>(resultDto, HttpStatus.OK);
+            Optional<ParametroGeneral> parametroGeneralFound = paramGenService.findById(valor);
+            if (parametroGeneralFound.isPresent()) {
+                ParametroGeneral parametroGeneral = MapperUtils.DtoFromEntity(parametroGeneralFound.get(), ParametroGeneral.class);
+                return new ResponseEntity<>(parametroGeneral, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch(Exception ex){
             return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
