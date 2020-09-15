@@ -66,6 +66,35 @@ public class ParametroGeneralController {
             return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @GetMapping("/estado/{estado}")
+    @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    public ResponseEntity<?> findByEsatdo(@PathVariable(value = "estado") boolean valor){
+        try{
+            Optional<List<ParametroGeneral>> result = paramGenService.findByEstado(valor);
+            if(result.isPresent()){
+                List<ParametroGeneralDTO> resultDto = MapperUtils.DtoListFromEntityList(result.get(), ParametroGeneralDTO.class);
+                return new ResponseEntity<>(resultDto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    public ResponseEntity<?> findById(@PathVariable(value = "id") Long valor){
+        try{
+            Optional<ParametroGeneral> result = paramGenService.findById(valor);
+            if(result.isPresent()){
+                ParametroGeneralDTO resultDto = MapperUtils.DtoFromEntity(result, ParametroGeneralDTO.class);
+                return new ResponseEntity<>(resultDto, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch(Exception ex){
+            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/descripcion/{descripcion}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun su descripcion", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
     public ResponseEntity<?> findByDescripcion(@PathVariable(value = "descripcion")String descripcion){

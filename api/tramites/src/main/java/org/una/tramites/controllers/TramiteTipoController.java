@@ -79,7 +79,7 @@ public class TramiteTipoController {
     @ApiOperation(value = "Obtiene una lista de todos los tipo de tramites por estado", response = TramiteTipoDTO.class, responseContainer = "List", tags = "Tramites_Tipos")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {
-            Optional<List<TramiteTipo>> result = tramiteTipoService.findByEstadoContaining(term);
+            Optional<List<TramiteTipo>> result = tramiteTipoService.findByEstado(term);
             if (result.isPresent()) {
                 List<TramiteTipoDTO> TramiteTipoDTO = MapperUtils.DtoListFromEntityList(result.get(), TramiteTipoDTO.class);
                 return new ResponseEntity<>(TramiteTipoDTO, HttpStatus.OK);
