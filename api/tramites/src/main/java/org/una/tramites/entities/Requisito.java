@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,8 +26,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
-
 /**
  *
  * @author colo7
@@ -36,8 +36,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Requisito implements Serializable{
-    
+public class Requisito implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,16 +53,16 @@ public class Requisito implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     @Setter(AccessLevel.NONE)
     private Date fechaRegistro;
-    
 
+    @ManyToOne
+    @JoinColumn(name = "variacion_id")
+    private Departamento variacion;
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "variaciones")//creo que es departamotos
 //    private List<Usuario> usuarios = new ArrayList<>();
-    
-    
-    
+
     @PrePersist
     public void prePersist() {
-        estado=true;
+        estado = true;
         fechaRegistro = new Date();
     }
 

@@ -26,6 +26,7 @@ public class RequisitoDTO {
     private String descripcion;
     private boolean estado;
     private Date fechaRegistro;
+    private VariacionDTO variacion;
 
 //    private List<Usuario> usuarios = new ArrayList<>();
     
