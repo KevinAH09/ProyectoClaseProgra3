@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,9 +29,9 @@ import org.una.tramites.dto.AuthenticationRequest;
 import org.una.tramites.dto.AuthenticationResponse;
 import org.una.tramites.dto.UsuarioDTO;
 import org.una.tramites.entities.Usuario;
-import org.una.tramites.services.IAutenticacionLogin;
 import org.una.tramites.services.IUsuarioService;
 import org.una.tramites.utils.MapperUtils;
+import org.una.tramites.services.IAutenticacionLoginService;
 
 /**
  *
@@ -46,6 +47,7 @@ public class UsuarioController {
     
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -63,6 +65,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un Usuario", response = UsuarioDTO.class, tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -113,6 +116,7 @@ public class UsuarioController {
 
     @GetMapping("/cedula/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR')")
     public ResponseEntity<?> findByCedulaAproximate(@PathVariable(value = "term") String term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByCedulaAproximate(term);
@@ -128,6 +132,7 @@ public class UsuarioController {
     }
     @GetMapping("/cedula/{cedula}/password_encriptado/{password}")
     @ApiOperation(value = "Obtiene un Usuario por cedula y password", response = UsuarioDTO.class, tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR')")
     public ResponseEntity<?> findByCedulaAndPassword(@PathVariable(value = "cedula") String cedula,@PathVariable(value = "password") String pass) {
         try {
 
@@ -160,6 +165,7 @@ public class UsuarioController {
 
     @GetMapping("/nombre/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR','USUARIO_CONSULTAR')")
     public ResponseEntity<?> findByNombreCompletoAproximateIgnoreCase(@PathVariable(value = "term") String term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByNombreCompletoAproximateIgnoreCase(term);
@@ -176,6 +182,7 @@ public class UsuarioController {
 
     @GetMapping("/estado/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los usuarios por estado", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR','USUARIO_CONSULTAR')")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByEstadoContaining(term);
@@ -194,6 +201,7 @@ public class UsuarioController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un usuario", response = UsuarioDTO.class, tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CREAR')")
     public ResponseEntity<?> create(@RequestBody Usuario usuario) {
         try {
             Usuario usuarioCreated = usuarioService.create(usuario);
@@ -207,6 +215,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     @ResponseBody
     @ApiOperation(value = "Modifica un usuario", response = UsuarioDTO.class, tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Usuario usuarioModified) {
         try {
             Optional<Usuario> usuarioUpdated = usuarioService.update(usuarioModified, id);
@@ -224,6 +233,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USUARIO_ELIMINAR')")
     public void delete(@PathVariable(value = "id") Long id) {
         usuarioService.delete(id);
     }
@@ -235,6 +245,7 @@ public class UsuarioController {
 
     @GetMapping("/departamento_id/{term}")//Puede que aqui sea nombreCompleto
     @ApiOperation(value = "Obtiene una lista de todos los usuarios por departamento", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_ELIMINAR_TODO')")
     public ResponseEntity<?> findByDepartamentoId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<Usuario>> result = usuarioService.findByDepartamentoId(id);
@@ -251,6 +262,7 @@ public class UsuarioController {
 
     @GetMapping("/departamentoId/{term}")//Puede que aqui sea nombreCompleto
     @ApiOperation(value = "Obtiene una lista de todos los usuarios por departamento", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
+    @PreAuthorize("hasAuthority('USUARIO_CONSULTAR')")
     public ResponseEntity<?> findJefeByDepartamento(@PathVariable(value = "term") Long id) {
         try {
             Usuario result = usuarioService.findJefeByDepartamento(id);

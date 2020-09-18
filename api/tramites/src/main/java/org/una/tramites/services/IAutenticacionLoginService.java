@@ -12,7 +12,7 @@ import org.una.tramites.dto.AuthenticationResponse;
  *
  * @author Bosco
  */
-public interface IAutenticacionLogin {
+public interface IAutenticacionLoginService {
     
     
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest);

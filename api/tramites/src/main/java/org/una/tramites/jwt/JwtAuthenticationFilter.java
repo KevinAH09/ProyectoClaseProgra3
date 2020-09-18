@@ -18,7 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.una.tramites.services.AutenticacionLoginImplementation;
+import org.una.tramites.services.AutenticacionLoginServiceImplementation;
 import org.una.tramites.services.UsuarioServiceImplementation;
 
 /**
@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtProvider tokenProvider;
 
     @Autowired
-    private AutenticacionLoginImplementation LoginService;
+    private AutenticacionLoginServiceImplementation LoginService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

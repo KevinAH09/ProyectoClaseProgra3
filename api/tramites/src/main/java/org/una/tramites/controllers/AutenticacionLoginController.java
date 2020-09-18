@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.una.tramites.dto.AuthenticationRequest;
 import org.una.tramites.dto.AuthenticationResponse;
 import org.una.tramites.dto.UsuarioDTO;
-import org.una.tramites.services.IAutenticacionLogin;
+import org.una.tramites.services.IAutenticacionLoginService;
 
 /**
  *
@@ -33,7 +33,7 @@ import org.una.tramites.services.IAutenticacionLogin;
 public class AutenticacionLoginController {
     
     @Autowired
-    private IAutenticacionLogin login;
+    private IAutenticacionLoginService login;
     
     @PostMapping("/login")
     @ResponseBody

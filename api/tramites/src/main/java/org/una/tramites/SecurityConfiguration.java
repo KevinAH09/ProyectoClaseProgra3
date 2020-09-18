@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -18,7 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.una.tramites.jwt.JwtAuthenticationEntryPoint;
 import org.una.tramites.jwt.JwtAuthenticationFilter;
-import org.una.tramites.services.AutenticacionLoginImplementation;
+import org.una.tramites.services.AutenticacionLoginServiceImplementation;
 import org.una.tramites.services.UsuarioServiceImplementation;
 
 /**
@@ -27,8 +28,11 @@ import org.una.tramites.services.UsuarioServiceImplementation;
  */
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    
+    
     @Autowired
     private JwtAuthenticationEntryPoint entryPoint;
 
@@ -49,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private AutenticacionLoginImplementation userService;
+    private AutenticacionLoginServiceImplementation userService;
 
     @Autowired
     private BCryptPasswordEncoder bCrypt;
@@ -71,7 +75,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests().antMatchers("/login/**", "/v2/api-docs",
                 "/swagger-resources/**",
                 "/swagger-ui.html**",
-                "/webjars/**").permitAll().anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(entryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                "/webjars/**").permitAll().anyRequest().authenticated().and().
+                exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler()).and().
+                exceptionHandling().authenticationEntryPoint(entryPoint).
+                and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

@@ -25,6 +25,7 @@ import org.una.tramites.dto.AuthenticationRequest;
 import org.una.tramites.dto.AuthenticationResponse;
 import org.una.tramites.dto.PermisoOtorgadoDTO;
 import org.una.tramites.dto.UsuarioDTO;
+import org.una.tramites.entities.PermisoOtorgado;
 import org.una.tramites.entities.Usuario;
 import org.una.tramites.jwt.JwtProvider;
 import org.una.tramites.repositories.IUsuarioRepository;
@@ -35,7 +36,7 @@ import org.una.tramites.utils.MapperUtils;
  * @author Bosco
  */
 @Service
-public class AutenticacionLoginImplementation implements UserDetailsService,IAutenticacionLogin {
+public class AutenticacionLoginServiceImplementation implements UserDetailsService,IAutenticacionLoginService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -76,7 +77,14 @@ public class AutenticacionLoginImplementation implements UserDetailsService,IAut
         if (usuarioBuscado.isPresent()) {
             Usuario usuario = usuarioBuscado.get();
             List<GrantedAuthority> roles = new ArrayList<>();
-            roles.add(new SimpleGrantedAuthority("ADMIN"));
+            for (PermisoOtorgado p : usuario.getPermisoOtorgado()) {
+                roles.add(new SimpleGrantedAuthority(p.getPermisoId().getCodigo()));
+            }
+            for (GrantedAuthority role : roles) {
+                System.out.println("org.una.tramites.services.AutenticacionLoginServiceImplementation.loadUserByUsername()"+role);
+                
+            }
+            //roles.add(new SimpleGrantedAuthority("ADMIN"));
             UserDetails userDetails = new User(usuario.getCedula(), usuario.getPasswordEncriptado(), roles);
             return userDetails;
         } else {
