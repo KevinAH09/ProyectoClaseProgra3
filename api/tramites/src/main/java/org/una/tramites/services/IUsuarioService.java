@@ -39,7 +39,7 @@ public interface IUsuarioService {
 
     public void deleteAll();
 
-    public AuthenticationResponse login(AuthenticationRequest authenticationRequest);
+    
     
 //    public Optional<Usuario> login(Usuario usuario); 
 

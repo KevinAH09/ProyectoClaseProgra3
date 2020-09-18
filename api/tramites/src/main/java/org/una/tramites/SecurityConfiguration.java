@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.una.tramites.jwt.JwtAuthenticationEntryPoint;
 import org.una.tramites.jwt.JwtAuthenticationFilter;
+import org.una.tramites.services.AutenticacionLoginImplementation;
 import org.una.tramites.services.UsuarioServiceImplementation;
 
 /**
@@ -48,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private UsuarioServiceImplementation userService;
+    private AutenticacionLoginImplementation userService;
 
     @Autowired
     private BCryptPasswordEncoder bCrypt;
@@ -67,7 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.authorizeRequests().anyRequest().authenticated().and().httpBasic();
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/usuarios/**", "/v2/api-docs",
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/login/**", "/v2/api-docs",
                 "/swagger-resources/**",
                 "/swagger-ui.html**",
                 "/webjars/**").permitAll().anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(entryPoint).and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

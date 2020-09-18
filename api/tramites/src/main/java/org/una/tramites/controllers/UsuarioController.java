@@ -28,6 +28,7 @@ import org.una.tramites.dto.AuthenticationRequest;
 import org.una.tramites.dto.AuthenticationResponse;
 import org.una.tramites.dto.UsuarioDTO;
 import org.una.tramites.entities.Usuario;
+import org.una.tramites.services.IAutenticacionLogin;
 import org.una.tramites.services.IUsuarioService;
 import org.una.tramites.utils.MapperUtils;
 
@@ -42,7 +43,7 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
-
+    
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
     public @ResponseBody
@@ -77,28 +78,7 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping("/login")
-    @ResponseBody
-    @ApiOperation(value = "Inicio de sesión para conseguir un token de acceso", response = UsuarioDTO.class, tags = "Seguridad")
-    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return new ResponseEntity("La información no esta bien formada o no coincide con el formato esperado", HttpStatus.BAD_REQUEST);
-        }
-        try {
-            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-            Optional<AuthenticationResponse> result = Optional.of(usuarioService.login(authenticationRequest));
-            
-            if (result.isPresent()) {
-                authenticationResponse =result.get();
-                return new ResponseEntity(authenticationResponse, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Credenciales invalidos", HttpStatus.UNAUTHORIZED);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    
 
 //    @PostMapping("/login")
 //    @ResponseBody
