@@ -105,38 +105,35 @@ public class UsuarioServiceImplementation implements UserDetailsService, IUsuari
         usuarioRepository.deleteAll();
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<AuthenticationResponse> login(AuthenticationRequest authenticationRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-        authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
-        Optional<Usuario> usuarioBuscado = findByCedula(authenticationRequest.getCedula());
-        if (usuarioBuscado.isPresent()) {
-            Usuario usuario = usuarioBuscado.get();
-            authenticationResponse.setUsuario(MapperUtils.DtoFromEntity(usuario, UsuarioDTO.class));
-//            PermisoOtorgadoServiceImplementation perOtorgadoServiceImplementation = new PermisoOtorgadoServiceImplementation();
-//            Optional<List<PermisoOtorgado>> ListpermisoOtorgado = perOtorgadoServiceImplementation.findByUsuarioIdAndEstado(usuario.getId(), true);
-//            if (ListpermisoOtorgado.isPresent()) {
-//                 System.out.println("org.una.tramites.controllers.UsuarioController.login() Controllleeeerrrr 333333333"+ authenticationResponse.getJwt());
-//                List<PermisoOtorgado> permisosOtorgados = ListpermisoOtorgado.get();
-//                authenticationResponse.setPermisos(MapperUtils.DtoListFromEntityList(permisosOtorgados, PermisoOtorgadoDTO.class));
-//            }
-
-        }
-
-        return Optional.ofNullable(authenticationResponse);
-
-    }
-
+//    @Override
+//    @Transactional(readOnly = true)
+//    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+//   
+//
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+//
+//        Optional<Usuario> usuario = findByCedula(authenticationRequest.getCedula());
+//
+//        if (usuario.isPresent()) {
+//            authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
+//            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
+//            authenticationResponse.setUsuario(usuarioDto);
+//            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisoOtorgado(), PermisoOtorgadoDTO.class);
+//            authenticationResponse.setPermisos(permisosOtorgadosDto);
+//
+//            return authenticationResponse;
+//        } else {
+//            return null;
+//        }
+//    }
 //    @Override
 //    @Transactional(readOnly = true)
 //    public Optional<Usuario> login(Usuario usuario) {
 //        encriptarPassword(usuario);
 //        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(usuario.getPasswordEncriptado(), usuario.getCedula()));
 //    }
-
     @Override
     @Transactional(readOnly = true)
     public Optional findByDepartamentoId(Long id) {
@@ -190,4 +187,74 @@ public class UsuarioServiceImplementation implements UserDetailsService, IUsuari
             usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));
         }
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+
+        Optional<Usuario> usuario = findByCedula(authenticationRequest.getCedula());
+
+        if (usuario.isPresent()) {
+            authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
+            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
+            authenticationResponse.setUsuario(usuarioDto);
+            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisoOtorgado(), PermisoOtorgadoDTO.class);
+            authenticationResponse.setPermisos(permisosOtorgadosDto);
+
+            return authenticationResponse;
+        } else {
+            return null;
+        }
+
+    }
+
+//@Override
+//    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+//
+//        Optional<Usuario> usuario = findByCedula(authenticationRequest.getCedula());
+//
+//        if (usuario.isPresent()) {
+//            authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
+//            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
+//            authenticationResponse.setUsuario(usuarioDto);
+//            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisos(), PermisoOtorgadoDTO.class);
+//            authenticationResponse.setPermisos(permisosOtorgadosDto);
+//
+//            return authenticationResponse;
+//        } else {
+//            return null;
+//        }
+//    }
+    
+//     @Override
+//    @Transactional(readOnly = true)
+//    public Optional<AuthenticationResponse> login(AuthenticationRequest authenticationRequest) {
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+//        authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
+//        Optional<Usuario> usuarioBuscado = findByCedula(authenticationRequest.getCedula());
+//        if (usuarioBuscado.isPresent()) {
+//            Usuario usuario = usuarioBuscado.get();
+//            authenticationResponse.setUsuario(MapperUtils.DtoFromEntity(usuario, UsuarioDTO.class));
+////            PermisoOtorgadoServiceImplementation perOtorgadoServiceImplementation = new PermisoOtorgadoServiceImplementation();
+////            Optional<List<PermisoOtorgado>> ListpermisoOtorgado = perOtorgadoServiceImplementation.findByUsuarioIdAndEstado(usuario.getId(), true);
+////            if (ListpermisoOtorgado.isPresent()) {
+////                 System.out.println("org.una.tramites.controllers.UsuarioController.login() Controllleeeerrrr 333333333"+ authenticationResponse.getJwt());
+////                List<PermisoOtorgado> permisosOtorgados = ListpermisoOtorgado.get();
+////                authenticationResponse.setPermisos(MapperUtils.DtoListFromEntityList(permisosOtorgados, PermisoOtorgadoDTO.class));
+////            }
+//
+//        }
+//
+//        return Optional.ofNullable(authenticationResponse);
+//
+//    }
 }

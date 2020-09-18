@@ -87,7 +87,7 @@ public class UsuarioController {
         }
         try {
             AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-            Optional<AuthenticationResponse> result = usuarioService.login(authenticationRequest);
+            Optional<AuthenticationResponse> result = Optional.of(usuarioService.login(authenticationRequest));
             
             if (result.isPresent()) {
                 authenticationResponse =result.get();
@@ -100,6 +100,36 @@ public class UsuarioController {
         }
     }
 
+//    @PostMapping("/login")
+//    @ResponseBody
+//    @ApiOperation(value = "Inicio de sesión para conseguir un token de acceso", response = UsuarioDTO.class, tags = "Seguridad")
+//    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authenticationRequest, BindingResult bindingResult) {
+//
+//        if (bindingResult.hasErrors()) {
+//            return new ResponseEntity(MENSAJE_VERIFICAR_CREDENCIALES, HttpStatus.BAD_REQUEST);
+//        }
+//        try {
+//            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+//            String token = service.login(authenticationRequest).getJwt();
+//            if (!token.isBlank()) {
+//                authenticationResponse.setJwt(token);
+//                Optional<Usuario> user = service.findByCedula(authenticationRequest.getCedula());
+//                UsuarioDTO userDto = MapperUtils.DtoFromEntity(user.get(), UsuarioDTO.class);
+//                authenticationResponse.setUsuario(userDto);
+//                authenticationResponse.setPermisos(userDto.getPermisos());
+//                return new ResponseEntity(authenticationResponse, HttpStatus.OK);
+//            } else {
+//                return new ResponseEntity<>("Credenciales invalidos", HttpStatus.UNAUTHORIZED);
+//            }
+//        } catch(UsernameNotFoundException | BadCredentialsException ex){
+//            return new ResponseEntity(MENSAJE_VERIFICAR_CREDENCIALES, HttpStatus.BAD_REQUEST);
+//        }catch (Exception e) {
+//            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+    
+    
+    
 
     @GetMapping("/cedula/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los Usuarios", response = UsuarioDTO.class, responseContainer = "List", tags = "Usuarios")
