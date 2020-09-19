@@ -11,60 +11,65 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.dto.UsuarioDTO;
 import org.una.tramites.entities.Usuario;
 import org.una.tramites.repositories.IUsuarioRepository;
+import org.una.tramites.utils.MapperUtils;
+import org.una.tramites.utils.ConversionLista;
 
 /**
  *
  * @author Bosco
  */
 @Service
-public class UsuarioServiceImplementation implements  IUsuarioService {
+public class UsuarioServiceImplementation implements IUsuarioService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
-
     
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<List<Usuario>> findAll() {
-        return Optional.ofNullable(usuarioRepository.findAll());
-    }
-
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Usuario> findById(Long id) {
-        return usuarioRepository.findById(id);
+    public Optional<List<UsuarioDTO>> findAll() {
+        return ConversionLista.findList((usuarioRepository.findAll()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Usuario>> findByCedulaAproximate(String cedula) {
-        return Optional.ofNullable(usuarioRepository.findByCedulaContaining(cedula));
+    public Optional<UsuarioDTO> findById(Long id) {
+        return ConversionLista.oneToDto(usuarioRepository.findById(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Usuario>> findByNombreCompletoAproximateIgnoreCase(String nombreCompleto) {
-        return Optional.ofNullable(usuarioRepository.findByNombreCompletoContainingIgnoreCase(nombreCompleto));
+    public Optional<List<UsuarioDTO>> findByCedulaAproximate(String cedula) {
+        return ConversionLista.findList(usuarioRepository.findByCedulaContaining(cedula));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<UsuarioDTO>> findByNombreCompletoAproximateIgnoreCase(String nombreCompleto) {
+        return ConversionLista.findList(usuarioRepository.findByNombreCompletoContainingIgnoreCase(nombreCompleto));
     }
 
     @Override
     @Transactional
-    public Usuario create(Usuario usuario) {
+    public UsuarioDTO create(UsuarioDTO usuario) {
         encriptarPassword(usuario);
-        return usuarioRepository.save(usuario);
+        Usuario user = MapperUtils.EntityFromDto(usuario, Usuario.class);
+        user = usuarioRepository.save(user);
+        return MapperUtils.DtoFromEntity(user, UsuarioDTO.class);
     }
 
     @Override
     @Transactional
-    public Optional<Usuario> update(Usuario usuario, Long id) {
+    public Optional<UsuarioDTO> update(UsuarioDTO usuario, Long id) {
         if (usuarioRepository.findById(id).isPresent()) {
-            return Optional.ofNullable(usuarioRepository.save(usuario));
+            Usuario user = MapperUtils.EntityFromDto(usuario, Usuario.class);
+            user = usuarioRepository.save(user);
+            return Optional.ofNullable(MapperUtils.DtoFromEntity(user, UsuarioDTO.class));
         } else {
             return null;
         }
@@ -115,88 +120,46 @@ public class UsuarioServiceImplementation implements  IUsuarioService {
     @Override
     @Transactional(readOnly = true)
     public Optional findByDepartamentoId(Long id) {
-        return Optional.ofNullable(usuarioRepository.findByDepartamentoId(id));
+        return ConversionLista.findList(usuarioRepository.findByDepartamentoId(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Usuario findJefeByDepartamento(Long id) {
-        return usuarioRepository.findJefeByDepartamento(id);
+    public Optional<UsuarioDTO> findJefeByDepartamento(Long id) {
+        Optional<Usuario> result = usuarioRepository.findJefeByDepartamento(id);
+        if (result != null) {
+            UsuarioDTO usuarioDTO = MapperUtils.DtoFromEntity(result.get(), UsuarioDTO.class);
+            return Optional.ofNullable(usuarioDTO);
+        } else {
+            return null;
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Usuario> findByCedulaAndPassword(String cedula, String password) {
-        System.out.println("org.una.tramites.services.UsuarioServiceImplementation.findByCedulaAndPassword()" + password + "  " + cedula);
-        return Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(cedula, bCryptPasswordEncoder.encode(password)));
+    public Optional<UsuarioDTO> findByCedulaAndPassword(String cedula, String password) {
+        //System.out.println("org.una.tramites.services.UsuarioServiceImplementation.findByCedulaAndPassword()" + password + "  " + cedula);
+        return ConversionLista.oneToDto(Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(cedula, bCryptPasswordEncoder.encode(password))));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Usuario>> findByEstadoContaining(boolean estado) {
-        return Optional.ofNullable(usuarioRepository.findByEstadoContaining(estado));
+    public Optional<List<UsuarioDTO>> findByEstadoContaining(boolean estado) {
+        return ConversionLista.findList(Optional.ofNullable(usuarioRepository.findByEstadoContaining(estado)));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Usuario> findByCedula(String cedula) {
-        return Optional.ofNullable(usuarioRepository.findByCedula(cedula));
+    public Optional<UsuarioDTO> findByCedula(String cedula) {
+        return ConversionLista.oneToDto(Optional.ofNullable(usuarioRepository.findByCedula(cedula)));
     }
 
-    
-
-    private void encriptarPassword(Usuario usuario) {
+    private UsuarioDTO encriptarPassword(UsuarioDTO usuario) {
         String password = usuario.getPasswordEncriptado();
         if (!password.isBlank()) {
             usuario.setPasswordEncriptado(bCryptPasswordEncoder.encode(password));
         }
+        return usuario;
     }
 
-    
-
-//@Override
-//    public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-//
-//        Optional<Usuario> usuario = findByCedula(authenticationRequest.getCedula());
-//
-//        if (usuario.isPresent()) {
-//            authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
-//            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
-//            authenticationResponse.setUsuario(usuarioDto);
-//            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisos(), PermisoOtorgadoDTO.class);
-//            authenticationResponse.setPermisos(permisosOtorgadosDto);
-//
-//            return authenticationResponse;
-//        } else {
-//            return null;
-//        }
-//    }
-    
-//     @Override
-//    @Transactional(readOnly = true)
-//    public Optional<AuthenticationResponse> login(AuthenticationRequest authenticationRequest) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getCedula(), authenticationRequest.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        AuthenticationResponse authenticationResponse = new AuthenticationResponse();
-//        authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
-//        Optional<Usuario> usuarioBuscado = findByCedula(authenticationRequest.getCedula());
-//        if (usuarioBuscado.isPresent()) {
-//            Usuario usuario = usuarioBuscado.get();
-//            authenticationResponse.setUsuario(MapperUtils.DtoFromEntity(usuario, UsuarioDTO.class));
-////            PermisoOtorgadoServiceImplementation perOtorgadoServiceImplementation = new PermisoOtorgadoServiceImplementation();
-////            Optional<List<PermisoOtorgado>> ListpermisoOtorgado = perOtorgadoServiceImplementation.findByUsuarioIdAndEstado(usuario.getId(), true);
-////            if (ListpermisoOtorgado.isPresent()) {
-////                 System.out.println("org.una.tramites.controllers.UsuarioController.login() Controllleeeerrrr 333333333"+ authenticationResponse.getJwt());
-////                List<PermisoOtorgado> permisosOtorgados = ListpermisoOtorgado.get();
-////                authenticationResponse.setPermisos(MapperUtils.DtoListFromEntityList(permisosOtorgados, PermisoOtorgadoDTO.class));
-////            }
-//
-//        }
-//
-//        return Optional.ofNullable(authenticationResponse);
-//
-//    }
 }

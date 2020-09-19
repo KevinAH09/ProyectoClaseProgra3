@@ -6,6 +6,7 @@
 package org.una.tramites.dto;
 
 import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class UsuarioDTO {
     private Date fechaRegistro;
     private Date fechaModificacion;
     private DepartamentoDTO departamento;
+    private List<PermisoOtorgadoDTO> permisoOtorgado;
     private boolean esJefe;
 
 }

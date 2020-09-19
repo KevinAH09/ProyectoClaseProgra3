@@ -54,13 +54,13 @@ public class AutenticacionLoginServiceImplementation implements UserDetailsServi
         SecurityContextHolder.getContext().setAuthentication(authentication);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
 
-        Optional<Usuario> usuario = usuarioService.findByCedula(authenticationRequest.getCedula());
+        Optional<UsuarioDTO> usuario = usuarioService.findByCedula(authenticationRequest.getCedula());
 
         if (usuario.isPresent()) {
             authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
             UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
             authenticationResponse.setUsuario(usuarioDto);
-            List<PermisoOtorgadoDTO> permisosOtorgadosDto = MapperUtils.DtoListFromEntityList(usuario.get().getPermisoOtorgado(), PermisoOtorgadoDTO.class);
+            List<PermisoOtorgadoDTO> permisosOtorgadosDto = usuario.get().getPermisoOtorgado();
             authenticationResponse.setPermisos(permisosOtorgadosDto);
 
             return authenticationResponse;
@@ -79,6 +79,9 @@ public class AutenticacionLoginServiceImplementation implements UserDetailsServi
             List<GrantedAuthority> roles = new ArrayList<>();
             for (PermisoOtorgado p : usuario.getPermisoOtorgado()) {
                 roles.add(new SimpleGrantedAuthority(p.getPermisoId().getDescripcion()));
+            }
+            for (GrantedAuthority role : roles) {
+                System.out.println("org.una.tramites.services.AutenticacionLoginServiceImplementation.loadUserByUsername()"+role);
             }
             //roles.add(new SimpleGrantedAuthority("ADMIN"));
             UserDetails userDetails = new User(usuario.getCedula(), usuario.getPasswordEncriptado(), roles);

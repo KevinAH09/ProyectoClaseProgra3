@@ -30,5 +30,5 @@ public interface IPermisoRepository extends JpaRepository<Permiso, Long> {
     
     public List<Permiso> findByEstado(boolean estado);
     
-    public Optional<List<Permiso>> findByFechaRegistroBetween(Date startDate, Date endDate);
+    public List<Permiso> findByFechaRegistroBetween(Date startDate, Date endDate);
 }

@@ -11,9 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import org.una.tramites.dto.PermisoDTO;
+import org.una.tramites.dto.PermisoOtorgadoDTO;
+import org.una.tramites.dto.UsuarioDTO;
 import org.una.tramites.entities.Permiso;
-import org.una.tramites.entities.PermisoOtorgado;
-import org.una.tramites.entities.Usuario;
 import org.una.tramites.loaders.Permisos;
 import org.una.tramites.services.IPermisoOtorgadoService;
 import org.una.tramites.services.IPermisoService;
@@ -46,12 +47,12 @@ public class DataLoader implements ApplicationRunner {
         
         if (usuarioService.findByCedula(cedula).isEmpty()) {
               
-            Permiso permiso;
+            PermisoDTO permiso;
             final String codigo = "Usu01";
-            Optional<Permiso> permisoBuscado = permisoService.findByCodigo(codigo);
+            Optional<PermisoDTO> permisoBuscado = permisoService.findByCodigo(codigo);
 
             if (permisoBuscado.isEmpty()) {
-                permiso = new Permiso();
+                permiso = new PermisoDTO();
                 permiso.setCodigo(codigo);
                 permiso.setDescripcion("Registrar usuario nuevo");
                 permiso = permisoService.create(permiso);
@@ -61,15 +62,16 @@ public class DataLoader implements ApplicationRunner {
             }
             
             createPermisos();
-            Usuario usuario = new Usuario();
+            UsuarioDTO usuario = new UsuarioDTO();
+            
             usuario.setNombreCompleto("Usuario Admin");
             usuario.setCedula(cedula);
             usuario.setPasswordEncriptado(password);
             usuario = usuarioService.create(usuario);
 
-            PermisoOtorgado permisoOtorgado = new PermisoOtorgado();
+            PermisoOtorgadoDTO permisoOtorgado = new PermisoOtorgadoDTO();
             permisoOtorgado.setPermisoId(permiso);
-            permisoOtorgado.setUsuario(usuario);
+            permisoOtorgado.setUsuarios(usuario);
             permisoOtorgadoService.create(permisoOtorgado);
 
             System.out.println("Se agrega el usuario inicial");
@@ -83,7 +85,7 @@ public class DataLoader implements ApplicationRunner {
     
     private void createPermisos() {
         for (Permisos permiso : Permisos.values()) {
-            Permiso nuevoPermiso = new Permiso();
+            PermisoDTO nuevoPermiso = new PermisoDTO();
             nuevoPermiso.setCodigo(permiso.getCodigo());
             nuevoPermiso.setDescripcion(permiso.name());
             permisoService.create(nuevoPermiso);
