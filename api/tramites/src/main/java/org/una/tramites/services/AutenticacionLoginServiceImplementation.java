@@ -78,11 +78,7 @@ public class AutenticacionLoginServiceImplementation implements UserDetailsServi
             Usuario usuario = usuarioBuscado.get();
             List<GrantedAuthority> roles = new ArrayList<>();
             for (PermisoOtorgado p : usuario.getPermisoOtorgado()) {
-                roles.add(new SimpleGrantedAuthority(p.getPermisoId().getCodigo()));
-            }
-            for (GrantedAuthority role : roles) {
-                System.out.println("org.una.tramites.services.AutenticacionLoginServiceImplementation.loadUserByUsername()"+role);
-                
+                roles.add(new SimpleGrantedAuthority(p.getPermisoId().getDescripcion()));
             }
             //roles.add(new SimpleGrantedAuthority("ADMIN"));
             UserDetails userDetails = new User(usuario.getCedula(), usuario.getPasswordEncriptado(), roles);

@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class NotaController {
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos las notas", response = NotaDTO.class, responseContainer = "List", tags = "Notas")
+    @PreAuthorize("hasAuthority('NOTA_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -56,6 +58,7 @@ public class NotaController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene una nota a travez del id", response = NotaDTO.class, tags = "Notas")
+    @PreAuthorize("hasAuthority('NOTA_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -74,6 +77,7 @@ public class NotaController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
+    @PreAuthorize("hasAuthority('NOTA_CREAR')")
     public ResponseEntity<?> create(@RequestBody Nota nota) {
         try {
             Nota notaCreated = notaService.create(nota);
@@ -86,6 +90,7 @@ public class NotaController {
 
     @PutMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('NOTA_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Nota notaModified) {
         try {
             Optional<Nota> notaUpdated = notaService.update(notaModified, id);
@@ -100,6 +105,7 @@ public class NotaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('NOTA_ELIMINAR')")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         try {
             notaService.delete(id);
@@ -113,6 +119,7 @@ public class NotaController {
     }
 
     @DeleteMapping("/")
+    @PreAuthorize("hasAuthority('NOTA_ELIMINAR_TODO')")
     public ResponseEntity<?> deleteAll() {
         try {
             notaService.deleteAll();

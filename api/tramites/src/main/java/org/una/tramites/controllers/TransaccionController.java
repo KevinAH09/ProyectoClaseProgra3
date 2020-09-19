@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class TransaccionController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene una transaccion", response = TransaccionDTO.class, tags = "Transacciones")
+    @PreAuthorize("hasAuthority('TRAN_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -58,6 +60,7 @@ public class TransaccionController {
     @GetMapping("/fecha_registro/{inicio}/{fin}")
     @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
+   @PreAuthorize("hasAuthority('TRAN_CONSULTAR')")
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
@@ -79,6 +82,7 @@ public class TransaccionController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea una transaccion", response = TransaccionDTO.class, tags = "Transacciones")
+    @PreAuthorize("hasAuthority('TRAN_CREAR')")
     public ResponseEntity<?> create(@RequestBody Transaccion transaccion) {
         try {
             Transaccion transaccionCreated = transaccionService.create(transaccion);
@@ -92,6 +96,7 @@ public class TransaccionController {
     @GetMapping("/{usuario}/{inicio}/{fin}")
     @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro por un usuario", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
+    @PreAuthorize("hasAuthority('TRAN_CONSULTAR')")
     public ResponseEntity<?> findByUsuarioIdAndFechaRegistroBetween(@PathVariable(value = "usuario") Long usuario, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
@@ -112,6 +117,7 @@ public class TransaccionController {
     @GetMapping("/{permiso}/{inicio}/{fin}")
     @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro por permiso", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
+    @PreAuthorize("hasAuthority('TRAN_CONSULTAR')")
     public ResponseEntity<?> findByPermisoIdAndFechaRegistroBetween(@PathVariable(value = "permiso") Long permiso, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
@@ -132,6 +138,7 @@ public class TransaccionController {
     @GetMapping("/{objeto}/{inicio}/{fin}")
     @ApiOperation(value = "Obtiene una lista de transacciones entre fechas de registro por objeto", response = TransaccionDTO.class, tags = "Transacciones")
     @ResponseBody
+    @PreAuthorize("hasAuthority('TRAN_CONSULTAR')")
     public ResponseEntity<?> findByObjetoAndFechaRegistroBetween(@PathVariable(value = "objeto") String objeto, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 

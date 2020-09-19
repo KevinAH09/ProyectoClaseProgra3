@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class RequisitoController {
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los requisitos", response = RequisitoDTO.class, responseContainer = "List", tags = "Requisitos")
+    @PreAuthorize("hasAuthority('REQUISITO_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -58,6 +60,7 @@ public class RequisitoController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un Requisito", response = RequisitoDTO.class, tags = "Requisitos")
+    @PreAuthorize("hasAuthority('REQUISITO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -77,6 +80,7 @@ public class RequisitoController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un requisito", response = RequisitoDTO.class, tags = "Requisitos")
+    @PreAuthorize("hasAuthority('REQUISITO_CREAR')")
     public ResponseEntity<?> create(@RequestBody Requisito requisito) {
         try {
             Requisito requisitoCreated = requisitoService.create(requisito);
@@ -89,6 +93,7 @@ public class RequisitoController {
 
     @GetMapping("/estado/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los requisitos por estado", response = RequisitoDTO.class, responseContainer = "List", tags = "Requisitos")
+    @PreAuthorize("hasAuthority('REQUISITO_INACTIVAR')")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {
             Optional<List<Requisito>> result = requisitoService.findByEstadoContaining(term);
@@ -106,6 +111,7 @@ public class RequisitoController {
     @PutMapping("/{id}")
     @ResponseBody
     @ApiOperation(value = "Modifica un requisitos", response = RequisitoDTO.class, tags = "Requisitos")
+    @PreAuthorize("hasAuthority('REQUISITO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Requisito requisito) {
         try {
             Optional<Requisito> requisitoUpdated = requisitoService.update(requisito, id);
@@ -123,11 +129,13 @@ public class RequisitoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('REQUISITO_ELIMINAR')")
     public void delete(@PathVariable(value = "id") Long id) {
         requisitoService.delete(id);
     }
 
     @DeleteMapping("/")
+    @PreAuthorize("hasAuthority('REQUISITO_ELIMINAR_TODO')")
     public void deleteAll() {
         requisitoService.deleteAll();
     }

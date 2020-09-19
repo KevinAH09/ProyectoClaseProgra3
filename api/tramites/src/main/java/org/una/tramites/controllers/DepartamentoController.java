@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,7 @@ public class DepartamentoController {
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los departamentos", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
+   @PreAuthorize("hasAuthority('DEPARTAMENTO_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -57,6 +59,7 @@ public class DepartamentoController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un departamento", response = DepartamentoDTO.class, tags = "Departamentos")
+    @PreAuthorize("hasAuthority('DEPARTAMENTO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -74,6 +77,7 @@ public class DepartamentoController {
 
     @GetMapping("/nombre/{nombre}")
     @ApiOperation(value = "Obtiene una lista de todos los departamentos por nombre", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
+    @PreAuthorize("hasAuthority('DEPARTAMENTO_CONSULTAR')")
     public ResponseEntity<?> findByNombreproximateIgnoreCase(@PathVariable(value = "nombre") String term) {
         try {
             Optional<List<Departamento>> result = departamentoService.findByNombreAproximateIgnoreCase(term);
@@ -90,6 +94,7 @@ public class DepartamentoController {
     
     @GetMapping("/estado/{estado}")
     @ApiOperation(value = "Obtiene una lista de todos los departamentos por estado", response = DepartamentoDTO.class, responseContainer = "List", tags = "Departamentos")
+    @PreAuthorize("hasAuthority('DEPARTAMENTO_INACTIVAR')")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "estado") boolean estado) {
         try {
             Optional<List<Departamento>> result = departamentoService.findByEstadoContaining(estado);
@@ -108,6 +113,7 @@ public class DepartamentoController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un departamento", response = DepartamentoDTO.class, tags = "Departamentos")
+    @PreAuthorize("hasAuthority('DEPARTAMENTO_CREAR')")
     public ResponseEntity<?> create(@RequestBody Departamento departamento) {
         try {
             Departamento departamentoCreated = departamentoService.create(departamento);
@@ -121,6 +127,7 @@ public class DepartamentoController {
     @PutMapping("/{id}")
     @ResponseBody
     @ApiOperation(value = "Modifica un departamento", response = DepartamentoDTO.class, tags = "Departamentos")
+    @PreAuthorize("hasAuthority('DEPARTAMENTO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Departamento departamentoModified) {
         try {
             Optional<Departamento> departamentoUpdated = departamentoService.update(departamentoModified, id);

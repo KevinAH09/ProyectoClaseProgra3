@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ public class ParametroGeneralController {
     
     @GetMapping("/nombre/{nombre}")
     @ApiOperation(value = "Obtiene los Paremetro General segun el nombre", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_CONSULTAR')")
     public ResponseEntity<?> findByNombre(@PathVariable(value = "nombre")String nombre) {
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByNombre(nombre);
@@ -56,6 +58,7 @@ public class ParametroGeneralController {
     
     @GetMapping("/valor/{valor}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_CONSULTAR')")
     public ResponseEntity<?> findByValor(@PathVariable(value = "valor") String valor){
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByValor(valor);
@@ -71,6 +74,7 @@ public class ParametroGeneralController {
     
     @GetMapping("/estado/{estado}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_INACTIVAR')")
     public ResponseEntity<?> findByEsatdo(@PathVariable(value = "estado") boolean valor){
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByEstado(valor);
@@ -85,6 +89,7 @@ public class ParametroGeneralController {
     }
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun el valor", response = ParametroGeneralDTO.class, tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long valor){
         try{
             Optional<ParametroGeneral> parametroGeneralFound = paramGenService.findById(valor);
@@ -100,6 +105,7 @@ public class ParametroGeneralController {
     }
     @GetMapping("/descripcion/{descripcion}")
     @ApiOperation(value = "Obtiene una lista de Parametro General segun su descripcion", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_CONSULTAR')")
     public ResponseEntity<?> findByDescripcion(@PathVariable(value = "descripcion")String descripcion){
         try{
             Optional<List<ParametroGeneral>> result = paramGenService.findByDescripcion(descripcion);
@@ -115,6 +121,7 @@ public class ParametroGeneralController {
     
     @PutMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('PARAMETRO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ParametroGeneral parGen) {
         try {
             Optional<ParametroGeneral> parametroGeneralUpdate = paramGenService.update(parGen, id);
@@ -131,6 +138,7 @@ public class ParametroGeneralController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un permiso", response = ParametroGeneralDTO.class, tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_CREAR')")
     public ResponseEntity<?> create(@RequestBody ParametroGeneral parametros) {
         try {
             Optional<ParametroGeneral> permisoCreated = paramGenService.create(parametros);
@@ -143,6 +151,7 @@ public class ParametroGeneralController {
     
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los Parametro General", response = ParametroGeneralDTO.class, responseContainer = "List", tags = "Parametros_Generales")
+    @PreAuthorize("hasAuthority('PARAMETRO_CONSULTAR')")
     public @ResponseBody ResponseEntity<?> findAll() {
         try {
             Optional<List<ParametroGeneral>> result = paramGenService.findAll();

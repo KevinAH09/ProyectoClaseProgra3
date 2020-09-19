@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class TramiteEstadoController {
     
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los tramites estados", response = TramiteEstadoDTO.class, responseContainer = "List", tags = "Tramites_Estados")
+    @PreAuthorize("hasAuthority('TRAMITE_ESTADO_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -57,6 +59,7 @@ public class TramiteEstadoController {
     
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un tipo de tramite del id", response = TramiteEstadoDTO.class, tags = "Tramites_Estados")
+    @PreAuthorize("hasAuthority('TRAMITE_ESTADO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -74,6 +77,7 @@ public class TramiteEstadoController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
+    @PreAuthorize("hasAuthority('TRAMITE_ESTADO_REGISTRAR')")
     public ResponseEntity<?> create(@RequestBody TramiteEstado tramiteEstado) {
         try {
             TramiteEstado tramiteEstadoCreated = tramiteEstadoService.create(tramiteEstado);
@@ -86,6 +90,7 @@ public class TramiteEstadoController {
 
     @PutMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('TRAMITE_ESTADO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody TramiteEstado tramiteEstadoModified) {
         try {
             Optional <TramiteEstado> tramiteEstadoUpdated = tramiteEstadoService.update(tramiteEstadoModified, id);
@@ -103,6 +108,7 @@ public class TramiteEstadoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('TRAMITE_ESTADO_FINALIZAR')")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         try {
             tramiteEstadoService.delete(id);
@@ -116,6 +122,7 @@ public class TramiteEstadoController {
     }
 
     @DeleteMapping("/")
+    @PreAuthorize("hasAuthority('TRAMITE_ESTADO_FINALIZAR')")
     public ResponseEntity<?> deleteAll() {
         try {
             tramiteEstadoService.deleteAll();

@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class RequisitoPresentadoController {
     
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un requisito presentado", response = RequisitoPresentadoDTO.class, tags = "Requisitos_Presentados")
+    @PreAuthorize("hasAuthority('REQUISITO_PRECE_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
             Optional<RequisitoPresentado> requisitoPresentadoFound = requisitoPresentadoService.findById(id);
@@ -57,6 +59,7 @@ public class RequisitoPresentadoController {
     
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los requisitos presentados", response = RequisitoPresentadoDTO.class, responseContainer = "List", tags = "Requisitos_Presentados")
+    @PreAuthorize("hasAuthority('REQUISITO_PRECE_CONSULTAR_TODO')")
     public @ResponseBody ResponseEntity<?> findAll() {
         try {
             Optional<List<RequisitoPresentado>> result = requisitoPresentadoService.findAll();
@@ -75,6 +78,7 @@ public class RequisitoPresentadoController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
+    @PreAuthorize("hasAuthority('REQUISITO_PRECE_CREAR')")
     public ResponseEntity<?> create(@RequestBody RequisitoPresentado requisitoPresentado) {
         try {
             RequisitoPresentado requisitoPresentadoCreated = requisitoPresentadoService.create(requisitoPresentado);
@@ -87,6 +91,7 @@ public class RequisitoPresentadoController {
 
     @PutMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('REQUISITO_PRECE_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody RequisitoPresentado reqPresentadoModified) {
         try {
             Optional<RequisitoPresentado> reqPresentadoUpdated = requisitoPresentadoService.update(reqPresentadoModified, id);
@@ -102,6 +107,7 @@ public class RequisitoPresentadoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('REQUISITO_PRECE_ELIMINAR')")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         try {
             requisitoPresentadoService.delete(id);
@@ -115,6 +121,7 @@ public class RequisitoPresentadoController {
     }
 
     @DeleteMapping("/")
+    @PreAuthorize("hasAuthority('REQUISITO_PRECE_ELIMINAR_TODO')")
     public ResponseEntity<?> deleteAll() {
         try {
             requisitoPresentadoService.deleteAll();

@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class PermisoOtorgadoController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un permiso otorgado", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
+   @PreAuthorize("hasAuthority('PERMISO_OTORGADO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -63,6 +65,7 @@ public class PermisoOtorgadoController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un permiso otorgado", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
+   @PreAuthorize("hasAuthority('PERMISO_OTORGADO_CREAR')")
     public ResponseEntity<?> create(@RequestBody PermisoOtorgado permisoOtorgado) {
         try {
             PermisoOtorgado PermisosOtorgadosCreated = permisoOtorgadoService.create(permisoOtorgado);
@@ -76,6 +79,7 @@ public class PermisoOtorgadoController {
     @PutMapping("/{id}")
     @ResponseBody
     @ApiOperation(value = "Modifica un permiso otorgado", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
+    @PreAuthorize("hasAuthority('PERMISO_OTORGADO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody PermisoOtorgado permisoOtorgadoModified) {
         try {
             Optional<PermisoOtorgado> permisoOtorgadoServiceUpdated = permisoOtorgadoService.update(permisoOtorgadoModified, id);
@@ -93,17 +97,20 @@ public class PermisoOtorgadoController {
     }
 
     @DeleteMapping("/{id}")
+   @PreAuthorize("hasAuthority('PERMISO_OTORGADO_ELIMINAR')")
     public void delete(@PathVariable(value = "id") Long id) {
         permisoOtorgadoService.delete(id);
     }
 
     @DeleteMapping("/")
+    @PreAuthorize("hasAuthority('PERMISO_OTORGADO_ELIMINAR_TODO')")
     public void deleteAll() {
         permisoOtorgadoService.deleteAll();
     }
 
     @GetMapping("/usuario/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
     @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por usuario", response = PermisoOtorgadoDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @PreAuthorize("hasAuthority('PERMISO_OTORGADO_CONSULTAR')")
     public ResponseEntity<?> findByUsuarioId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<PermisoOtorgado>> result = permisoOtorgadoService.findByUsuarioId(id);
@@ -120,6 +127,7 @@ public class PermisoOtorgadoController {
 
     @GetMapping("/permisoId/{term}")//puede que aqui se usuario_id o usuarioId ????? preguntar al profe que va en el mapping???/
     @ApiOperation(value = "Obtiene una lista de todos los permisos otorgados por permisos", response = PermisoOtorgadoDTO.class, responseContainer = "List", tags = "Permisos_Otorgados")
+    @PreAuthorize("hasAuthority('PERMISO_OTORGADO_CONSULTAR')")
     public ResponseEntity<?> findByPermisoId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<PermisoOtorgado>> result = permisoOtorgadoService.findByPermisoId(id);
@@ -137,6 +145,7 @@ public class PermisoOtorgadoController {
     @GetMapping("/fecha_registro/{inicio}/{fin}")
     @ApiOperation(value = "Obtiene una lista de permisos otorgados entre fechas de registro", response = PermisoOtorgadoDTO.class, tags = "Permisos_Otorgados")
     @ResponseBody
+    @PreAuthorize("hasAuthority('PERMISO_OTORGADO_CONSULTAR')")
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 

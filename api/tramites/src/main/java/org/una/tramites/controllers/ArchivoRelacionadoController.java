@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,7 @@ public class ArchivoRelacionadoController {
     
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene una lista de Archivos Relacionados por id", response = ArchivoRelacionadoDTO.class, tags = "Archivos_Relacionados")
+    @PreAuthorize("hasAuthority('ARCHIVO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
             Optional<ArchivoRelacionado> archivoRelacionadoResult = archivoRelacionadoService.findById(id);
@@ -58,6 +60,7 @@ public class ArchivoRelacionadoController {
     
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los archivos relacionados", response = ArchivoRelacionadoDTO.class, responseContainer = "List", tags = "Archivos_Relacionados")
+    @PreAuthorize("hasAuthority('ARCHIVO_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -75,6 +78,7 @@ public class ArchivoRelacionadoController {
     
     @GetMapping("tramite_registrado/{id}")
     @ApiOperation(value = "Obtiene los archivos relacionados al tramite registrado", response = ArchivoRelacionadoDTO.class, responseContainer = "List", tags = "Archivos_Relacionados")
+    @PreAuthorize("hasAuthority('ARCHIVO_CONSULTAR')")
     public ResponseEntity<?> findByTramiteRegistrado(@PathVariable(value = "id")Long  id) {
         try{
             Optional<List<ArchivoRelacionado>> result = archivoRelacionadoService.findByTramiteRegistrado(id);
@@ -90,6 +94,7 @@ public class ArchivoRelacionadoController {
     
     @GetMapping("/{fechaRegistro}")
     @ApiOperation(value = "Obtiene los archivos relacionados al tramite registrado", response = ArchivoRelacionadoDTO.class, responseContainer = "List", tags = "Archivos_Relacionados")
+    @PreAuthorize("hasAuthority('ARCHIVO_CONSULTAR')")
     public ResponseEntity<?> findByFechaRegistro(@PathVariable(value = "fechaRegistro")Date  fechaRegistro) {
         try{
             Optional<List<ArchivoRelacionado>> result = archivoRelacionadoService.findByFechaRegistro(fechaRegistro);
@@ -106,7 +111,7 @@ public class ArchivoRelacionadoController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
-    
+    @PreAuthorize("hasAuthority('ARCHIVO_CREAR')")
     public ResponseEntity<?> create(@RequestBody ArchivoRelacionado archivoRelacionado) {
         try {
             ArchivoRelacionado archivoRelacionadoCreated = archivoRelacionadoService.create(archivoRelacionado);
@@ -119,6 +124,7 @@ public class ArchivoRelacionadoController {
 
     @PutMapping("/{id}")
     @ResponseBody
+    @PreAuthorize("hasAuthority('ARCHIVO_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody ArchivoRelacionado archivoRelacionadoModified) {
         try {
             Optional<ArchivoRelacionado> archivoRelacionadoUpdated = archivoRelacionadoService.update(archivoRelacionadoModified, id);
@@ -134,6 +140,7 @@ public class ArchivoRelacionadoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ARCHIVO_ELIMINAR')")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         try {
             archivoRelacionadoService.delete(id);
@@ -147,6 +154,7 @@ public class ArchivoRelacionadoController {
     }
 
     @DeleteMapping("/")
+     @PreAuthorize("hasAuthority('ARCHIVO_ELIMINAR_TODO')")
     public ResponseEntity<?> deleteAll() {
         try {
             archivoRelacionadoService.deleteAll();

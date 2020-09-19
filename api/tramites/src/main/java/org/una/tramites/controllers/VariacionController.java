@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,7 @@ public class VariacionController {
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todas las variaciones", response = VariacionDTO.class, responseContainer = "List", tags = "Variaciones")
+    @PreAuthorize("hasAuthority('VARIACION_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
@@ -57,6 +59,7 @@ public class VariacionController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene una Variacion", response = VariacionDTO.class, tags = "Variaciones")
+    @PreAuthorize("hasAuthority('VARIACION_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
@@ -74,6 +77,7 @@ public class VariacionController {
     
     @GetMapping("/estado/{term}")
     @ApiOperation(value = "Obtiene una lista de todas las variaciones por estado", response = VariacionDTO.class, responseContainer = "List", tags = "Variaciones")
+    @PreAuthorize("hasAuthority('VARIACION_INACTIVAR')")
     public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {
             Optional<List<Variacion>> result = variacionesService.findByEstadoContaining(term);
@@ -94,6 +98,7 @@ public class VariacionController {
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea una variacion", response = VariacionDTO.class, tags = "Variaciones")
+    @PreAuthorize("hasAuthority('VARIACION_CREAR')")
     public ResponseEntity<?> create(@RequestBody Variacion variacion) {
         try {
             Variacion variacionCreated = variacionesService.create(variacion);
@@ -107,6 +112,7 @@ public class VariacionController {
     @PutMapping("/{id}")
     @ResponseBody
     @ApiOperation(value = "Modifica una variacion", response = VariacionDTO.class, tags = "Variaciones")
+   @PreAuthorize("hasAuthority('VARIACION_MODIFICAR')")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody Variacion variacionModified) {
         try {
             Optional<Variacion> usuarioUpdated = variacionesService.update(variacionModified, id);
@@ -135,6 +141,7 @@ public class VariacionController {
 
     @GetMapping("/tramiteTipo_id/{term}")//Puede que aqui sea nombreCompleto
     @ApiOperation(value = "Obtiene una lista de todas las variaciones por tipo de tramite", response = VariacionDTO.class, responseContainer = "List", tags = "Variaciones")
+    @PreAuthorize("hasAuthority('VARIACION_CONSULTAR')")
     public ResponseEntity<?> findByTramiteTipoId(@PathVariable(value = "term") Long id) {
         try {
             Optional<List<Variacion>> result = variacionesService.findByTramiteTipoId(id);
