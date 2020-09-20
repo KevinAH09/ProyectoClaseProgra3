@@ -44,9 +44,9 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        
+         System.out.println("org.una.tramites.utils.ConversionLista.findList() wqeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
         if (usuarioService.findByCedula(cedula).isEmpty()) {
-              
+             
             PermisoDTO permiso;
             final String codigo = "Usu01";
             Optional<PermisoDTO> permisoBuscado = permisoService.findByCodigo(codigo);

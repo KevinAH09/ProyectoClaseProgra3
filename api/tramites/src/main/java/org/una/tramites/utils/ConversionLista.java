@@ -21,7 +21,7 @@ public class ConversionLista {
             List<UsuarioDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, UsuarioDTO.class);
             return Optional.ofNullable(usuariosDTO);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -29,7 +29,7 @@ public class ConversionLista {
         if (list.isPresent()) {
             return findList(list.get());
         } else {
-            return null;
+            return Optional.empty();
         }
     }
     
@@ -38,7 +38,7 @@ public class ConversionLista {
             UsuarioDTO usuarioDTO = MapperUtils.DtoFromEntity(one.get(), UsuarioDTO.class);
             return Optional.ofNullable(usuarioDTO);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 }

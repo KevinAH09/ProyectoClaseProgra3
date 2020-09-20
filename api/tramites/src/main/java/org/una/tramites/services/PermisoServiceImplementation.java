@@ -32,7 +32,7 @@ public class PermisoServiceImplementation implements IPermisoService {
             List<PermisoDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, PermisoDTO.class);
             return Optional.ofNullable(usuariosDTO);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -40,7 +40,7 @@ public class PermisoServiceImplementation implements IPermisoService {
         if (list.isPresent()) {
             return findList(list.get());
         } else {
-            return null;
+            return Optional.empty();
         }
     }
     
@@ -49,7 +49,7 @@ public class PermisoServiceImplementation implements IPermisoService {
             PermisoDTO PermisoDTO = MapperUtils.DtoFromEntity(one.get(), PermisoDTO.class);
             return Optional.ofNullable(PermisoDTO);
         } else {
-            return null;
+            return Optional.empty();
         }
     }
     
