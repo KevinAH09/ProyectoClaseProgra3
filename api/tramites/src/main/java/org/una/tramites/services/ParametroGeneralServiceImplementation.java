@@ -10,8 +10,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.dto.ParametroGeneralDTO;
 import org.una.tramites.entities.ParametroGeneral;
 import org.una.tramites.repositories.IParametroGeneralRepository;
+import org.una.tramites.utils.MapperUtils;
 
 /**
  *
@@ -23,53 +25,84 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
     @Autowired
     private IParametroGeneralRepository parametroGeneralRepository;
     
+    public static Optional<List<ParametroGeneralDTO>> findList(List<ParametroGeneral> list) {
+        if (list != null) {
+            List<ParametroGeneralDTO> ParametroGeneralDTO = MapperUtils.DtoListFromEntityList(list, ParametroGeneralDTO.class);
+            return Optional.ofNullable(ParametroGeneralDTO);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<List<ParametroGeneralDTO>> findList(Optional<List<ParametroGeneral>> list) {
+        if (list.isPresent()) {
+            return findList(list.get());
+        } else {
+            return Optional.empty();
+        }
+    }
+    
+    public static Optional<ParametroGeneralDTO> oneToDto(Optional<ParametroGeneral> one) {
+        if (one.isPresent()) {
+            ParametroGeneralDTO ParametroGeneralDTO = MapperUtils.DtoFromEntity(one.get(), ParametroGeneralDTO.class);
+            return Optional.ofNullable(ParametroGeneralDTO);
+        } else {
+            return Optional.empty();
+        }
+    }
+    
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ParametroGeneral>> findByNombre(String nombre) {
-        return Optional.ofNullable(parametroGeneralRepository.findByNombreContainingIgnoreCase(nombre));
+    public Optional<List<ParametroGeneralDTO>> findByNombre(String nombre) {
+        return findList(parametroGeneralRepository.findByNombreContainingIgnoreCase(nombre));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ParametroGeneral>> findByValor(String valor) {
-        return Optional.ofNullable(parametroGeneralRepository.findByValor(valor));
+    public Optional<List<ParametroGeneralDTO>> findByValor(String valor) {
+        return findList(parametroGeneralRepository.findByValor(valor));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ParametroGeneral>> findByDescripcion(String descripcion) {
-        return Optional.ofNullable(parametroGeneralRepository.findByDescripcion(descripcion));
+    public Optional<List<ParametroGeneralDTO>> findByDescripcion(String descripcion) {
+        return findList(parametroGeneralRepository.findByDescripcion(descripcion));
     }
 
     @Override
     @Transactional
-    public Optional<ParametroGeneral> update(ParametroGeneral parametroGeneral, Long id) {
-        if(parametroGeneralRepository.findById(id).isPresent()){
-            return Optional.ofNullable(parametroGeneralRepository.save(parametroGeneral));
+    public Optional<ParametroGeneralDTO> update(ParametroGeneralDTO parametroGeneral, Long id) {
+        if (parametroGeneralRepository.findById(id).isPresent()) {
+            ParametroGeneral user = MapperUtils.EntityFromDto(parametroGeneral, ParametroGeneral.class);
+            user = parametroGeneralRepository.save(user);
+            return Optional.ofNullable(MapperUtils.DtoFromEntity(user, ParametroGeneralDTO.class));
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ParametroGeneral>> findAll() {
-        return Optional.ofNullable(parametroGeneralRepository.findAll());
+    public Optional<List<ParametroGeneralDTO>> findAll() {
+       return findList((parametroGeneralRepository.findAll()));
     }
 
     @Override
-    public Optional<ParametroGeneral> create(ParametroGeneral parametroGeneral) {
-        return Optional.ofNullable(parametroGeneralRepository.save(parametroGeneral));
+    public ParametroGeneralDTO create(ParametroGeneralDTO parametroGeneral) {
+        ParametroGeneral user = MapperUtils.EntityFromDto(parametroGeneral, ParametroGeneral.class);
+        user = parametroGeneralRepository.save(user);
+        return MapperUtils.DtoFromEntity(user, ParametroGeneralDTO.class);
         
     }
 
     @Override
-    public Optional<List<ParametroGeneral>> findByEstado(boolean estado) {
-        return Optional.ofNullable(parametroGeneralRepository.findByEstado(estado));
+    public Optional<List<ParametroGeneralDTO>> findByEstado(boolean estado) {
+        return findList(Optional.ofNullable(parametroGeneralRepository.findByEstado(estado)));
     }
 
     @Override
-    public Optional<ParametroGeneral> findById(Long id) {
-       return  parametroGeneralRepository.findById(id);
+    public Optional<ParametroGeneralDTO> findById(Long id) {
+      return oneToDto(parametroGeneralRepository.findById(id));
     }
     
 }
