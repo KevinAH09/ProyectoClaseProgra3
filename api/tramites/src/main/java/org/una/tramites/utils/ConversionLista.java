@@ -16,27 +16,27 @@ import org.una.tramites.utils.MapperUtils;
  * @author Bosco
  */
 public class ConversionLista {
-    public static Optional<List<UsuarioDTO>> findList(List<Usuario> list) {
+    public static Optional findList(List list,Class c) {
         if (list != null) {
-            List<UsuarioDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, UsuarioDTO.class);
-            return Optional.ofNullable(usuariosDTO);
+            List<Object> listObj = MapperUtils.DtoListFromEntityList(list, c);
+            return Optional.ofNullable(listObj);
         } else {
             return Optional.empty();
         }
     }
 
-    public static Optional<List<UsuarioDTO>> findList(Optional<List<Usuario>> list) {
+    public static Optional findList(Optional<List> list,Class c) {
         if (list.isPresent()) {
-            return findList(list.get());
+            return findList(list.get(),c);
         } else {
             return Optional.empty();
         }
     }
     
-    public static Optional<UsuarioDTO> oneToDto(Optional<Usuario> one) {
+    public static Optional oneToDto(Optional one,Class c) {
         if (one.isPresent()) {
-            UsuarioDTO usuarioDTO = MapperUtils.DtoFromEntity(one.get(), UsuarioDTO.class);
-            return Optional.ofNullable(usuarioDTO);
+            Object op = MapperUtils.DtoFromEntity(one.get(),c);
+            return Optional.ofNullable(op);
         } else {
             return Optional.empty();
         }

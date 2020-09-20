@@ -58,7 +58,7 @@ public class AutenticacionLoginServiceImplementation implements UserDetailsServi
 
         if (usuario.isPresent()) {
             authenticationResponse.setJwt(jwtProvider.generateToken(authenticationRequest));
-            UsuarioDTO usuarioDto = MapperUtils.DtoFromEntity(usuario.get(), UsuarioDTO.class);
+            UsuarioDTO usuarioDto = usuario.get();
             authenticationResponse.setUsuario(usuarioDto);
             List<PermisoOtorgadoDTO> permisosOtorgadosDto = usuario.get().getPermisoOtorgado();
             authenticationResponse.setPermisos(permisosOtorgadosDto);

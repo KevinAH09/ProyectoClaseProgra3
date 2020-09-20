@@ -33,25 +33,25 @@ public class UsuarioServiceImplementation implements IUsuarioService {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<UsuarioDTO>> findAll() {
-        return ConversionLista.findList((usuarioRepository.findAll()));
+        return (Optional<List<UsuarioDTO>>) ConversionLista.findList((usuarioRepository.findAll()),UsuarioDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<UsuarioDTO> findById(Long id) {
-        return ConversionLista.oneToDto(usuarioRepository.findById(id));
+        return (Optional<UsuarioDTO>)ConversionLista.oneToDto(usuarioRepository.findById(id),UsuarioDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<UsuarioDTO>> findByCedulaAproximate(String cedula) {
-        return ConversionLista.findList(usuarioRepository.findByCedulaContaining(cedula));
+        return (Optional<List<UsuarioDTO>>) ConversionLista.findList(usuarioRepository.findByCedulaContaining(cedula),UsuarioDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<UsuarioDTO>> findByNombreCompletoAproximateIgnoreCase(String nombreCompleto) {
-        return ConversionLista.findList(usuarioRepository.findByNombreCompletoContainingIgnoreCase(nombreCompleto));
+        return (Optional<List<UsuarioDTO>>)ConversionLista.findList(usuarioRepository.findByNombreCompletoContainingIgnoreCase(nombreCompleto),UsuarioDTO.class);
     }
 
     @Override
@@ -119,8 +119,8 @@ public class UsuarioServiceImplementation implements IUsuarioService {
 //    }
     @Override
     @Transactional(readOnly = true)
-    public Optional findByDepartamentoId(Long id) {
-        return ConversionLista.findList(usuarioRepository.findByDepartamentoId(id));
+    public Optional<List<UsuarioDTO>> findByDepartamentoId(Long id) {
+        return (Optional<List<UsuarioDTO>>) ConversionLista.findList(usuarioRepository.findByDepartamentoId(id),UsuarioDTO.class);
     }
 
     @Override
@@ -139,19 +139,19 @@ public class UsuarioServiceImplementation implements IUsuarioService {
     @Transactional(readOnly = true)
     public Optional<UsuarioDTO> findByCedulaAndPassword(String cedula, String password) {
         //System.out.println("org.una.tramites.services.UsuarioServiceImplementation.findByCedulaAndPassword()" + password + "  " + cedula);
-        return ConversionLista.oneToDto(Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(cedula, bCryptPasswordEncoder.encode(password))));
+        return (Optional<UsuarioDTO>)ConversionLista.oneToDto(Optional.ofNullable(usuarioRepository.findByCedulaAndPasswordEncriptado(cedula, bCryptPasswordEncoder.encode(password))),UsuarioDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<UsuarioDTO>> findByEstadoContaining(boolean estado) {
-        return ConversionLista.findList(Optional.ofNullable(usuarioRepository.findByEstadoContaining(estado)));
+        return (Optional<List<UsuarioDTO>>)ConversionLista.findList(Optional.ofNullable(usuarioRepository.findByEstadoContaining(estado)),UsuarioDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<UsuarioDTO> findByCedula(String cedula) {
-        return ConversionLista.oneToDto(Optional.ofNullable(usuarioRepository.findByCedula(cedula)));
+        return (Optional<UsuarioDTO>)ConversionLista.oneToDto(Optional.ofNullable(usuarioRepository.findByCedula(cedula)),UsuarioDTO.class);
     }
 
     private UsuarioDTO encriptarPassword(UsuarioDTO usuario) {
