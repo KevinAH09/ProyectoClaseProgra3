@@ -10,47 +10,53 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.dto.VariacionDTO;
+import org.una.tramites.entities.Usuario;
 import org.una.tramites.entities.Variacion;
 import org.una.tramites.repositories.IVariacionRepository;
+import org.una.tramites.utils.ConversionLista;
+import org.una.tramites.utils.MapperUtils;
 
 /**
  *
  * @author Bosco
  */
 @Service
-public class VariacionServiceImplementation implements IVariacionService{
+public class VariacionServiceImplementation implements IVariacionService {
 
     @Autowired
     private IVariacionRepository variacionesRepository;
-    
+
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Variacion>> findAll() {
-        return Optional.ofNullable(variacionesRepository.findAll());
+    public Optional<List<VariacionDTO>> findAll() {
+        return (Optional<List<VariacionDTO>>) ConversionLista.findList(Optional.ofNullable(variacionesRepository.findAll()), VariacionDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Variacion> findById(Long id) {
-        return variacionesRepository.findById(id);
+    public Optional<VariacionDTO> findById(Long id) {
+        return (Optional<VariacionDTO>) ConversionLista.oneToDto(Optional.ofNullable(variacionesRepository.findById(id)), VariacionDTO.class);
     }
 
     @Override
-    public Optional<List<Variacion>> findByEstadoContaining(boolean estado) {
-        return Optional.ofNullable(variacionesRepository.findByEstadoContaining(estado));
+    public Optional<List<VariacionDTO>> findByEstadoContaining(boolean estado) {
+        return (Optional<List<VariacionDTO>>) ConversionLista.findList(Optional.ofNullable(variacionesRepository.findByEstadoContaining(estado)), VariacionDTO.class);
     }
 
     @Override
     @Transactional
-    public Variacion create(Variacion usuario) {
-        return variacionesRepository.save(usuario);
+    public VariacionDTO create(VariacionDTO usuario) {
+        Variacion var = MapperUtils.EntityFromDto(usuario, Variacion.class);
+        return MapperUtils.DtoFromEntity(variacionesRepository.save(var), VariacionDTO.class);
     }
 
     @Override
     @Transactional
-    public Optional<Variacion> update(Variacion usuario, Long id) {
+    public Optional<VariacionDTO> update(VariacionDTO var, Long id) {
         if (variacionesRepository.findById(id).isPresent()) {
-            return Optional.ofNullable(variacionesRepository.save(usuario));
+            Variacion vari = MapperUtils.EntityFromDto(var, Variacion.class);
+            return Optional.ofNullable(MapperUtils.DtoFromEntity(variacionesRepository.save(vari), VariacionDTO.class));
         } else {
             return null;
         }
@@ -72,9 +78,9 @@ public class VariacionServiceImplementation implements IVariacionService{
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<Variacion >>findByTramiteTipoId(Long id) {
-        return Optional.ofNullable(variacionesRepository.findByTramiteTipoId(id));
+    public Optional<List<VariacionDTO>> findByTramiteTipoId(Long id) {
+        return (Optional<List<VariacionDTO>>) ConversionLista.findList(Optional.ofNullable(variacionesRepository.findByTramiteTipoId(id)), VariacionDTO.class);
 
     }
-    
+
 }

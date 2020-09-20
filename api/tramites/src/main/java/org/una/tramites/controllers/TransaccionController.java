@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,6 +39,7 @@ public class TransaccionController {
 
     @Autowired
     private ITransaccionService transaccionService;
+    final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene una transaccion", response = TransaccionDTO.class, tags = "Transacciones")
@@ -45,13 +47,7 @@ public class TransaccionController {
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
-            Optional<Transaccion> transaccionFound = transaccionService.findById(id);
-            if (transaccionFound.isPresent()) {
-                TransaccionDTO transaccionDto = MapperUtils.DtoFromEntity(transaccionFound.get(), TransaccionDTO.class);
-                return new ResponseEntity<>(transaccionDto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+                return new ResponseEntity<>(transaccionService.findById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -64,14 +60,7 @@ public class TransaccionController {
     public ResponseEntity<?> findByFechaRegistroBetween(@PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
-            Optional<List<Transaccion>> transaccionFound = transaccionService.findByFechaRegistroBetween(startDate, endDate);
-            if (transaccionFound.isPresent()) {
-                List<TransaccionDTO> transaccionDto = MapperUtils.DtoListFromEntityList(transaccionFound.get(), TransaccionDTO.class);
-                return new ResponseEntity<>(transaccionDto, HttpStatus.OK);
-
-            } else {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
+                return new ResponseEntity<>(transaccionService.findByFechaRegistroBetween(startDate, endDate), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -83,13 +72,15 @@ public class TransaccionController {
     @ResponseBody
     @ApiOperation(value = "Crea una transaccion", response = TransaccionDTO.class, tags = "Transacciones")
     @PreAuthorize("hasAuthority('TRAN_CREAR')")
-    public ResponseEntity<?> create(@RequestBody Transaccion transaccion) {
-        try {
-            Transaccion transaccionCreated = transaccionService.create(transaccion);
-            TransaccionDTO transaccionDto = MapperUtils.DtoFromEntity(transaccionCreated, TransaccionDTO.class);
-            return new ResponseEntity<>(transaccionDto, HttpStatus.CREATED);
+    public ResponseEntity<?> create(@RequestBody TransaccionDTO transaccion, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+            return new ResponseEntity<>(transaccionService.create(transaccion), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        }else{
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -99,15 +90,9 @@ public class TransaccionController {
     @PreAuthorize("hasAuthority('TRAN_CONSULTAR')")
     public ResponseEntity<?> findByUsuarioIdAndFechaRegistroBetween(@PathVariable(value = "usuario") Long usuario, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
+                return new ResponseEntity<>(transaccionService.findByUsuarioIdAndFechaRegistroBetween(usuario, startDate, endDate), HttpStatus.OK);
 
-            Optional<List<Transaccion>> transaccionFound = transaccionService.findByUsuarioIdAndFechaRegistroBetween(usuario, startDate, endDate);
-            if (transaccionFound.isPresent()) {
-                List<TransaccionDTO> transaccionDto = MapperUtils.DtoListFromEntityList(transaccionFound.get(), TransaccionDTO.class);
-                return new ResponseEntity<>(transaccionDto, HttpStatus.OK);
-
-            } else {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
+            
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -121,14 +106,9 @@ public class TransaccionController {
     public ResponseEntity<?> findByPermisoIdAndFechaRegistroBetween(@PathVariable(value = "permiso") Long permiso, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
-            Optional<List<Transaccion>> transaccionFound = transaccionService.findByPermisoIdAndFechaRegistroBetween(permiso, startDate, endDate);
-            if (transaccionFound.isPresent()) {
-                List<TransaccionDTO> transaccionDto = MapperUtils.DtoListFromEntityList(transaccionFound.get(), TransaccionDTO.class);
-                return new ResponseEntity<>(transaccionDto, HttpStatus.OK);
+                return new ResponseEntity<>(transaccionService.findByPermisoIdAndFechaRegistroBetween(permiso, startDate, endDate), HttpStatus.OK);
 
-            } else {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
+
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -142,14 +122,8 @@ public class TransaccionController {
     public ResponseEntity<?> findByObjetoAndFechaRegistroBetween(@PathVariable(value = "objeto") String objeto, @PathVariable(value = "inicio") Date startDate, @PathVariable(value = "fin") Date endDate) {
         try {
 
-            Optional<List<Transaccion>> transaccionFound = transaccionService.findByObjetoAndFechaRegistroBetween(objeto, startDate, endDate);
-            if (transaccionFound.isPresent()) {
-                List<TransaccionDTO> transaccionDto = MapperUtils.DtoListFromEntityList(transaccionFound.get(), TransaccionDTO.class);
-                return new ResponseEntity<>(transaccionDto, HttpStatus.OK);
+                return new ResponseEntity<>(transaccionService.findByObjetoAndFechaRegistroBetween(objeto, startDate, endDate), HttpStatus.OK);
 
-            } else {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }

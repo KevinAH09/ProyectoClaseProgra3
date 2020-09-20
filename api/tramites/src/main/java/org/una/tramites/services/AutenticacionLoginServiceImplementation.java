@@ -80,9 +80,9 @@ public class AutenticacionLoginServiceImplementation implements UserDetailsServi
             for (PermisoOtorgado p : usuario.getPermisoOtorgado()) {
                 roles.add(new SimpleGrantedAuthority(p.getPermisoId().getDescripcion()));
             }
-            for (GrantedAuthority role : roles) {
-                System.out.println("org.una.tramites.services.AutenticacionLoginServiceImplementation.loadUserByUsername()"+role);
-            }
+//            for (GrantedAuthority role : roles) {
+//                System.out.println("org.una.tramites.services.AutenticacionLoginServiceImplementation.loadUserByUsername()"+role);
+//            }
             //roles.add(new SimpleGrantedAuthority("ADMIN"));
             UserDetails userDetails = new User(usuario.getCedula(), usuario.getPasswordEncriptado(), roles);
             return userDetails;

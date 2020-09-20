@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,15 +33,15 @@ import org.una.tramites.utils.MapperUtils;
  *
  * @author Bosco
  */
-  @RestController
+@RestController
 @RequestMapping("/tramites_Tipos")
 @Api(tags = {"Tramites_Tipos"})
 public class TramiteTipoController {
-  
-
 
     @Autowired
     private ITramiteTipoService tramiteTipoService;
+
+    final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los tipo de tramite", response = TramiteTipoDTO.class, responseContainer = "List", tags = "Tramites_Tipos")
@@ -48,13 +49,7 @@ public class TramiteTipoController {
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
-            Optional<List<TramiteTipo>> result = tramiteTipoService.findAll();
-            if (result.isPresent()) {
-                List<TramiteTipoDTO> tramiteTipoDTO = MapperUtils.DtoListFromEntityList(result.get(), TramiteTipoDTO.class);
-                return new ResponseEntity<>(tramiteTipoDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            return new ResponseEntity<>(tramiteTipoService.findAll(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -66,62 +61,49 @@ public class TramiteTipoController {
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
 
-            Optional<TramiteTipo> tramiteTipoFound = tramiteTipoService.findById(id);
-            if (tramiteTipoFound.isPresent()) {
-                TramiteTipoDTO tramiteTipoDTO = MapperUtils.DtoFromEntity(tramiteTipoFound.get(), TramiteTipoDTO.class);
-                return new ResponseEntity<>(tramiteTipoDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            return new ResponseEntity<>(tramiteTipoService.findById(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-@GetMapping("/estado/{term}")
+    @GetMapping("/estado/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los tipo de tramites por estado", response = TramiteTipoDTO.class, responseContainer = "List", tags = "Tramites_Tipos")
-   @PreAuthorize("hasAuthority('TRAMITE_TIPO_ESTADO')")
-public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
+    @PreAuthorize("hasAuthority('TRAMITE_TIPO_ESTADO')")
+    public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") boolean term) {
         try {
-            Optional<List<TramiteTipo>> result = tramiteTipoService.findByEstado(term);
-            if (result.isPresent()) {
-                List<TramiteTipoDTO> TramiteTipoDTO = MapperUtils.DtoListFromEntityList(result.get(), TramiteTipoDTO.class);
-                return new ResponseEntity<>(TramiteTipoDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            return new ResponseEntity<>(tramiteTipoService.findByEstado(term), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/departamento_id/{term}")
     @ApiOperation(value = "Obtiene una lista de todos los tipos de tramites por departamento", response = TramiteTipoDTO.class, responseContainer = "List", tags = "Tramites_Tipos")
     @PreAuthorize("hasAuthority('TRAMITE_TIPO_CONSULTAR')")
     public ResponseEntity<?> findByDepartamentoId(@PathVariable(value = "term") Long id) {
         try {
-            Optional<List<TramiteTipo>> result = tramiteTipoService.findByDepartamentoId(id);
-            if (result.isPresent()) {
-                List<TramiteTipoDTO> tramieTipoDTO = MapperUtils.DtoListFromEntityList(result.get(), TramiteTipoDTO.class);
-                return new ResponseEntity<>(tramieTipoDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            return new ResponseEntity<>(tramiteTipoService.findByDepartamentoId(id), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/")
     @ResponseBody
     @ApiOperation(value = "Crea un tipo de tramite", response = TramiteTipoDTO.class, tags = "Tramites_Tipos")
     @PreAuthorize("hasAuthority('TRAMITE_TIPO_REGISTRAR')")
-    public ResponseEntity<?> create(@RequestBody TramiteTipo tramiteTipo) {
-        try {
-            TramiteTipo tramiteTipoCreated = tramiteTipoService.create(tramiteTipo);
-            TramiteTipoDTO tramiteTipoDto = MapperUtils.DtoFromEntity(tramiteTipoCreated, TramiteTipoDTO.class);
-            return new ResponseEntity<>(tramiteTipoDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> create(@RequestBody TramiteTipoDTO tramiteTipo, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                TramiteTipoDTO tramiteTipoDto = MapperUtils.DtoFromEntity(tramiteTipoService.create(tramiteTipo), TramiteTipoDTO.class);
+                return new ResponseEntity<>(tramiteTipoDto, HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -129,19 +111,16 @@ public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") bo
     @ResponseBody
     @ApiOperation(value = "Modifica un tipo de tramite", response = TramiteTipoDTO.class, tags = "Tramites_Tipos")
     @PreAuthorize("hasAuthority('TRAMITE_TIPO_MODIFICAR')")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody TramiteTipo tramiteTipoModified) {
-        try {
-            Optional<TramiteTipo> tramiteTipoUpdated = tramiteTipoService.update(tramiteTipoModified, id);
-            if (tramiteTipoUpdated.isPresent()) {
-                TramiteTipoDTO tramiteTipoDTO = MapperUtils.DtoFromEntity(tramiteTipoUpdated.get(), TramiteTipoDTO.class);
-                return new ResponseEntity<>(tramiteTipoDTO, HttpStatus.OK);
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody TramiteTipoDTO tramiteTipoModified, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                return new ResponseEntity<>(tramiteTipoService.update(tramiteTipoModified, id), HttpStatus.OK);
 
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+            } catch (Exception e) {
+                return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -156,4 +135,4 @@ public ResponseEntity<?> findByEstadoContaining(@PathVariable(value = "term") bo
     public void deleteAll() {
         tramiteTipoService.deleteAll();
     }
-  }
+}

@@ -10,8 +10,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.dto.TramiteTipoDTO;
+import org.una.tramites.dto.VariacionDTO;
 import org.una.tramites.entities.TramiteTipo;
+import org.una.tramites.entities.Variacion;
 import org.una.tramites.repositories.ITramiteTipoRepository;
+import org.una.tramites.utils.ConversionLista;
+import org.una.tramites.utils.MapperUtils;
 
 /**
  *
@@ -25,33 +30,35 @@ public class TramiteTipoServiceImplementation implements ITramiteTipoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramiteTipo>> findAll() {
-       return Optional.ofNullable(tramitesTiposRepository.findAll());
+    public Optional<List<TramiteTipoDTO>> findAll() {
+         return (Optional<List<TramiteTipoDTO>>) ConversionLista.findList((tramitesTiposRepository.findAll()),TramiteTipoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<TramiteTipo> findById(Long id) {
-        return tramitesTiposRepository.findById(id);
+    public Optional<TramiteTipoDTO> findById(Long id) {
+        return (Optional<TramiteTipoDTO>)ConversionLista.oneToDto(tramitesTiposRepository.findById(id),VariacionDTO.class);
     }
 
     @Override
     @Transactional
-    public TramiteTipo create(TramiteTipo usuario) {
-        return tramitesTiposRepository.save(usuario);
+    public TramiteTipoDTO create(TramiteTipoDTO trami) {
+        TramiteTipo tra = MapperUtils.EntityFromDto(trami, TramiteTipo.class);
+        return MapperUtils.DtoFromEntity(tramitesTiposRepository.save(tra), TramiteTipoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramiteTipo>> findByEstado(boolean estado) {
-         return Optional.ofNullable(tramitesTiposRepository.findByEstado(estado));
+    public Optional<List<TramiteTipoDTO>> findByEstado(boolean estado) {
+        return (Optional<List<TramiteTipoDTO>>) ConversionLista.findList((tramitesTiposRepository.findByEstado(estado)),TramiteTipoDTO.class);
     }
 
     @Override
     @Transactional
-    public Optional<TramiteTipo> update(TramiteTipo usuario, Long id) {
+    public Optional<TramiteTipoDTO> update(TramiteTipoDTO trami, Long id) {
         if (tramitesTiposRepository.findById(id).isPresent()) {
-            return Optional.ofNullable(tramitesTiposRepository.save(usuario));
+            TramiteTipo tra = MapperUtils.EntityFromDto(trami, TramiteTipo.class);
+            return Optional.ofNullable(MapperUtils.DtoFromEntity(tramitesTiposRepository.save(tra), TramiteTipoDTO.class));
         } else {
             return null;
         }
@@ -59,8 +66,8 @@ public class TramiteTipoServiceImplementation implements ITramiteTipoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramiteTipo>> findByDepartamentoId(Long id) {
-        return Optional.ofNullable(tramitesTiposRepository.findByDepartamentoId(id));
+    public Optional<List<TramiteTipoDTO>> findByDepartamentoId(Long id) {
+        return (Optional<List<TramiteTipoDTO>>) ConversionLista.findList((tramitesTiposRepository.findByDepartamentoId(id)),TramiteTipoDTO.class);
     }
 
     @Override

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +37,11 @@ import org.una.tramites.utils.MapperUtils;
 @RequestMapping("/tramites_registrados")
 @Api(tags = {"Tramites_Registrados"})
 public class TramiteRegistradoController {
-     @Autowired
+
+    @Autowired
     private ITramiteRegistradoService tramiteRegistradoService;
+
+    final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
 
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los tramites registrados", response = TramiteRegistradoDTO.class, responseContainer = "List", tags = "Tramites_Registrados")
@@ -45,13 +49,8 @@ public class TramiteRegistradoController {
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
-            Optional<List<TramiteRegistrado>> result = tramiteRegistradoService.findAll();
-            if (result.isPresent()) {
-                List<TramiteRegistradoDTO> tramiteRegistradoDto = MapperUtils.DtoListFromEntityList(result.get(), TramiteRegistradoDTO.class);
-                return new ResponseEntity<>(tramiteRegistradoDto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            return new ResponseEntity<>(tramiteRegistradoService.findAll(), HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -62,14 +61,8 @@ public class TramiteRegistradoController {
     @PreAuthorize("hasAuthority('TRAMITE_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
+            return new ResponseEntity<>(tramiteRegistradoService.findById(id), HttpStatus.OK);
 
-            Optional<TramiteRegistrado> tramitesFound = tramiteRegistradoService.findById(id);
-            if (tramitesFound.isPresent()) {
-                TramiteRegistradoDTO tramiteRegistradoDto = MapperUtils.DtoFromEntity(tramitesFound.get(), TramiteRegistradoDTO.class);
-                return new ResponseEntity<>(tramiteRegistradoDto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -79,32 +72,31 @@ public class TramiteRegistradoController {
     @PostMapping("/")
     @ResponseBody
     @PreAuthorize("hasAuthority('TRAMITE_REGISTRAR')")
-    public ResponseEntity<?> create(@RequestBody TramiteRegistrado tramiteRegistrado) {
-        try {
-            TramiteRegistrado tramiteRegistradoCreated = tramiteRegistradoService.create(tramiteRegistrado);
-            TramiteRegistradoDTO tramiteRegistradoDto = MapperUtils.DtoFromEntity(tramiteRegistradoCreated, TramiteRegistradoDTO.class);
-            return new ResponseEntity<>(tramiteRegistradoDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> create(@RequestBody TramiteRegistradoDTO tramiteRegistrado, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                return new ResponseEntity<>(tramiteRegistradoService.create(tramiteRegistrado), HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
     @ResponseBody
     @PreAuthorize("hasAuthority('TRAMITE_MODIFICAR')")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody TramiteRegistrado tramiteRegistradoModified) {
-        try {
-            Optional<TramiteRegistrado> tramiteRegistradoUpdated = tramiteRegistradoService.update(tramiteRegistradoModified, id);
-            if (tramiteRegistradoUpdated.isPresent()) {
-                TramiteRegistradoDTO tramiteRegistradoDto = MapperUtils.DtoFromEntity(tramiteRegistradoUpdated.get(), TramiteRegistradoDTO.class);
-                return new ResponseEntity<>(tramiteRegistradoDto, HttpStatus.OK);
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody TramiteRegistradoDTO tramiteRegistradoModified, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                return new ResponseEntity<>(tramiteRegistradoService.update(tramiteRegistradoModified, id), HttpStatus.OK);
 
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+            } catch (Exception e) {
+                return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -135,5 +127,5 @@ public class TramiteRegistradoController {
             return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }
