@@ -7,6 +7,7 @@ package org.una.tramites.services;
 
 import java.util.List;
 import java.util.Optional;
+import org.una.tramites.dto.RequisitoDTO;
 import org.una.tramites.entities.Requisito;
 
 /**
@@ -15,15 +16,15 @@ import org.una.tramites.entities.Requisito;
  */
 public interface IRequisitoService {
 
-    public Optional<List<Requisito>> findAll();
+    public Optional<List<RequisitoDTO>> findAll();
 
-    public Optional<Requisito> findById(Long id);
+    public Optional<RequisitoDTO> findById(Long id);
 
-    public Optional<List<Requisito>> findByEstadoContaining(boolean estado);
+    public Optional<List<RequisitoDTO>> findByEstadoContaining(boolean estado);
 
-    public Requisito create(Requisito requisitos);
+    public RequisitoDTO create(RequisitoDTO requisitos);
 
-    public Optional<Requisito> update(Requisito requisitos, Long id);
+    public Optional<RequisitoDTO> update(RequisitoDTO requisitos, Long id);
 
     public void delete(Long id);
 

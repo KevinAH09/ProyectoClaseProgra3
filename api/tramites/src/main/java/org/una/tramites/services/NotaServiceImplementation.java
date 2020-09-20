@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.dto.NotaDTO;
 import org.una.tramites.entities.Nota;
 import org.una.tramites.repositories.INotaRepository;
+import org.una.tramites.utils.ConversionLista;
 import org.una.tramites.utils.MapperUtils;
 
 /**
@@ -25,42 +26,17 @@ public class NotaServiceImplementation implements INotaService {
     @Autowired
     private INotaRepository notaRepository;
     
-    public static Optional<List<NotaDTO>> findList(List<Nota> list) {
-        if (list != null) {
-            List<NotaDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, NotaDTO.class);
-            return Optional.ofNullable(usuariosDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<List<NotaDTO>> findList(Optional<List<Nota>> list) {
-        if (list.isPresent()) {
-            return findList(list.get());
-        } else {
-            return Optional.empty();
-        }
-    }
     
-    public static Optional<NotaDTO> oneToDto(Optional<Nota> one) {
-        if (one.isPresent()) {
-            NotaDTO PermisoDTO = MapperUtils.DtoFromEntity(one.get(), NotaDTO.class);
-            return Optional.ofNullable(PermisoDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Optional<List<NotaDTO>> findAll() {
-        return findList((notaRepository.findAll()));
+         return (Optional<List<NotaDTO>>) ConversionLista.findList((notaRepository.findAll()),NotaDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<NotaDTO> findById(Long id) {
-        return oneToDto(notaRepository.findById(id));
+        return (Optional<NotaDTO>)ConversionLista.oneToDto(notaRepository.findById(id),NotaDTO.class);
     }
 
     @Override
@@ -98,7 +74,7 @@ public class NotaServiceImplementation implements INotaService {
     @Override
     @Transactional(readOnly = true)
     public Optional<NotaDTO> findByTitulo(String titulo) {
-        return oneToDto(Optional.ofNullable(notaRepository.findByTitulo(titulo)));
+        return (Optional<NotaDTO>)ConversionLista.oneToDto(Optional.ofNullable(notaRepository.findByTitulo(titulo)),NotaDTO.class);
     }
 
   

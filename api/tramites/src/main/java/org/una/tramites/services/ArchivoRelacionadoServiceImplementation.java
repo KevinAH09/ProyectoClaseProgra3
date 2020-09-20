@@ -23,54 +23,28 @@ public class ArchivoRelacionadoServiceImplementation implements IArchivoRelacion
     @Autowired
     private IArchivoRelacionadoRepository archivoRelacionadoRepository;
 
-    public static Optional<List<ArchivoRelacionadoDTO>> findList(List<ArchivoRelacionado> list) {
-        if (list != null) {
-            List<ArchivoRelacionadoDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, ArchivoRelacionadoDTO.class);
-            return Optional.ofNullable(usuariosDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<List<ArchivoRelacionadoDTO>> findList(Optional<List<ArchivoRelacionado>> list) {
-        if (list.isPresent()) {
-            return findList(list.get());
-        } else {
-            return Optional.empty();
-        }
-    }
-    
-    public static Optional<ArchivoRelacionadoDTO> oneToDto(Optional<ArchivoRelacionado> one) {
-        if (one.isPresent()) {
-            ArchivoRelacionadoDTO PermisoDTO = MapperUtils.DtoFromEntity(one.get(), ArchivoRelacionadoDTO.class);
-            return Optional.ofNullable(PermisoDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-    
     @Override
     @Transactional(readOnly = true)
     public Optional<ArchivoRelacionadoDTO> findById(Long id) {
-        return oneToDto(archivoRelacionadoRepository.findById(id));
+        return (Optional<ArchivoRelacionadoDTO>)ConversionLista.oneToDto(archivoRelacionadoRepository.findById(id),ArchivoRelacionadoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ArchivoRelacionadoDTO>> findAll() {
-       return findList((archivoRelacionadoRepository.findAll()));
+       return (Optional<List<ArchivoRelacionadoDTO>>) ConversionLista.findList((archivoRelacionadoRepository.findAll()),ArchivoRelacionadoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ArchivoRelacionadoDTO>> findByTramiteRegistrado(Long id) {
-         return findList(archivoRelacionadoRepository.findByTramiteRegistrado(id));
+         return (Optional<List<ArchivoRelacionadoDTO>>) ConversionLista.findList(archivoRelacionadoRepository.findByTramiteRegistrado(id),ArchivoRelacionadoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ArchivoRelacionadoDTO>> findByFechaRegistro(Date fechaRegistro) {
-        return findList(archivoRelacionadoRepository.findByFechaRegistro(fechaRegistro));
+        return (Optional<List<ArchivoRelacionadoDTO>>)ConversionLista.findList(archivoRelacionadoRepository.findByFechaRegistro(fechaRegistro),ArchivoRelacionadoDTO.class);
     }
 
     @Override

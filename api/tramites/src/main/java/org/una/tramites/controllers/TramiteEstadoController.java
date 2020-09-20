@@ -9,10 +9,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,19 +41,17 @@ public class TramiteEstadoController {
     @Autowired
     private ITramiteEstadoService tramiteEstadoService;
     
+        final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
+
+    
     @GetMapping()
     @ApiOperation(value = "Obtiene una lista de todos los tramites estados", response = TramiteEstadoDTO.class, responseContainer = "List", tags = "Tramites_Estados")
     @PreAuthorize("hasAuthority('TRAMITE_ESTADO_CONSULTAR_TODO')")
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
-            Optional<List<TramiteEstado>> result = tramiteEstadoService.findAll();
-            if (result.isPresent()) {
-                List<TramiteEstadoDTO> resultDto = MapperUtils.DtoListFromEntityList(result.get(), TramiteEstadoDTO.class);
-                return new ResponseEntity<>(resultDto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+            return new ResponseEntity<>(tramiteEstadoService.findAll(), HttpStatus.OK);
+
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -62,15 +62,9 @@ public class TramiteEstadoController {
     @PreAuthorize("hasAuthority('TRAMITE_ESTADO_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
-
-            Optional<TramiteEstado> tramiteEstadoFound = tramiteEstadoService.findById(id);
-            if (tramiteEstadoFound.isPresent()) {
-                TramiteEstadoDTO tramiteEstadoDTO = MapperUtils.DtoFromEntity(tramiteEstadoFound.get(), TramiteEstadoDTO.class);
-                return new ResponseEntity<>(tramiteEstadoDTO, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity(tramiteEstadoService.findById(id), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -78,32 +72,35 @@ public class TramiteEstadoController {
     @PostMapping("/")
     @ResponseBody
     @PreAuthorize("hasAuthority('TRAMITE_ESTADO_REGISTRAR')")
-    public ResponseEntity<?> create(@RequestBody TramiteEstado tramiteEstado) {
-        try {
-            TramiteEstado tramiteEstadoCreated = tramiteEstadoService.create(tramiteEstado);
-            TramiteEstadoDTO tramiteEstadoDTO = MapperUtils.DtoFromEntity(tramiteEstadoCreated, TramiteEstadoDTO.class);
-            return new ResponseEntity<>(tramiteEstadoDTO, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> create(@Valid @RequestBody TramiteEstadoDTO TramiteEstadoDTO, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                return new ResponseEntity(tramiteEstadoService.create(TramiteEstadoDTO), HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
     @ResponseBody
     @PreAuthorize("hasAuthority('TRAMITE_ESTADO_MODIFICAR')")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody TramiteEstado tramiteEstadoModified) {
-        try {
-            Optional <TramiteEstado> tramiteEstadoUpdated = tramiteEstadoService.update(tramiteEstadoModified, id);
-            if (tramiteEstadoUpdated.isPresent()) {
-                TramiteEstadoDTO tramiteEstadoDto = MapperUtils.DtoFromEntity(tramiteEstadoUpdated.get(), TramiteEstadoDTO.class);
-                return new ResponseEntity<>(tramiteEstadoDto, HttpStatus.OK);
-
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @Valid @RequestBody TramiteEstadoDTO TramiteEstadoDTO, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                Optional<TramiteEstadoDTO> usuarioUpdated = tramiteEstadoService.update(TramiteEstadoDTO, id);
+                if (usuarioUpdated.isPresent()) {
+                    return new ResponseEntity(usuarioUpdated, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity(HttpStatus.NOT_FOUND);
+                }
+            } catch (Exception e) {
+                return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -112,12 +109,9 @@ public class TramiteEstadoController {
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         try {
             tramiteEstadoService.delete(id);
-            if (findById(id).getStatusCode() == HttpStatus.NO_CONTENT) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -126,12 +120,9 @@ public class TramiteEstadoController {
     public ResponseEntity<?> deleteAll() {
         try {
             tramiteEstadoService.deleteAll();
-            if (findAll().getStatusCode() == HttpStatus.NO_CONTENT) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     

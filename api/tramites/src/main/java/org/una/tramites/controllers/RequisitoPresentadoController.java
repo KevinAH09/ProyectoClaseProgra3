@@ -9,10 +9,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,20 +42,17 @@ public class RequisitoPresentadoController {
     @Autowired
     IRequisitoPresentadoService requisitoPresentadoService;
     
+        final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
+
+    
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtiene un requisito presentado", response = RequisitoPresentadoDTO.class, tags = "Requisitos_Presentados")
     @PreAuthorize("hasAuthority('REQUISITO_PRECE_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
-        try {
-            Optional<RequisitoPresentado> requisitoPresentadoFound = requisitoPresentadoService.findById(id);
-            if (requisitoPresentadoFound.isPresent()) {
-                RequisitoPresentadoDTO requisitoPresentadoDto = MapperUtils.DtoFromEntity(requisitoPresentadoFound.get(), RequisitoPresentadoDTO.class);
-                return new ResponseEntity<>(requisitoPresentadoDto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+         try {
+            return new ResponseEntity(requisitoPresentadoService.findById(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -62,15 +61,10 @@ public class RequisitoPresentadoController {
     @PreAuthorize("hasAuthority('REQUISITO_PRECE_CONSULTAR_TODO')")
     public @ResponseBody ResponseEntity<?> findAll() {
         try {
-            Optional<List<RequisitoPresentado>> result = requisitoPresentadoService.findAll();
-            if (result.isPresent()) {
-                List<RequisitoPresentadoDTO> requisitoPresentadoDTO = MapperUtils.DtoListFromEntityList(result.get(), RequisitoPresentadoDTO.class);
-                return new ResponseEntity<>(requisitoPresentadoDTO, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(requisitoPresentadoService.findAll(), HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
@@ -79,30 +73,35 @@ public class RequisitoPresentadoController {
     @PostMapping("/")
     @ResponseBody
     @PreAuthorize("hasAuthority('REQUISITO_PRECE_CREAR')")
-    public ResponseEntity<?> create(@RequestBody RequisitoPresentado requisitoPresentado) {
-        try {
-            RequisitoPresentado requisitoPresentadoCreated = requisitoPresentadoService.create(requisitoPresentado);
-            RequisitoPresentadoDTO requisitoPresentadoDto = MapperUtils.DtoFromEntity(requisitoPresentadoCreated, RequisitoPresentadoDTO.class);
-            return new ResponseEntity<>(requisitoPresentadoDto, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<?> create(@Valid @RequestBody RequisitoPresentadoDTO RequisitoPresentadoDTO, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                return new ResponseEntity(requisitoPresentadoService.create(RequisitoPresentadoDTO), HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
     @ResponseBody
     @PreAuthorize("hasAuthority('REQUISITO_PRECE_MODIFICAR')")
-    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @RequestBody RequisitoPresentado reqPresentadoModified) {
-        try {
-            Optional<RequisitoPresentado> reqPresentadoUpdated = requisitoPresentadoService.update(reqPresentadoModified, id);
-            if (reqPresentadoUpdated.isPresent()) {
-                RequisitoPresentadoDTO reqPresentadoDto = MapperUtils.DtoFromEntity(reqPresentadoUpdated.get(), RequisitoPresentadoDTO.class);
-                return new ResponseEntity<>(reqPresentadoDto, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> update(@PathVariable(value = "id") Long id, @Valid @RequestBody RequisitoPresentadoDTO RequisitoPresentadoDTO, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                Optional<RequisitoPresentadoDTO> RequisitoPresentadoUpdated = requisitoPresentadoService.update(RequisitoPresentadoDTO, id);
+                if (RequisitoPresentadoUpdated.isPresent()) {
+                    return new ResponseEntity(RequisitoPresentadoUpdated, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity(HttpStatus.NOT_FOUND);
+                }
+            } catch (Exception e) {
+                return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        } catch (Exception e) {
-            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            return new ResponseEntity(MENSAJE_VERIFICAR_INFORMACION, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -111,12 +110,9 @@ public class RequisitoPresentadoController {
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         try {
             requisitoPresentadoService.delete(id);
-            if (findById(id).getStatusCode() == HttpStatus.NO_CONTENT) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -125,12 +121,9 @@ public class RequisitoPresentadoController {
     public ResponseEntity<?> deleteAll() {
         try {
             requisitoPresentadoService.deleteAll();
-            if (findAll().getStatusCode() == HttpStatus.NO_CONTENT) {
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     

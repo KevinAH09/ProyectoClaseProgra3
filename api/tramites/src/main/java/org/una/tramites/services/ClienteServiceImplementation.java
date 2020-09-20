@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.dto.ClienteDTO;
 import org.una.tramites.entities.Cliente;
 import org.una.tramites.repositories.IClienteRepository;
+import org.una.tramites.utils.ConversionLista;
 import org.una.tramites.utils.MapperUtils;
 
 /**
@@ -25,54 +26,29 @@ public class ClienteServiceImplementation implements IClienteService {
     @Autowired
     private IClienteRepository clienteRepository;
 
-    public static Optional<List<ClienteDTO>> findList(List<Cliente> list) {
-        if (list != null) {
-            List<ClienteDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, ClienteDTO.class);
-            return Optional.ofNullable(usuariosDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<List<ClienteDTO>> findList(Optional<List<Cliente>> list) {
-        if (list.isPresent()) {
-            return findList(list.get());
-        } else {
-            return Optional.empty();
-        }
-    }
-    
-    public static Optional<ClienteDTO> oneToDto(Optional<Cliente> one) {
-        if (one.isPresent()) {
-            ClienteDTO PermisoDTO = MapperUtils.DtoFromEntity(one.get(), ClienteDTO.class);
-            return Optional.ofNullable(PermisoDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
     
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ClienteDTO>> findAll() {
-        return findList((clienteRepository.findAll()));
+        return (Optional<List<ClienteDTO>>) ConversionLista.findList((clienteRepository.findAll()),ClienteDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<ClienteDTO> findById(Long id) {
-       return oneToDto(clienteRepository.findById(id));   
+       return (Optional<ClienteDTO>) ConversionLista.oneToDto(clienteRepository.findById(id),ClienteDTO.class);   
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ClienteDTO>> findByCedulaAproximate(String cedula) {
-        return findList(clienteRepository.findByCedulaContaining(cedula));
+        return (Optional<List<ClienteDTO>>) ConversionLista.findList(clienteRepository.findByCedulaContaining(cedula),ClienteDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ClienteDTO>> findByNombreCompletoAproximateIgnoreCase(String nombreCompleto) {
-        return  findList((clienteRepository.findByNombreCompletoContainingIgnoreCase(nombreCompleto)));
+        return  (Optional<List<ClienteDTO>>) ConversionLista.findList(clienteRepository.findByNombreCompletoContainingIgnoreCase(nombreCompleto),ClienteDTO.class);
     }
 
     @Override
@@ -110,7 +86,7 @@ public class ClienteServiceImplementation implements IClienteService {
 
     @Override
     public Optional<ClienteDTO> findByCedula(String cedula) {
-        return oneToDto(Optional.ofNullable(clienteRepository.findByCedula(cedula)));
+        return (Optional<ClienteDTO>) ConversionLista.oneToDto(Optional.ofNullable(clienteRepository.findByCedula(cedula)),ClienteDTO.class);
     }
 
 }

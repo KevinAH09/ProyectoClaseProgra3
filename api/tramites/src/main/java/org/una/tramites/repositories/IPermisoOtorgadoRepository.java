@@ -18,7 +18,7 @@ import org.una.tramites.entities.PermisoOtorgado;
  */
 public interface IPermisoOtorgadoRepository extends JpaRepository<PermisoOtorgado, Long> {
 
-    public Optional<List<PermisoOtorgado>> findByUsuarioId(@Param("usuario") Long usuario);
+    public List<PermisoOtorgado> findByUsuarioId(@Param("usuario") Long usuario);
 
     public List<PermisoOtorgado> findByPermisoId(@Param("permisosId") Long permisos);
 

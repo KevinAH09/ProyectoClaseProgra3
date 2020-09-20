@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.dto.DepartamentoDTO;
 import org.una.tramites.entities.Departamento;
 import org.una.tramites.repositories.IDepartamentoRepository;
+import org.una.tramites.utils.ConversionLista;
 import org.una.tramites.utils.MapperUtils;
 
 /**
@@ -25,48 +26,23 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
     @Autowired
     private IDepartamentoRepository departamentoRepository;
 
-    public static Optional<List<DepartamentoDTO>> findList(List<Departamento> list) {
-        if (list != null) {
-            List<DepartamentoDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, DepartamentoDTO.class);
-            return Optional.ofNullable(usuariosDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<List<DepartamentoDTO>> findList(Optional<List<Departamento>> list) {
-        if (list.isPresent()) {
-            return findList(list.get());
-        } else {
-            return Optional.empty();
-        }
-    }
-    
-    public static Optional<DepartamentoDTO> oneToDto(Optional<Departamento> one) {
-        if (one.isPresent()) {
-            DepartamentoDTO PermisoDTO = MapperUtils.DtoFromEntity(one.get(), DepartamentoDTO.class);
-            return Optional.ofNullable(PermisoDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
     
     @Override
     @Transactional(readOnly = true)
     public Optional<List<DepartamentoDTO>> findAll() {
-        return findList((departamentoRepository.findAll()));
+        return (Optional<List<DepartamentoDTO>>) ConversionLista.findList((departamentoRepository.findAll()),DepartamentoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<DepartamentoDTO> findById(Long id) {
-        return oneToDto(departamentoRepository.findById(id));
+         return (Optional<DepartamentoDTO>)ConversionLista.oneToDto(departamentoRepository.findById(id),DepartamentoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<DepartamentoDTO>> findByNombreAproximateIgnoreCase(String nombre) {
-        return findList(departamentoRepository.findByNombreContainingIgnoreCase(nombre));
+        return (Optional<List<DepartamentoDTO>>) ConversionLista.findList(departamentoRepository.findByNombreContainingIgnoreCase(nombre),DepartamentoDTO.class);
     }
 
     @Override
@@ -92,7 +68,7 @@ public class DepartamentoServiceImplementation implements IDepartamentoService {
     @Override
     @Transactional(readOnly = true)
     public Optional<List<DepartamentoDTO>> findByEstadoContaining(boolean estado) {
-        return findList(Optional.ofNullable(departamentoRepository.findByEstado(estado)));
+        return (Optional<List<DepartamentoDTO>>) ConversionLista.findList(Optional.ofNullable(departamentoRepository.findByEstado(estado)), DepartamentoDTO.class);
 
     }
 

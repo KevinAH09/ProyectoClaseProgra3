@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.una.tramites.dto.ParametroGeneralDTO;
 import org.una.tramites.entities.ParametroGeneral;
 import org.una.tramites.repositories.IParametroGeneralRepository;
+import org.una.tramites.utils.ConversionLista;
 import org.una.tramites.utils.MapperUtils;
 
 /**
@@ -25,48 +26,24 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
     @Autowired
     private IParametroGeneralRepository parametroGeneralRepository;
     
-    public static Optional<List<ParametroGeneralDTO>> findList(List<ParametroGeneral> list) {
-        if (list != null) {
-            List<ParametroGeneralDTO> ParametroGeneralDTO = MapperUtils.DtoListFromEntityList(list, ParametroGeneralDTO.class);
-            return Optional.ofNullable(ParametroGeneralDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<List<ParametroGeneralDTO>> findList(Optional<List<ParametroGeneral>> list) {
-        if (list.isPresent()) {
-            return findList(list.get());
-        } else {
-            return Optional.empty();
-        }
-    }
     
-    public static Optional<ParametroGeneralDTO> oneToDto(Optional<ParametroGeneral> one) {
-        if (one.isPresent()) {
-            ParametroGeneralDTO ParametroGeneralDTO = MapperUtils.DtoFromEntity(one.get(), ParametroGeneralDTO.class);
-            return Optional.ofNullable(ParametroGeneralDTO);
-        } else {
-            return Optional.empty();
-        }
-    }
     
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ParametroGeneralDTO>> findByNombre(String nombre) {
-        return findList(parametroGeneralRepository.findByNombreContainingIgnoreCase(nombre));
+        return (Optional<List<ParametroGeneralDTO>>) ConversionLista.findList(parametroGeneralRepository.findByNombreContainingIgnoreCase(nombre),ParametroGeneralDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ParametroGeneralDTO>> findByValor(String valor) {
-        return findList(parametroGeneralRepository.findByValor(valor));
+       return (Optional<List<ParametroGeneralDTO>>) ConversionLista.findList(parametroGeneralRepository.findByValor(valor),ParametroGeneralDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ParametroGeneralDTO>> findByDescripcion(String descripcion) {
-        return findList(parametroGeneralRepository.findByDescripcion(descripcion));
+        return (Optional<List<ParametroGeneralDTO>>) ConversionLista.findList(parametroGeneralRepository.findByDescripcion(descripcion),ParametroGeneralDTO.class);
     }
 
     @Override
@@ -84,7 +61,7 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
     @Override
     @Transactional(readOnly = true)
     public Optional<List<ParametroGeneralDTO>> findAll() {
-       return findList((parametroGeneralRepository.findAll()));
+       return (Optional<List<ParametroGeneralDTO>>) ConversionLista.findList((parametroGeneralRepository.findAll()),ParametroGeneralDTO.class);
     }
 
     @Override
@@ -97,12 +74,12 @@ public class ParametroGeneralServiceImplementation implements IParametroGeneralS
 
     @Override
     public Optional<List<ParametroGeneralDTO>> findByEstado(boolean estado) {
-        return findList(Optional.ofNullable(parametroGeneralRepository.findByEstado(estado)));
+        return (Optional<List<ParametroGeneralDTO>>)ConversionLista.findList(Optional.ofNullable(parametroGeneralRepository.findByEstado(estado)),ParametroGeneralDTO.class);
     }
 
     @Override
     public Optional<ParametroGeneralDTO> findById(Long id) {
-      return oneToDto(parametroGeneralRepository.findById(id));
+      return (Optional<ParametroGeneralDTO>)ConversionLista.oneToDto(parametroGeneralRepository.findById(id),ParametroGeneralDTO.class);
     }
     
 }

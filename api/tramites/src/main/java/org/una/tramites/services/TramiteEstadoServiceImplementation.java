@@ -10,8 +10,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.dto.TramiteEstadoDTO;
 import org.una.tramites.entities.TramiteEstado;
 import org.una.tramites.repositories.ITramiteEstadoRepository;
+import org.una.tramites.utils.ConversionLista;
+import org.una.tramites.utils.MapperUtils;
 
 /**
  *
@@ -25,26 +28,30 @@ public class TramiteEstadoServiceImplementation implements ITramiteEstadoService
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<TramiteEstado> findById(Long id) {
-        return tramiteEstadoRepository.findById(id);
+    public Optional<TramiteEstadoDTO> findById(Long id) {
+        return (Optional<TramiteEstadoDTO>)ConversionLista.oneToDto(tramiteEstadoRepository.findById(id),TramiteEstadoDTO.class);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<TramiteEstado>> findAll() {
-        return Optional.ofNullable(tramiteEstadoRepository.findAll());
+    public Optional<List<TramiteEstadoDTO>> findAll() {
+        return (Optional<List<TramiteEstadoDTO>>) ConversionLista.findList((tramiteEstadoRepository.findAll()),TramiteEstadoDTO.class);
     }
 
     @Override
     @Transactional
-    public TramiteEstado create(TramiteEstado tramites) {
-        return tramiteEstadoRepository.save(tramites);
+    public TramiteEstadoDTO create(TramiteEstadoDTO tramites) {
+        TramiteEstado user = MapperUtils.EntityFromDto(tramites, TramiteEstado.class);
+        user = tramiteEstadoRepository.save(user);
+        return MapperUtils.DtoFromEntity(user, TramiteEstadoDTO.class);
     }
 
     @Override
-    public Optional<TramiteEstado> update(TramiteEstado tramites, Long id) {
+    public Optional<TramiteEstadoDTO> update(TramiteEstadoDTO tramites, Long id) {
         if (tramiteEstadoRepository.findById(id).isPresent()) {
-            return Optional.ofNullable(tramiteEstadoRepository.save(tramites));
+            TramiteEstado user = MapperUtils.EntityFromDto(tramites, TramiteEstado.class);
+            user = tramiteEstadoRepository.save(user);
+            return Optional.ofNullable(MapperUtils.DtoFromEntity(user, TramiteEstadoDTO.class));
         } else {
             return null;
         }
@@ -61,8 +68,8 @@ public class TramiteEstadoServiceImplementation implements ITramiteEstadoService
     }
 
     @Override
-    public Optional<TramiteEstado> findByNombre(String nombre) {
-        return Optional.ofNullable(tramiteEstadoRepository.findByNombre(nombre));
+    public Optional<TramiteEstadoDTO> findByNombre(String nombre) {
+        return (Optional<TramiteEstadoDTO>)ConversionLista.oneToDto(Optional.ofNullable(tramiteEstadoRepository.findByNombre(nombre)),TramiteEstadoDTO.class);
     }
     
 }
