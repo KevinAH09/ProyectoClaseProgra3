@@ -3,7 +3,6 @@ package org.una.tramites.loaders;
 
 
 public enum Permisos {
-    USUARIO_CREAR("USU1"),
     USUARIO_MODIFICAR("USU2"),
     USUARIO_INACTIVAR("USU3"),
     USUARIO_CONSULTAR("USU4"),

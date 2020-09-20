@@ -48,13 +48,13 @@ public class DataLoader implements ApplicationRunner {
         if (usuarioService.findByCedula(cedula).isEmpty()) {
              
             PermisoDTO permiso;
-            final String codigo = "Usu01";
+            final String codigo = "USU1";
             Optional<PermisoDTO> permisoBuscado = permisoService.findByCodigo(codigo);
 
             if (permisoBuscado.isEmpty()) {
                 permiso = new PermisoDTO();
                 permiso.setCodigo(codigo);
-                permiso.setDescripcion("Registrar usuario nuevo");
+                permiso.setDescripcion("USUARIO_CREAR");
                 permiso = permisoService.create(permiso);
 
             } else {
