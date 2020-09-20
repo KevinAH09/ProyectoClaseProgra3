@@ -7,8 +7,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.una.tramites.dto.ArchivoRelacionadoDTO;
 import org.una.tramites.entities.ArchivoRelacionado;
 import org.una.tramites.repositories.IArchivoRelacionadoRepository;
+import org.una.tramites.utils.ConversionLista;
+import org.una.tramites.utils.MapperUtils;
 
 /**
  *
@@ -20,43 +23,74 @@ public class ArchivoRelacionadoServiceImplementation implements IArchivoRelacion
     @Autowired
     private IArchivoRelacionadoRepository archivoRelacionadoRepository;
 
+    public static Optional<List<ArchivoRelacionadoDTO>> findList(List<ArchivoRelacionado> list) {
+        if (list != null) {
+            List<ArchivoRelacionadoDTO> usuariosDTO = MapperUtils.DtoListFromEntityList(list, ArchivoRelacionadoDTO.class);
+            return Optional.ofNullable(usuariosDTO);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public static Optional<List<ArchivoRelacionadoDTO>> findList(Optional<List<ArchivoRelacionado>> list) {
+        if (list.isPresent()) {
+            return findList(list.get());
+        } else {
+            return Optional.empty();
+        }
+    }
+    
+    public static Optional<ArchivoRelacionadoDTO> oneToDto(Optional<ArchivoRelacionado> one) {
+        if (one.isPresent()) {
+            ArchivoRelacionadoDTO PermisoDTO = MapperUtils.DtoFromEntity(one.get(), ArchivoRelacionadoDTO.class);
+            return Optional.ofNullable(PermisoDTO);
+        } else {
+            return Optional.empty();
+        }
+    }
+    
     @Override
     @Transactional(readOnly = true)
-    public Optional<ArchivoRelacionado> findById(Long id) {
-        return archivoRelacionadoRepository.findById(id);
+    public Optional<ArchivoRelacionadoDTO> findById(Long id) {
+        return oneToDto(archivoRelacionadoRepository.findById(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ArchivoRelacionado>> findAll() {
-        return Optional.ofNullable(archivoRelacionadoRepository.findAll());
+    public Optional<List<ArchivoRelacionadoDTO>> findAll() {
+       return findList((archivoRelacionadoRepository.findAll()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ArchivoRelacionado>> findByTramiteRegistrado(Long id) {
-        return Optional.ofNullable(archivoRelacionadoRepository.findByTramiteRegistrado(id));
+    public Optional<List<ArchivoRelacionadoDTO>> findByTramiteRegistrado(Long id) {
+         return findList(archivoRelacionadoRepository.findByTramiteRegistrado(id));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<List<ArchivoRelacionado>> findByFechaRegistro(Date fechaRegistro) {
-        return Optional.ofNullable(archivoRelacionadoRepository.findByFechaRegistro(fechaRegistro));
+    public Optional<List<ArchivoRelacionadoDTO>> findByFechaRegistro(Date fechaRegistro) {
+        return findList(archivoRelacionadoRepository.findByFechaRegistro(fechaRegistro));
     }
 
     @Override
     @Transactional
-    public ArchivoRelacionado create(ArchivoRelacionado archivoRelacionado) {
-        return archivoRelacionadoRepository.save(archivoRelacionado);
+    public ArchivoRelacionadoDTO create(ArchivoRelacionadoDTO archivoRelacionado) {
+        ArchivoRelacionado ArchivoRelacionado = MapperUtils.EntityFromDto(archivoRelacionado, ArchivoRelacionado.class);
+        ArchivoRelacionado = archivoRelacionadoRepository.save(ArchivoRelacionado);
+        return MapperUtils.DtoFromEntity(ArchivoRelacionado, ArchivoRelacionadoDTO.class);
     }
 
     @Override
     @Transactional
-    public Optional<ArchivoRelacionado> update(ArchivoRelacionado ArchivoRelacionado, Long id) {
-        if(archivoRelacionadoRepository.findById(id).isPresent())
-            return Optional.ofNullable(archivoRelacionadoRepository.save(ArchivoRelacionado));
-        else
+    public Optional<ArchivoRelacionadoDTO> update(ArchivoRelacionadoDTO ArchivoRelacionado, Long id) {
+         if (archivoRelacionadoRepository.findById(id).isPresent()) {
+            ArchivoRelacionado archivoRelacionado = MapperUtils.EntityFromDto(ArchivoRelacionado, ArchivoRelacionado.class);
+            archivoRelacionado = archivoRelacionadoRepository.save(archivoRelacionado);
+            return Optional.ofNullable(MapperUtils.DtoFromEntity(archivoRelacionado, ArchivoRelacionadoDTO.class));
+        } else {
             return null;
+        }
     }
 
     @Override

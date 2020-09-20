@@ -18,7 +18,7 @@ import org.una.tramites.entities.Cliente;
 public interface IClienteRepository extends JpaRepository<Cliente, Long>{
     public Cliente findByCedulaAndPasswordEncriptado(String cedula, String passwordEncriptado);
 
-    public List<Cliente> findByCedulaContaining(String cedula);
+    public List<Cliente> findByCedulaContaining(@Param("cedula") String cedula);
 
     public List<Cliente> findByNombreCompletoContainingIgnoreCase(String nombreCompleto);
     
