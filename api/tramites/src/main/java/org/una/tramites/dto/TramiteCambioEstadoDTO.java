@@ -5,31 +5,26 @@
  */
 package org.una.tramites.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.una.tramites.entities.TramiteRegistrado;
 
 /**
  *
- * @author Bosco
+ * @author cfugu
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TramiteTipoDTO {
+public class TramiteCambioEstadoDTO {
 
     private Long id;
-    private String descripcion;
-    private boolean estado;
-    private DepartamentoDTO departamento;
     private Date fechaRegistro;
-    private Date fechaModificacion;
-    private List<TramiteRegistrado> tramiteRegistrado = new ArrayList<>();
+    private ClienteDTO cliente;
+    private TramiteEstadoDTO tramiteEstado;
+    private TramiteRegistradoDTO tramiteRegistrado;
 
 }

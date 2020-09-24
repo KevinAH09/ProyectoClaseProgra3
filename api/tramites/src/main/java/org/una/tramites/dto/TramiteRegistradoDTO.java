@@ -26,6 +26,6 @@ public class TramiteRegistradoDTO {
     private TramiteTipoDTO tramitesTiposId;
     private Cliente clienteId;
     private List<NotaDTO> notas = new ArrayList<>();
-    private List<ArchivoRelacionadoDTO> archivosRelacionados = new ArrayList<>();
+    private List<ArchivoRelacionadoDTO> archivoRelacionado = new ArrayList<>();
     private List<RequisitoPresentadoDTO> requisitosPresentados = new ArrayList<>();
 }

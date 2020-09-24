@@ -69,7 +69,8 @@ public class SwaggerConfiguration {
                          new Tag("Requisitos_Presentados", "Entidad de Requisitos Presentados"),
                          new Tag("Tramites_Estados", "Entidad de Requisitos Tramites Estados"),
                          new Tag("Tramites_Registrados", "Entidad de Requisitos Tramites Registrados"),
-                         new Tag("Variaciones", "Entidad de Variaciones")
+                         new Tag("Variaciones", "Entidad de Variaciones"),
+                         new Tag("Tramites_Cambio_Estado", "Entidad de Tramites Cambio de Estado")
                 );
 
     }
