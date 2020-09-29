@@ -32,9 +32,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class TramiteRegistrado implements Serializable {
+public class TramiteRegistrado {
 
-    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,7 +45,7 @@ public class TramiteRegistrado implements Serializable {
     @ManyToOne
     @JoinColumn(name = "tramites_tipos_id")
     private TramiteTipo tramiteTipo;
-//    
+//  
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado")
     private List<ArchivoRelacionado> archivoRelacionado = new ArrayList<>();
 //    

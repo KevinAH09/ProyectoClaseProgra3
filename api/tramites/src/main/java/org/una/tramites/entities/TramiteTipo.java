@@ -66,8 +66,8 @@ public class TramiteTipo implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteTipo")
-    private List<TramiteRegistrado> tramiteRegistrado = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteTipo")
+//    private List<TramiteRegistrado> tramiteRegistrado = new ArrayList<>();
 
     private static final long serialVersionUID = 1L;
 
