@@ -20,5 +20,8 @@ public interface ITramiteRegistradoRepository extends JpaRepository<TramiteRegis
     @Query("SELECT t FROM TramiteRegistrado t LEFT JOIN t.cliente d WHERE t.cliente.id =:id")
     public List<TramiteRegistrado> findByClientesId(Long id);
     
+    @Query("SELECT t FROM TramiteRegistrado t LEFT JOIN t.cliente d WHERE t.cliente.cedula =:cedula")
+    public List<TramiteRegistrado> findByClientesCedula(String cedula);
+    
 //    public List<TramiteRegistrado> findByTramitesTiposId(Long id);
 }
