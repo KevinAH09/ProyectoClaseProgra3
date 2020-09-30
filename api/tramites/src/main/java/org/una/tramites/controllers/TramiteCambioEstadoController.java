@@ -7,6 +7,10 @@ package org.una.tramites.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,6 +53,15 @@ public class TramiteCambioEstadoController {
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
+//            Optional<List<TramiteCambioEstadoDTO>> listTamites = tramiteCambioEstadoService.findAll();
+//            List<TramiteCambioEstadoDTO> result = new ArrayList<>();
+//            List<TramiteCambioEstadoDTO> result2 = new ArrayList<>();
+//            
+//            if(listTamites.isPresent()){
+//               result=listTamites.get();
+//               result.stream().map(TramiteCambioEstadoDTO::getTramiteRegistrado).distinct().forEach(x->System.out.println(x.getId()));
+//            }
+            
             return new ResponseEntity<>(tramiteCambioEstadoService.findAll(), HttpStatus.OK);
 
         } catch (Exception e) {

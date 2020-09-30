@@ -27,4 +27,5 @@ public class TramiteCambioEstadoDTO {
     private TramiteEstadoDTO tramiteEstado;
     private TramiteRegistradoDTO tramiteRegistrado;
 
+
 }

@@ -20,20 +20,18 @@ import org.una.tramites.entities.TramiteRegistrado;
 public interface ITramiteCambioEstadoRepository extends JpaRepository<TramiteCambioEstado, Long> {
 
     @Query("SELECT t FROM TramiteCambioEstado t LEFT JOIN t.tramiteRegistrado d WHERE d.cliente.cedula =:cedula")
-    public Optional<List<TramiteCambioEstado>> findByCedulaCliente (@Param("cedula") String cedula);
+    public List<TramiteCambioEstado> findByCedulaCliente (@Param("cedula") String cedula);
     
     
     @Query("SELECT t FROM TramiteCambioEstado t LEFT JOIN t.tramiteRegistrado d WHERE d.id=:id")
-    public Optional<List<TramiteCambioEstado>> findByTramiteRegistradId (@Param("id") Long id);
+    public List<TramiteCambioEstado> findByTramiteRegistradId (@Param("id") Long id);
     
     @Query("SELECT t FROM TramiteCambioEstado t LEFT JOIN t.tramiteEstado d WHERE d.nombre=:nombre")
-    public Optional<List<TramiteCambioEstado>> findByEstado(@Param("nombre") String nombre);
+    public List<TramiteCambioEstado> findByEstado(@Param("nombre") String nombre);
     
     @Query("SELECT t FROM TramiteCambioEstado t LEFT JOIN t.tramiteEstado d WHERE d.nombre=:nombre")
-    public Optional<List<TramiteCambioEstado>> findByFechaRegistro(@Param("nombre") String nombre);
+    public List<TramiteCambioEstado> findByFechaRegistro(@Param("nombre") String nombre);
     
-    @Query("SELECT t FROM TramiteCambioEstado t GROUP BY t.tramiteRegistrado")
-    public Optional<List<TramiteCambioEstado>> findByEstadoActual();
     
     
     

@@ -16,9 +16,10 @@ import org.una.tramites.dto.TramiteCambioEstadoDTO;
 public interface ITramiteCambioEstadoService {
 
     public Optional<List<TramiteCambioEstadoDTO>> findAll();
+    
+    public Optional<List<TramiteCambioEstadoDTO>> findByTramiteRegistradId(Long id);
 
     public Optional<TramiteCambioEstadoDTO> findById(Long id);
-//    public Optional<TramiteCambioEstadoDTO> findByCedulaCliente(String cedula);
 
     public TramiteCambioEstadoDTO create(TramiteCambioEstadoDTO tramiteRegistrado);
 

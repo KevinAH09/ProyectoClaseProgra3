@@ -7,6 +7,9 @@ package org.una.tramites.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.ArrayList;
+import java.util.Comparator;
+import static java.util.Comparator.comparing;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +29,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.una.tramites.dto.TramiteCambioEstadoDTO;
 import org.una.tramites.dto.TramiteRegistradoDTO;
-import org.una.tramites.entities.TramiteRegistrado;
+import org.una.tramites.services.ITramiteCambioEstadoService;
 import org.una.tramites.services.ITramiteRegistradoService;
-import org.una.tramites.utils.MapperUtils;
 
 /**
  *
  * @author colo7
  */
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 @RestController
 @RequestMapping("/tramites_registrados")
 @Api(tags = {"Tramites_Registrados"})
@@ -43,6 +46,9 @@ public class TramiteRegistradoController {
 
     @Autowired
     private ITramiteRegistradoService tramiteRegistradoService;
+
+    @Autowired
+    private ITramiteCambioEstadoService tramiteCambioEstadoService;
 
     final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
 
@@ -52,7 +58,26 @@ public class TramiteRegistradoController {
     public @ResponseBody
     ResponseEntity<?> findAll() {
         try {
-            return new ResponseEntity<>(tramiteRegistradoService.findAll(), HttpStatus.OK);
+            Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findAll();
+
+            if (resultTramiteRegistrado.isPresent()) {
+                System.out.println(resultTramiteRegistrado.get().size());
+                for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
+                    Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
+                    if (!resultTramiteCambioestado.isEmpty()){
+                        resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
+                        List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
+                        cambioEstadoDTOs =  resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        if(cambioEstadoDTOs.size()>1){
+                            TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x-> x.getFechaRegistro())).get();
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(get);
+                        }else if(cambioEstadoDTOs.size()==1){
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual( resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
+                        }
+                    }
+                }
+            }
+            return new ResponseEntity<>(resultTramiteRegistrado, HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);

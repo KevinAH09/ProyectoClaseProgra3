@@ -81,4 +81,12 @@ public class TramiteCambioEstadoServiceImplementation implements ITramiteCambioE
 //            return null;
 //        }
 //    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramiteCambioEstadoDTO>> findByTramiteRegistradId(Long id) {
+         return (Optional<List<TramiteCambioEstadoDTO>>) ConversionLista.findList((tramiteCambioEstadoRepository.findByTramiteRegistradId(id)), TramiteCambioEstadoDTO.class);
+    }
 }
+
+    
