@@ -39,24 +39,32 @@ public class Cliente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "nombre_completo", length = 100)
     private String nombreCompleto;
+
     @Column(length = 25, unique = true)
     private String cedula;
+    
     @Column(length = 10)
     private String telefono;
+    
     @Column(length = 100)
     private String direccion;
+    
     @Column(name = "fecha_registro", updatable = false)
     @Temporal(TemporalType.DATE)
     @Setter(AccessLevel.NONE)
     private Date fechaRegistro;
+    
     @Column(name = "fecha_modificacion")
     @Setter(AccessLevel.NONE)
     @Temporal(TemporalType.DATE)
     private Date fechaModificacion;
+    
     @Column
     private boolean estado;
+    
     @Column(length = 100, name = "password_encriptado")
     private String passwordEncriptado;
 
@@ -74,4 +82,3 @@ public class Cliente implements Serializable {
         fechaModificacion = new Date();
     }
 }
-
