@@ -29,7 +29,6 @@ import org.una.tramites.entities.PermisoOtorgado;
 import org.una.tramites.entities.Usuario;
 import org.una.tramites.jwt.JwtProvider;
 import org.una.tramites.repositories.IUsuarioRepository;
-import org.una.tramites.utils.MapperUtils;
 
 /**
  *
