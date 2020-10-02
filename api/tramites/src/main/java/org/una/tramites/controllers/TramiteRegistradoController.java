@@ -9,9 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.ArrayList;
 import java.util.Comparator;
-import static java.util.Comparator.comparing;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,8 +69,8 @@ public class TramiteRegistradoController {
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                         cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
                         if (cambioEstadoDTOs.size() > 1) {
-                            TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
-                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(get);
+                            TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(actualCambioEsatdo);
                         } else if (cambioEstadoDTOs.size() == 1) {
                             resultTramiteRegistrado.get().get(i).setCambioEstadoActual(resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
                         }
@@ -99,8 +99,8 @@ public class TramiteRegistradoController {
                     List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                     cambioEstadoDTOs = resultTramiteRegistrado.get().getTramitesCambioEstados();
                     if (cambioEstadoDTOs.size() > 1) {
-                        TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
-                        resultTramiteRegistrado.get().setCambioEstadoActual(get);
+                        TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                        resultTramiteRegistrado.get().setCambioEstadoActual(actualCambioEsatdo);
                     } else if (cambioEstadoDTOs.size() == 1) {
                         resultTramiteRegistrado.get().setCambioEstadoActual(resultTramiteRegistrado.get().getTramitesCambioEstados().get(0));
                     }
@@ -192,13 +192,45 @@ public class TramiteRegistradoController {
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                         cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
                         if (cambioEstadoDTOs.size() > 1) {
-                            TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
-                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(get);
+                            TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(actualCambioEsatdo);
                         } else if (cambioEstadoDTOs.size() == 1) {
                             resultTramiteRegistrado.get().get(i).setCambioEstadoActual(resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
                         }
                     }
                 }
+            }
+            return new ResponseEntity<>(resultTramiteRegistrado, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/estado/{estado}")
+    @ApiOperation(value = "Obtiene una lista de todos los tramites registrados por cedula", response = TramiteRegistradoDTO.class, responseContainer = "List", tags = "Tramites_Registrados")
+    @PreAuthorize("hasAuthority('TRAMITE_CONSULTAR')")
+    public @ResponseBody
+    ResponseEntity<?> findByEstadoActualTramite(@PathVariable(value = "estado") String estado) {
+        try {
+            Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findAll();
+
+            if (resultTramiteRegistrado.isPresent()) {
+                System.out.println(resultTramiteRegistrado.get().size());
+                for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
+                    Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
+                    if (!resultTramiteCambioestado.isEmpty()) {
+                        resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
+                        List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
+                        cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        if (cambioEstadoDTOs.size() > 1) {
+                            TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(actualCambioEsatdo);
+                        } else if (cambioEstadoDTOs.size() == 1) {
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
+                        }
+                    }
+                }
+                resultTramiteRegistrado = Optional.ofNullable(resultTramiteRegistrado.get().stream().filter(x->x.getCambioEstadoActual().getTramiteEstado().getNombre().equals(estado)).collect(Collectors.toList()));
             }
             return new ResponseEntity<>(resultTramiteRegistrado, HttpStatus.OK);
 
