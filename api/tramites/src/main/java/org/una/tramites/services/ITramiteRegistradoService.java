@@ -18,6 +18,7 @@ import org.una.tramites.entities.TramiteRegistrado;
 public interface ITramiteRegistradoService {
     public Optional<List<TramiteRegistradoDTO>> findAll();
     
+    public Optional<List<TramiteRegistradoDTO>> findByClientesCedula(String cedula);
 
     public Optional<TramiteRegistradoDTO> findById(Long id);
     

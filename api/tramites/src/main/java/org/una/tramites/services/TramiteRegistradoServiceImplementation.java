@@ -27,11 +27,13 @@ public class TramiteRegistradoServiceImplementation implements ITramiteRegistrad
     private ITramiteRegistradoRepository tramiteRegistradoRepository;
     
     @Override
+    @Transactional(readOnly = true)
     public Optional<List<TramiteRegistradoDTO>> findAll() {
          return (Optional<List<TramiteRegistradoDTO>>) ConversionLista.findList((tramiteRegistradoRepository.findAll()),TramiteRegistradoDTO.class);
     }
 
     @Override
+    @Transactional
     public TramiteRegistradoDTO create(TramiteRegistradoDTO tramiteRegistrado) {
         
          TramiteRegistrado tra = MapperUtils.EntityFromDto(tramiteRegistrado, TramiteRegistrado.class);
@@ -39,6 +41,7 @@ public class TramiteRegistradoServiceImplementation implements ITramiteRegistrad
     }
 
     @Override
+    @Transactional
     public Optional<TramiteRegistradoDTO> update(TramiteRegistradoDTO tramiteRegistrado, Long id) {
         if(tramiteRegistradoRepository.findById(id).isPresent()){
             TramiteRegistrado tra = MapperUtils.EntityFromDto(tramiteRegistrado, TramiteRegistrado.class);
@@ -49,17 +52,26 @@ public class TramiteRegistradoServiceImplementation implements ITramiteRegistrad
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         tramiteRegistradoRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public void deleteAll() {
         tramiteRegistradoRepository.deleteAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<TramiteRegistradoDTO> findById(Long id) {
        return (Optional<TramiteRegistradoDTO>) ConversionLista.oneToDto((tramiteRegistradoRepository.findById(id)),TramiteRegistradoDTO.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<List<TramiteRegistradoDTO>> findByClientesCedula(String cedula) {
+        return (Optional<List<TramiteRegistradoDTO>>) ConversionLista.findList((tramiteRegistradoRepository.findByClientesCedula(cedula)),TramiteRegistradoDTO.class);
     }
 }

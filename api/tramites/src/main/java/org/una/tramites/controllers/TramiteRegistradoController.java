@@ -64,15 +64,15 @@ public class TramiteRegistradoController {
                 System.out.println(resultTramiteRegistrado.get().size());
                 for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
                     Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
-                    if (!resultTramiteCambioestado.isEmpty()){
+                    if (!resultTramiteCambioestado.isEmpty()) {
                         resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
-                        cambioEstadoDTOs =  resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
-                        if(cambioEstadoDTOs.size()>1){
-                            TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x-> x.getFechaRegistro())).get();
+                        cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        if (cambioEstadoDTOs.size() > 1) {
+                            TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
                             resultTramiteRegistrado.get().get(i).setCambioEstadoActual(get);
-                        }else if(cambioEstadoDTOs.size()==1){
-                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual( resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
+                        } else if (cambioEstadoDTOs.size() == 1) {
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
                         }
                     }
                 }
@@ -89,7 +89,26 @@ public class TramiteRegistradoController {
     @PreAuthorize("hasAuthority('TRAMITE_CONSULTAR')")
     public ResponseEntity<?> findById(@PathVariable(value = "id") Long id) {
         try {
-            return new ResponseEntity<>(tramiteRegistradoService.findById(id), HttpStatus.OK);
+            Optional<TramiteRegistradoDTO> resultTramiteRegistrado = tramiteRegistradoService.findById(id);
+            List<TramiteRegistradoDTO> resultList = new ArrayList<>();
+            if (resultTramiteRegistrado.isPresent()) {
+
+                Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().getId());
+                if (!resultTramiteCambioestado.isEmpty()) {
+                    resultTramiteRegistrado.get().setTramitesCambioEstados(resultTramiteCambioestado.get());
+                    List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
+                    cambioEstadoDTOs = resultTramiteRegistrado.get().getTramitesCambioEstados();
+                    if (cambioEstadoDTOs.size() > 1) {
+                        TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                        resultTramiteRegistrado.get().setCambioEstadoActual(get);
+                    } else if (cambioEstadoDTOs.size() == 1) {
+                        resultTramiteRegistrado.get().setCambioEstadoActual(resultTramiteRegistrado.get().getTramitesCambioEstados().get(0));
+                    }
+
+                }
+                resultList.add(resultTramiteRegistrado.get());
+            }
+            return new ResponseEntity<>(resultList, HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -153,6 +172,38 @@ public class TramiteRegistradoController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         } catch (Exception ex) {
             return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/cedula/{ced}")
+    @ApiOperation(value = "Obtiene una lista de todos los tramites registrados por cedula", response = TramiteRegistradoDTO.class, responseContainer = "List", tags = "Tramites_Registrados")
+    @PreAuthorize("hasAuthority('TRAMITE_CONSULTAR_TODO')")
+    public @ResponseBody
+    ResponseEntity<?> findClienteCedula(@PathVariable(value = "ced") String cedula) {
+        try {
+            Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findByClientesCedula(cedula);
+
+            if (resultTramiteRegistrado.isPresent()) {
+                System.out.println(resultTramiteRegistrado.get().size());
+                for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
+                    Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
+                    if (!resultTramiteCambioestado.isEmpty()) {
+                        resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
+                        List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
+                        cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        if (cambioEstadoDTOs.size() > 1) {
+                            TramiteCambioEstadoDTO get = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(get);
+                        } else if (cambioEstadoDTOs.size() == 1) {
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
+                        }
+                    }
+                }
+            }
+            return new ResponseEntity<>(resultTramiteRegistrado, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
