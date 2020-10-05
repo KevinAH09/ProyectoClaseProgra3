@@ -7,8 +7,10 @@ package org.una.tramites.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,7 +61,7 @@ public class TramiteRegistradoController {
     ResponseEntity<?> findAll() {
         try {
             Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findAll();
-
+             Optional<List<TramiteRegistradoDTO>> resultTramite = null;
             if (resultTramiteRegistrado.isPresent()) {
                 System.out.println(resultTramiteRegistrado.get().size());
                 for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
@@ -77,6 +79,7 @@ public class TramiteRegistradoController {
                     }
                 }
             }
+            System.out.println(resultTramiteRegistrado.get());
             return new ResponseEntity<>(resultTramiteRegistrado, HttpStatus.OK);
 
         } catch (Exception e) {
@@ -233,6 +236,42 @@ public class TramiteRegistradoController {
                 resultTramiteRegistrado = Optional.ofNullable(resultTramiteRegistrado.get().stream().filter(x->x.getCambioEstadoActual().getTramiteEstado().getNombre().equals(estado)).collect(Collectors.toList()));
             }
             return new ResponseEntity<>(resultTramiteRegistrado, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/fecha/{fecha}")
+    @ApiOperation(value = "Obtiene una lista de todos los tramites registrados por cedula", response = TramiteRegistradoDTO.class, responseContainer = "List", tags = "Tramites_Registrados")
+    @PreAuthorize("hasAuthority('TRAMITE_CONSULTAR')")
+    public @ResponseBody
+    ResponseEntity<?> findByFechaTramite(@PathVariable(value = "fecha") String fecha) {
+        try {
+            Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findAll();
+            Optional<List<TramiteRegistradoDTO>> resultTramite = null;
+            if (resultTramiteRegistrado.isPresent()) {
+//                System.out.println(resultTramiteRegistrado.get().size());
+                for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
+                    Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
+                    if (!resultTramiteCambioestado.isEmpty()) {
+                        resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
+                        List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
+                        cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        if (cambioEstadoDTOs.size() > 1) {
+                            TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
+                            System.out.println(actualCambioEsatdo.getFechaRegistro());
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(actualCambioEsatdo);
+                        } else if (cambioEstadoDTOs.size() == 1) {
+                            resultTramiteRegistrado.get().get(i).setCambioEstadoActual(resultTramiteRegistrado.get().get(i).getTramitesCambioEstados().get(0));
+                        }
+                    }
+                }
+                Date fechafilter =new SimpleDateFormat("yyyy-MM-dd").parse(fecha); 
+                System.out.println(fechafilter);
+                
+                resultTramite = Optional.ofNullable(resultTramiteRegistrado.get().stream().filter(x->x.getCambioEstadoActual().getFechaRegistro().getDay()==fechafilter.getDay() && x.getCambioEstadoActual().getFechaRegistro().getMonth()==fechafilter.getMonth() && x.getCambioEstadoActual().getFechaRegistro().getYear()==fechafilter.getYear() ).collect(Collectors.toList()));
+            }
+            return new ResponseEntity<>(resultTramite, HttpStatus.OK);
 
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
