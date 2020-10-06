@@ -26,4 +26,5 @@ public class TramiteRegistradoDTO {
     private ClienteDTO cliente;
     private TramiteCambioEstadoDTO cambioEstadoActual;
     private List<TramiteCambioEstadoDTO> tramitesCambioEstados;
+    private List<NotaDTO> notas;
 }

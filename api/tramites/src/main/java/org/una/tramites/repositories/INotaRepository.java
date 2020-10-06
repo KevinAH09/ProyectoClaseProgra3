@@ -6,7 +6,9 @@
 package org.una.tramites.repositories;
 
 
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.una.tramites.entities.Nota;
 
@@ -17,4 +19,7 @@ import org.una.tramites.entities.Nota;
 public interface INotaRepository extends JpaRepository<Nota, Long>{
     
     public Nota findByTitulo(String titulo);
+    
+    @Query("SELECT u FROM Nota u LEFT JOIN u.tramiteRegistrado d WHERE  d.id=:id")
+    public List<Nota> findByRegistroIdImplementado(@Param("id") Long id);
 }

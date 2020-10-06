@@ -27,4 +27,7 @@ public interface INotaService {
     public void deleteAll();
     
     public Optional<NotaDTO> findByTitulo(String grupo);
+    
+    public Optional<List<NotaDTO>> findByRegistroIdImplementado(Long tramiteRegistradoId);
+
 }

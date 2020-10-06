@@ -52,8 +52,8 @@ public class TramiteRegistrado {
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado")
 //    private List<TramiteCambioEstado> tramitesCambioEstados = new ArrayList<>();
 ////    
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado")
-//    private List<Nota> nota = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado")
+    private List<Nota> nota = new ArrayList<>();
 ////    
 //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tramiteRegistrado")
 //    private List<RequisitoPresentado> requisitoPresentado = new ArrayList<>();

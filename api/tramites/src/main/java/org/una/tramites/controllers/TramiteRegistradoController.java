@@ -32,8 +32,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.una.tramites.dto.NotaDTO;
 import org.una.tramites.dto.TramiteCambioEstadoDTO;
 import org.una.tramites.dto.TramiteRegistradoDTO;
+import org.una.tramites.services.INotaService;
 import org.una.tramites.services.ITramiteCambioEstadoService;
 import org.una.tramites.services.ITramiteRegistradoService;
 
@@ -52,6 +54,10 @@ public class TramiteRegistradoController {
 
     @Autowired
     private ITramiteCambioEstadoService tramiteCambioEstadoService;
+    
+    @Autowired
+    private INotaService notasService;
+    
 
     final String MENSAJE_VERIFICAR_INFORMACION = "Debe verifiar el formato y la información de su solicitud con el formato esperado";
 
@@ -67,8 +73,10 @@ public class TramiteRegistradoController {
                 System.out.println(resultTramiteRegistrado.get().size());
                 for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
                     Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
+                    Optional<List<NotaDTO>> NOTA = notasService.findByRegistroIdImplementado(resultTramiteRegistrado.get().get(i).getId());
                     if (!resultTramiteCambioestado.isEmpty()) {
                         resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
+                        resultTramiteRegistrado.get().get(i).setNotas(NOTA.get());
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                         cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
                         if (cambioEstadoDTOs.size() > 1) {

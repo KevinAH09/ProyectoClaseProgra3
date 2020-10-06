@@ -77,6 +77,11 @@ public class NotaServiceImplementation implements INotaService {
         return (Optional<NotaDTO>)ConversionLista.oneToDto(Optional.ofNullable(notaRepository.findByTitulo(titulo)),NotaDTO.class);
     }
 
+    @Override
+    public Optional<List<NotaDTO>> findByRegistroIdImplementado(Long tramiteRegistradoId) {
+       return (Optional<List<NotaDTO>>) ConversionLista.findList((notaRepository.findByRegistroIdImplementado(tramiteRegistradoId)),NotaDTO.class);
+    }
+
   
 
 }
