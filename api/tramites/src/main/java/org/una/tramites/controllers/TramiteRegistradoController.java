@@ -109,10 +109,11 @@ public class TramiteRegistradoController {
             Optional<TramiteRegistradoDTO> resultTramiteRegistrado = tramiteRegistradoService.findById(id);
             List<TramiteRegistradoDTO> resultList = new ArrayList<>();
             if (resultTramiteRegistrado.isPresent()) {
-
+                Optional<List<NotaDTO>> NOTA = notasService.findByRegistroIdImplementado(resultTramiteRegistrado.get().getId());
                 Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().getId());
                 if (!resultTramiteCambioestado.isEmpty()) {
                     resultTramiteRegistrado.get().setTramitesCambioEstados(resultTramiteCambioestado.get());
+                    resultTramiteRegistrado.get().setNotas(NOTA.get());
                     List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                     cambioEstadoDTOs = resultTramiteRegistrado.get().getTramitesCambioEstados();
                     if (cambioEstadoDTOs.size() > 1) {
@@ -204,8 +205,10 @@ public class TramiteRegistradoController {
                 System.out.println(resultTramiteRegistrado.get().size());
                 for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
                     Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
+                    Optional<List<NotaDTO>> NOTA = notasService.findByRegistroIdImplementado(resultTramiteRegistrado.get().get(i).getId());
                     if (!resultTramiteCambioestado.isEmpty()) {
                         resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
+                        resultTramiteRegistrado.get().get(i).setNotas(NOTA.get());
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                         cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
                         if (cambioEstadoDTOs.size() > 1) {
@@ -231,15 +234,18 @@ public class TramiteRegistradoController {
     ResponseEntity<?> findByEstadoActualTramite(@PathVariable(value = "estado") String estado) {
         try {
             Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findAll();
+            
 
             if (resultTramiteRegistrado.isPresent()) {
                 System.out.println(resultTramiteRegistrado.get().size());
                 for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
+                    Optional<List<NotaDTO>> NOTA = notasService.findByRegistroIdImplementado(resultTramiteRegistrado.get().get(i).getId());
                     Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
                     if (!resultTramiteCambioestado.isEmpty()) {
                         resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                         cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        resultTramiteRegistrado.get().get(i).setNotas(NOTA.get());
                         if (cambioEstadoDTOs.size() > 1) {
                             TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
                             resultTramiteRegistrado.get().get(i).setCambioEstadoActual(actualCambioEsatdo);
@@ -265,14 +271,18 @@ public class TramiteRegistradoController {
         try {
             Optional<List<TramiteRegistradoDTO>> resultTramiteRegistrado = tramiteRegistradoService.findAll();
             Optional<List<TramiteRegistradoDTO>> resultTramite = null;
+            
+
             if (resultTramiteRegistrado.isPresent()) {
 //                System.out.println(resultTramiteRegistrado.get().size());
                 for (int i = 0; i < resultTramiteRegistrado.get().size(); i++) {
+                    Optional<List<NotaDTO>> NOTA = notasService.findByRegistroIdImplementado(resultTramiteRegistrado.get().get(i).getId());
                     Optional<List<TramiteCambioEstadoDTO>> resultTramiteCambioestado = tramiteCambioEstadoService.findByTramiteRegistradId(resultTramiteRegistrado.get().get(i).getId());
                     if (!resultTramiteCambioestado.isEmpty()) {
                         resultTramiteRegistrado.get().get(i).setTramitesCambioEstados(resultTramiteCambioestado.get());
                         List<TramiteCambioEstadoDTO> cambioEstadoDTOs = new ArrayList<>();
                         cambioEstadoDTOs = resultTramiteRegistrado.get().get(i).getTramitesCambioEstados();
+                        resultTramiteRegistrado.get().get(i).setNotas(NOTA.get());
                         if (cambioEstadoDTOs.size() > 1) {
                             TramiteCambioEstadoDTO actualCambioEsatdo = cambioEstadoDTOs.stream().max(Comparator.comparing(x -> x.getFechaRegistro())).get();
                             System.out.println(actualCambioEsatdo.getFechaRegistro());
