@@ -23,7 +23,7 @@ public class TramiteCambioEstadoDTO {
 
     private Long id;
     private Date fechaRegistro;
-    private ClienteDTO cliente;
+    private UsuarioDTO usuario;
     private TramiteEstadoDTO tramiteEstado;
     private TramiteRegistradoDTO tramiteRegistrado;
 
